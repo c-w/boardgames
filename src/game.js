@@ -120,6 +120,16 @@ function playCard(G, ctx, i) {
     throw new Error(`Unhandled state card=${card.rank}@${card.suit} played=${G.played.rank}@${G.played.suit}`);
   }
 
+  let next;
+
+  if (G.played.rank === 1 && winnerId !== opponentID) {
+    next = opponentID;
+  } else if (card.rank === 1 && winnerId !== playerID) {
+    next = playerID;
+  } else {
+    next = winnerId;
+  }
+
   player.hand = hand;
   G.tricks[winnerId]++;
   G.played = null;
@@ -152,7 +162,7 @@ function playCard(G, ctx, i) {
     return;
   }
 
-  ctx.events.endTurn({ next: winnerId });
+  ctx.events.endTurn({ next });
 }
 
 export default {
