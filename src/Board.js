@@ -47,6 +47,12 @@ export default function Board({ G, ctx, playerID, moves }) {
   const player = G.players[playerID];
   const tricks = G.tricks[playerID].length;
 
+  const hand = player.hand.map((card, i) => ({ card, i })).sort((a, b) => {
+    return a.card.suit === b.card.suit
+      ? a.card.rank - b.card.rank
+      : a.card.suit.localeCompare(b.card.suit);
+  });
+
   return (
     <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : null }}>
       <div>Player: {playerID}</div>
@@ -58,7 +64,7 @@ export default function Board({ G, ctx, playerID, moves }) {
           <div>Current: <Card {...G.played} /></div>
           <div>Hand:
             <ol>
-              {player.hand.map((card, i) =>
+              {hand.map(({ card, i }) =>
                 <li key={`${card.rank}-${card.suit}`}>
                   <Card
                     {...card}
