@@ -24,6 +24,7 @@ export default function Board({ G, ctx, playerID, moves }) {
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
   const player = G.players[playerID];
+  const tricks = G.tricks[playerID];
 
   return (
     <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : isActive ? '#C1FFC1' : '#E9967A' }}>
@@ -32,7 +33,7 @@ export default function Board({ G, ctx, playerID, moves }) {
       {!isOver && (
         <React.Fragment>
           <div>Trump: <Card {...G.trump} /></div>
-          <div>Tricks: {player.tricks}</div>
+          <div>Tricks: {tricks}</div>
           <div>Current: <Card {...G.played} /></div>
           <div>Hand:
             <ol>

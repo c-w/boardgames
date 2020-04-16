@@ -1,4 +1,4 @@
-import { INVALID_MOVE } from 'boardgame.io/core';
+import { PlayerView, INVALID_MOVE } from 'boardgame.io/core';
 import { last, sum } from './utils.js';
 
 const SUITS = ['key', 'tower', 'moon'];
@@ -24,16 +24,20 @@ function dealCards(ctx) {
   }
 
   return {
-    deck,
+    secret: {
+      deck,
+    },
+    tricks: {
+      [PLAYER_1]: 0,
+      [PLAYER_2]: 0,
+    },
     trump,
     players: {
       [PLAYER_1]: {
         hand: hand1,
-        tricks: 0,
       },
       [PLAYER_2]: {
         hand: hand2,
-        tricks: 0,
       },
     },
   };
@@ -110,12 +114,12 @@ function playCard(G, ctx, i) {
   }
 
   player.hand = hand;
-  G.players[winnerId].tricks++;
+  G.tricks[winnerId]++;
   G.played = null;
 
   if (player.hand.length === 0) {
     [playerID, opponentID].forEach(id => {
-      const { tricks } = G.players[id];
+      const tricks = G.tricks[id];
 
       if (tricks <= 3) {
         G.scores[id].push(6);
@@ -133,7 +137,8 @@ function playCard(G, ctx, i) {
     });
 
     const newRound = dealCards(ctx);
-    G.deck = newRound.deck;
+    G.secret = newRound.secret;
+    G.tricks = newRound.tricks;
     G.trump = newRound.trump;
     G.players = newRound.players;
     ctx.events.endTurn();
@@ -159,10 +164,15 @@ export default {
   }),
 
   moves: {
-    playCard,
+    playCard: {
+      move: playCard,
+      client: false,
+    },
   },
 
   endIf: checkGameOver,
+
+  playerView: PlayerView.STRIP_SECRETS,
 
   events: {
     endTurn: false,
