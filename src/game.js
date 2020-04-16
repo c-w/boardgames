@@ -108,7 +108,17 @@ function playCard(G, ctx, i) {
     return INVALID_MOVE;
   } else if (G.played.rank === 11 && card.rank !== 1 && card.rank !== highestRankInSuit) {
     return INVALID_MOVE;
-  } else if (card.suit === G.trump.suit && G.played.suit !== G.trump.suit) {
+  }
+
+  if ((card.rank === 9 || G.played.rank === 9) && !(card.rank === 9 && G.played.rank === 9)) {
+    if (card.rank === 9) {
+      card.suit = G.trump.suit;
+    } else if (G.played.rank === 9) {
+      G.played.suit = G.trump.suit;
+    }
+  }
+
+  if (card.suit === G.trump.suit && G.played.suit !== G.trump.suit) {
     winnerId = playerID;
   } else if (card.suit !== G.trump.suit && G.played.suit === G.trump.suit) {
     winnerId = opponentID;
@@ -131,14 +141,14 @@ function playCard(G, ctx, i) {
   }
 
   player.hand = hand;
-  G.tricks[winnerId].push([G.played, card]);
+  G.tricks[winnerId].push([G.played.rank, card.rank]);
   G.played = null;
 
   if (player.hand.length === 0) {
     [playerID, opponentID].forEach(id => {
       const tricks = G.tricks[id].length;
 
-      let score = G.tricks[id].flat().filter(c => c.rank === 7).length;
+      let score = G.tricks[id].flat().filter(rank => rank === 7).length;
 
       if (tricks <= 3) {
         score += 6;
