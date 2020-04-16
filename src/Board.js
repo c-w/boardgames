@@ -1,4 +1,5 @@
 import React from 'react';
+import { sum } from './utils';
 
 function Card({ rank, suit, onClick }) {
   if (!rank || !suit) {
@@ -19,25 +20,31 @@ function Card({ rank, suit, onClick }) {
 }
 
 export default function Board({ G, ctx, playerID, moves }) {
+  const isOver = ctx.gameover != null;
+  const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
   const player = G.players[playerID];
 
   return (
-    <div style={{ backgroundColor: isActive ? '#C1FFC1' : '#E9967A' }}>
+    <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : isActive ? '#C1FFC1' : '#E9967A' }}>
       <div>Player: {playerID}</div>
-      <div>Score: {G.scores[playerID]}</div>
-      <div>Trump: <Card {...G.trump} /></div>
-      <div>Tricks: {player.tricks}</div>
-      <div>Current: <Card {...G.played} /></div>
-      <div>Hand:
-        <ol>
-          {player.hand.map((card, i) =>
-            <li key={`${card.rank}-${card.suit}`}>
-              <Card {...card} onClick={() => moves.playCard(i) } />
-            </li>
-          )}
-        </ol>
-      </div>
+      <div>Score: {sum(G.scores[playerID])}</div>
+      {!isOver && (
+        <React.Fragment>
+          <div>Trump: <Card {...G.trump} /></div>
+          <div>Tricks: {player.tricks}</div>
+          <div>Current: <Card {...G.played} /></div>
+          <div>Hand:
+            <ol>
+              {player.hand.map((card, i) =>
+                <li key={`${card.rank}-${card.suit}`}>
+                  <Card {...card} onClick={() => moves.playCard(i) } />
+                </li>
+              )}
+            </ol>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 }

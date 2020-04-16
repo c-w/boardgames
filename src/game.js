@@ -1,7 +1,9 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
+import { last, sum } from './utils.js';
 
 const SUITS = ['key', 'tower', 'moon'];
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const WINNING_SCORE = 16;
 const HAND_SIZE = 13;
 const PLAYER_1 = 0;
 const PLAYER_2 = 1;
@@ -37,10 +39,49 @@ function dealCards(ctx) {
   };
 }
 
-function playCard(G, ctx, i) {
+function getPlayers(G, ctx) {
   const opponentID = Object.keys(G.players).find(id => id !== ctx.currentPlayer);
   const playerID = ctx.currentPlayer;
+
+  const opponent = G.players[opponentID];
   const player = G.players[playerID];
+
+  return {
+    opponentID,
+    opponent,
+    playerID,
+    player,
+  };
+}
+
+function checkGameOver(G, ctx) {
+  const { playerID, opponentID } = getPlayers(G, ctx);
+
+  const playerScores = G.scores[playerID];
+  const opponentScores = G.scores[opponentID];
+
+  const playerScore = sum(playerScores);
+  const opponentScore = sum(opponentScores);
+
+  if (playerScore < WINNING_SCORE && opponentScore < WINNING_SCORE) {
+    return;
+  }
+
+  if (playerScore > opponentScore) {
+    return { winner: playerID };
+  }
+
+  if (opponentScore > playerScore) {
+    return { winner: opponentID };
+  }
+
+  return last(playerScores) > last(opponentScores)
+    ? { winner: playerID }
+    : { winner: opponentID };
+}
+
+function playCard(G, ctx, i) {
+  const { playerID, opponentID, player } = getPlayers(G, ctx);
 
   const card = player.hand[i];
   const hand = player.hand.filter((_, j) => j !== i);
@@ -77,15 +118,17 @@ function playCard(G, ctx, i) {
       const { tricks } = G.players[id];
 
       if (tricks <= 3) {
-        G.scores[id] += 6;
+        G.scores[id].push(6);
       } else if (tricks === 4) {
-        G.scores[id] += 1;
+        G.scores[id].push(1);
       } else if (tricks === 5) {
-        G.scores[id] += 2;
+        G.scores[id].push(2);
       } else if (tricks === 6) {
-        G.scores[id] += 3;
+        G.scores[id].push(3);
       } else if (tricks >= 7 && tricks <= 9) {
-        G.scores[id] += 6;
+        G.scores[id].push(6);
+      } else {
+        G.scores[id].push(0);
       }
     });
 
@@ -110,14 +153,16 @@ export default {
     ...dealCards(ctx),
     played: null,
     scores: {
-      [PLAYER_1]: 0,
-      [PLAYER_2]: 0,
+      [PLAYER_1]: [],
+      [PLAYER_2]: [],
     },
   }),
 
   moves: {
     playCard,
   },
+
+  endIf: checkGameOver,
 
   events: {
     endTurn: false,
