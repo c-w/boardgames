@@ -54,7 +54,7 @@ function playCard(G, ctx, i) {
 
   let winnerId;
 
-  if (card.suit !== G.played.suit && hand.some(c => c.suit === card.suit)) {
+  if (card.suit !== G.played.suit && hand.some(c => c.suit === G.played.suit)) {
     return INVALID_MOVE;
   } else if (card.suit === G.trump.suit && G.played.suit !== G.trump.suit) {
     winnerId = playerID;
