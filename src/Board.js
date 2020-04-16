@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { sum } from './utils';
 
-function Card({ rank, suit, onClick }) {
+function Card({ rank, suit, onClick, enabled }) {
   if (!rank || !suit) {
     return null;
   }
@@ -13,13 +13,34 @@ function Card({ rank, suit, onClick }) {
   }
 
   return (
-    <button onClick={onClick}>
+    <label>
+      <input
+        type="checkbox"
+        onClick={onClick}
+        disabled={!enabled}
+      />
       {rank} of {suit}
-    </button>
+    </label>
   );
 }
 
 export default function Board({ G, ctx, playerID, moves }) {
+  const [checkboxes, setCheckboxes] = useState({});
+
+  const chosen = Object.entries(checkboxes)
+    .filter(([_, v]) => v)
+    .map(([k, _]) => k)
+    .map(i => Number(i));
+
+  const playCard = () => {
+    moves.playCard(...chosen);
+    setCheckboxes({});
+  };
+
+  const onClick = (i) => (even) => {
+    setCheckboxes({ ...checkboxes, [i]: even.target.checked });
+  };
+
   const isOver = ctx.gameover != null;
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
@@ -27,7 +48,7 @@ export default function Board({ G, ctx, playerID, moves }) {
   const tricks = G.tricks[playerID].length;
 
   return (
-    <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : isActive ? '#C1FFC1' : '#E9967A' }}>
+    <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : null }}>
       <div>Player: {playerID}</div>
       <div>Score: {sum(G.scores[playerID])}</div>
       {!isOver && (
@@ -39,11 +60,25 @@ export default function Board({ G, ctx, playerID, moves }) {
             <ol>
               {player.hand.map((card, i) =>
                 <li key={`${card.rank}-${card.suit}`}>
-                  <Card {...card} onClick={() => moves.playCard(i) } />
+                  <Card
+                    {...card}
+                    onClick={onClick(i)}
+                    enabled={
+                      chosen.length === 0 ||
+                      chosen.includes(i) ||
+                      (chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                    }
+                  />
                 </li>
               )}
             </ol>
           </div>
+          <button
+            onClick={playCard}
+            disabled={!isActive}
+          >
+            Play card
+          </button>
         </React.Fragment>
       )}
     </div>

@@ -84,11 +84,20 @@ function checkGameOver(G, ctx) {
     : { winner: opponentID };
 }
 
-function playCard(G, ctx, i) {
+function playCard(G, ctx, i, j) {
   const { playerID, opponentID, player } = getPlayers(G, ctx);
 
   const card = player.hand[i];
-  const hand = player.hand.filter((_, j) => j !== i);
+
+  if (card.rank !== 3 && j != null) {
+    return INVALID_MOVE;
+  } else if (card.rank === 3 && j != null) {
+    const oldTrump = { ...G.trump };
+    G.trump = { ...player.hand[j] };
+    player.hand[j] = oldTrump;
+  }
+
+  const hand = player.hand.filter((_, k) => k !== i);
 
   if (G.played == null) {
     player.hand = hand;
