@@ -24,7 +24,7 @@ export default function Board({ G, ctx, playerID, moves }) {
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
   const player = G.players[playerID];
-  const tricks = G.tricks[playerID];
+  const tricks = G.tricks[playerID].length;
 
   return (
     <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : isActive ? '#C1FFC1' : '#E9967A' }}>

@@ -28,8 +28,8 @@ function dealCards(ctx) {
       deck,
     },
     tricks: {
-      [PLAYER_1]: 0,
-      [PLAYER_2]: 0,
+      [PLAYER_1]: [],
+      [PLAYER_2]: [],
     },
     trump,
     players: {
@@ -131,26 +131,28 @@ function playCard(G, ctx, i) {
   }
 
   player.hand = hand;
-  G.tricks[winnerId]++;
+  G.tricks[winnerId].push([G.played, card]);
   G.played = null;
 
   if (player.hand.length === 0) {
     [playerID, opponentID].forEach(id => {
-      const tricks = G.tricks[id];
+      const tricks = G.tricks[id].length;
+
+      let score = G.tricks[id].flat().filter(c => c.rank === 7).length;
 
       if (tricks <= 3) {
-        G.scores[id].push(6);
+        score += 6;
       } else if (tricks === 4) {
-        G.scores[id].push(1);
+        score += 1;
       } else if (tricks === 5) {
-        G.scores[id].push(2);
+        score += 2;
       } else if (tricks === 6) {
-        G.scores[id].push(3);
+        score += 3;
       } else if (tricks >= 7 && tricks <= 9) {
-        G.scores[id].push(6);
-      } else {
-        G.scores[id].push(0);
+        score += 6;
       }
+
+      G.scores[id].push(score);
     });
 
     const newRound = dealCards(ctx);
