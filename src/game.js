@@ -97,9 +97,16 @@ function playCard(G, ctx, i) {
     return;
   }
 
+  const highestRankInSuit = player.hand
+    .filter(c => c.suit === G.played.suit)
+    .map(c => c.rank)
+    .reduce((max, rank) => max < rank ? rank : max, -1);
+
   let winnerId;
 
   if (card.suit !== G.played.suit && hand.some(c => c.suit === G.played.suit)) {
+    return INVALID_MOVE;
+  } else if (G.played.rank === 11 && card.rank !== 1 && card.rank !== highestRankInSuit) {
     return INVALID_MOVE;
   } else if (card.suit === G.trump.suit && G.played.suit !== G.trump.suit) {
     winnerId = playerID;
