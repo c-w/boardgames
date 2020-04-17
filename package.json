@@ -5,7 +5,8 @@
   "dependencies": {
     "boardgame.io": "^0.39.7",
     "envalid": "^6.0.1",
-    "esm": "^3.2.25"
+    "esm": "^3.2.25",
+    "node-persist": "^3.0.5"
   },
   "devDependencies": {
     "axios": "^0.19.2",
@@ -20,7 +21,7 @@
   "scripts": {
     "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
     "start-client": "cross-env REACT_APP_SERVER_URL=http://localhost:8000 react-scripts start",
-    "start-server": "cross-env PORT=8000 nodemon -r esm src/server.js",
+    "start-server": "cross-env STATE_DIR=state PORT=8000 nodemon -r esm src/server.js",
     "build": "react-scripts build"
   },
   "eslintConfig": {
