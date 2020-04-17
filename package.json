@@ -26,6 +26,13 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "nodemonConfig": {
+    "watch": [
+      "src/server.js",
+      "src/game.js",
+      "src/utils.js"
+    ]
+  },
   "browserslist": {
     "production": [
       ">0.2%",
