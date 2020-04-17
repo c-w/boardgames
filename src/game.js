@@ -1,5 +1,5 @@
 import { PlayerView, INVALID_MOVE } from 'boardgame.io/core';
-import { last, sum } from './utils.js';
+import { last, removeAt, sum } from './utils.js';
 
 const SUITS = ['key', 'tower', 'moon'];
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -84,7 +84,7 @@ function checkGameOver(G, ctx) {
 function discardCard(G, ctx, i) {
   const { player } = getPlayers(G, ctx);
 
-  player.hand = player.hand.filter((_, j) => j !== i);
+  player.hand = removeAt(player.hand, i);
 
   ctx.events.endStage();
 
@@ -112,7 +112,7 @@ function playCard(G, ctx, i, j) {
     player.hand[j] = oldTrump;
   }
 
-  const hand = player.hand.filter((_, k) => k !== i);
+  const hand = removeAt(player.hand, i);
 
   if (card.rank === 5 && G.stashed == null) {
     hand.push(G.secret.deck.pop());

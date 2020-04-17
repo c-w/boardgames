@@ -5,3 +5,7 @@ export function last(items) {
 export function sum(numbers) {
   return numbers.reduce((acc, number) => acc + number, 0);
 }
+
+export function removeAt(items, i) {
+  return items.filter((_, j) => j !== i);
+}
