@@ -90,6 +90,9 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
           Your score: {sum(G.scores[playerID])}
         </div>
         <div>
+          {opponent.name} score: {sum(G.scores[opponent.id])}
+        </div>
+        <div>
           Your tricks: {tricksWon}
         </div>
         <div>
