@@ -38,27 +38,26 @@ function Card({ rank, suit, onClick, enabled }) {
 }
 
 export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
-  const [checkboxes, setCheckboxes] = useState({});
-
-  const chosen = Object.entries(checkboxes)
-    .filter(([_, v]) => v)
-    .map(([k, _]) => k)
-    .map(i => Number(i));
+  const [chosen, setChosen] = useState([]);
 
   const playCard = (event) => {
     event.preventDefault();
     moves.playCard(...chosen);
-    setCheckboxes({});
+    setChosen([]);
   };
 
   const discardCard = (event) => {
     event.preventDefault();
     moves.discardCard(...chosen);
-    setCheckboxes({});
+    setChosen([]);
   };
 
   const onClick = (i) => (event) => {
-    setCheckboxes({ ...checkboxes, [i]: event.target.checked });
+    if (event.target.checked) {
+      setChosen([...chosen, i]);
+    } else {
+      setChosen(chosen.filter(x => x !== i));
+    }
   };
 
   const isOver = ctx.gameover != null;
