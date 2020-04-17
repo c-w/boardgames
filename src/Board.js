@@ -37,7 +37,7 @@ function Card({ rank, suit, onClick, enabled }) {
   );
 }
 
-export default function Board({ G, ctx, playerID, moves }) {
+export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const [checkboxes, setCheckboxes] = useState({});
 
   const chosen = Object.entries(checkboxes)
@@ -66,6 +66,7 @@ export default function Board({ G, ctx, playerID, moves }) {
   const isActive = playerID === ctx.currentPlayer;
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const player = G.players[playerID];
+  const opponent = gameMetadata.find(u => u.id !== playerID);
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const lastTrick = G.tricks.length >= 1 ? last(G.tricks) : null;
@@ -92,7 +93,7 @@ export default function Board({ G, ctx, playerID, moves }) {
           Your tricks: {tricksWon}
         </div>
         <div>
-          Opponent tricks: {tricksLost}
+          {opponent.name} tricks: {tricksLost}
         </div>
         {lastTrick && (
           <div>
@@ -110,11 +111,11 @@ export default function Board({ G, ctx, playerID, moves }) {
         </div>
         {G.played && (
           <div>
-            {isActive ? 'Opponent played' : 'You played'}:&nbsp;
+            {isActive ? `${opponent.name} played` : 'You played'}:&nbsp;
             <Card {...G.played} />
           </div>
         )}
-        <em>{isActive ? 'Your move!' : 'Waiting for opponent...'}</em>
+        <em>{isActive ? 'Your move!' : `Waiting for ${opponent.name}...`}</em>
       </fieldset>
       <fieldset disabled={!isActive}>
         <legend>Your hand</legend>
