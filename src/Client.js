@@ -7,4 +7,5 @@ export default Client({
   game: Game,
   board: Board,
   multiplayer: SocketIO({ server: process.env.REACT_APP_SERVER_URL }),
+  debug: false,
 });
