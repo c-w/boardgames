@@ -1,10 +1,6 @@
 import { Server } from 'boardgame.io/server';
+import config from './config/server';
 import Game from './game';
-import envalid from 'envalid';
-
-const env = envalid.cleanEnv(process.env, {
-  PORT: envalid.port(),
-});
 
 const server = Server({
   games: [
@@ -12,4 +8,4 @@ const server = Server({
   ],
 });
 
-server.run(env.PORT, () => console.log(`Server running on port ${env.PORT}`));
+server.run(config.PORT, () => console.log(`Server running on port ${config.PORT}`));

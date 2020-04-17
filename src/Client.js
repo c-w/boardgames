@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import Board from './Board';
+import config from './config/client';
 import http from './http';
 import game from './game';
 import { repeatedly } from './utils';
 
-const REFRESH_MS = Number(process.env.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS || 2000);
-
 const GameClient = Client({
   game,
   board: Board,
-  multiplayer: SocketIO({ server: process.env.REACT_APP_SERVER_URL }),
+  multiplayer: SocketIO({ server: config.REACT_APP_SERVER_URL }),
   debug: false,
 });
 
@@ -31,7 +30,7 @@ export default function WaitForPlayers(props) {
       }
 
       setStatus({ isLoading: false, isReady });
-    }, REFRESH_MS);
+    }, config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
     return () => clearInterval(refreshInterval);
   }, [gameID]);
