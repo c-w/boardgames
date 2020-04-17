@@ -4,7 +4,7 @@ import http from './http';
 import game from './game';
 
 export default withRouter(({ history, gameID }) => {
-  const [playerName, setPlayerName] = useState(localStorage.getItem('playerName'));
+  const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
 
   const onChange = (event) => {
     const { value } = event.target;
