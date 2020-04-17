@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import http from './http';
 import game from './game';
-
-const http = axios.create({
-  baseURL: `${process.env.REACT_APP_SERVER_URL}/games/${game.name}`,
-});
 
 export default withRouter(({ history, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName'));

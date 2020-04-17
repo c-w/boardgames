@@ -9,3 +9,8 @@ export function sum(numbers) {
 export function removeAt(items, i) {
   return items.filter((_, j) => j !== i);
 }
+
+export function repeatedly(func, ms) {
+  func();
+  return setInterval(func, ms);
+}
