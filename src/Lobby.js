@@ -8,10 +8,12 @@ const http = axios.create({
 });
 
 export default withRouter(({ history, gameID }) => {
-  const [playerName, setPlayerName] = useState('');
+  const [playerName, setPlayerName] = useState(localStorage.getItem('playerName'));
 
   const onChange = (event) => {
-    setPlayerName(event.target.value);
+    const { value } = event.target;
+    setPlayerName(value);
+    localStorage.setItem('playerName', value);
   };
 
   const onSubmit = async (event) => {
@@ -40,7 +42,7 @@ export default withRouter(({ history, gameID }) => {
     <form onSubmit={onSubmit}>
       <label>
         Enter your name:
-        <input onChange={onChange} />
+        <input onChange={onChange} value={playerName} />
       </label>
       <input type="submit" value={gameID == null ? 'Create game' : 'Join game'} />
     </form>
