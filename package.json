@@ -8,6 +8,7 @@
     "esm": "^3.2.25"
   },
   "devDependencies": {
+    "axios": "^0.19.2",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "nodemon": "^2.0.3",
