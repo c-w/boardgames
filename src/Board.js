@@ -57,8 +57,8 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
     setCheckboxes({});
   };
 
-  const onClick = (i) => (even) => {
-    setCheckboxes({ ...checkboxes, [i]: even.target.checked });
+  const onClick = (i) => (event) => {
+    setCheckboxes({ ...checkboxes, [i]: event.target.checked });
   };
 
   const isOver = ctx.gameover != null;
