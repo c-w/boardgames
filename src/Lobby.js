@@ -38,7 +38,12 @@ export default withRouter(({ history, gameID }) => {
     <form onSubmit={onSubmit}>
       <label>
         Enter your name:
-        <input onChange={onChange} value={playerName} />
+        <input
+          onChange={onChange}
+          value={playerName}
+          required
+          minLength="1"
+        />
       </label>
       <input type="submit" value={gameID == null ? 'Create game' : 'Join game'} />
     </form>

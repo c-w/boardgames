@@ -6,10 +6,14 @@ function Card({ rank, suit, onClick, enabled }) {
     return null;
   }
 
+  const card = (
+    <span className={suit}>
+      {rank} of {suit}
+    </span>
+  );
+
   if (!onClick) {
-    return (
-      <span>{rank} of {suit}</span>
-    );
+    return card;
   }
 
   return (
@@ -19,7 +23,7 @@ function Card({ rank, suit, onClick, enabled }) {
         onClick={onClick}
         disabled={!enabled}
       />
-      {rank} of {suit}
+      &nbsp;{card}
     </label>
   );
 }
@@ -32,12 +36,14 @@ export default function Board({ G, ctx, playerID, moves }) {
     .map(([k, _]) => k)
     .map(i => Number(i));
 
-  const playCard = () => {
+  const playCard = (event) => {
+    event.preventDefault();
     moves.playCard(...chosen);
     setCheckboxes({});
   };
 
-  const discardCard = () => {
+  const discardCard = (event) => {
+    event.preventDefault();
     moves.discardCard(...chosen);
     setCheckboxes({});
   };
@@ -52,6 +58,7 @@ export default function Board({ G, ctx, playerID, moves }) {
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const player = G.players[playerID];
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
+  const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const lastTrick = G.tricks.length >= 1 ? last(G.tricks) : null;
 
   const hand = player.hand.map((card, i) => ({ card, i })).sort((a, b) => {
@@ -60,55 +67,68 @@ export default function Board({ G, ctx, playerID, moves }) {
       : a.card.suit.localeCompare(b.card.suit);
   });
 
+  if (isOver) {
+    return isWinner ? 'You won' : 'You lost';
+  }
+
   return (
-    <div style={{ backgroundColor: isOver && isWinner ? '#CCAC00' : isOver ? '#C0C0C0' : null }}>
-      <div>Player: {playerID}</div>
-      <div>Score: {sum(G.scores[playerID])}</div>
-      {!isOver && (
-        <React.Fragment>
-          <div>Trump: <Card {...G.trump} /></div>
-          <div>Tricks: {tricksWon}</div>
-          <div>Last: {lastTrick && (
-            <React.Fragment>
-              <Card {...lastTrick.cards[0]} /> vs <Card {...lastTrick.cards[1]} />
-              &nbsp;(you {lastTrick.winner === playerID ? 'won' : 'lost'})
-            </React.Fragment>
-          )}</div>
-          <div>Current: <Card {...G.played} /></div>
-          <div>Hand:
-            <ol>
-              {hand.map(({ card, i }) =>
-                <li key={`${card.rank}-${card.suit}`}>
-                  <Card
-                    {...card}
-                    onClick={onClick(i)}
-                    enabled={
-                      chosen.length === 0 ||
-                      chosen.includes(i) ||
-                      (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
-                    }
-                  />
-                </li>
-              )}
-            </ol>
+    <form onSubmit={isDiscard ? discardCard : playCard}>
+      <fieldset disabled={!isActive}>
+        <legend>Stats</legend>
+        <div>
+          Your score: {sum(G.scores[playerID])}
+        </div>
+        <div>
+          Your tricks: {tricksWon}
+        </div>
+        <div>
+          Opponent tricks: {tricksLost}
+        </div>
+        {lastTrick && (
+          <div>
+            Last trick:&nbsp;
+            <Card {...lastTrick.cards[0]} /> vs <Card {...lastTrick.cards[1]} />&nbsp;
+            (you {lastTrick.winner === playerID ? 'won' : 'lost'})
           </div>
-          {isDiscard ? (
-            <button
-              onClick={discardCard}
-              disabled={!isActive}
-            >
-              Discard card
-            </button>
-          ) : (
-            <button
-              onClick={playCard}
-              disabled={!isActive}
-            >
-              Play card
-            </button>
+        )}
+      </fieldset>
+      <fieldset disabled={!isActive}>
+        <legend>This trick</legend>
+        <div>
+          Trump:&nbsp;
+          <Card {...G.trump} />
+        </div>
+        {G.played && (
+          <div>
+            {isActive ? 'Opponent played' : 'You played'}:&nbsp;
+            <Card {...G.played} />
+          </div>
+        )}
+        <em>{isActive ? 'Your move!' : 'Waiting for opponent...'}</em>
+      </fieldset>
+      <fieldset disabled={!isActive}>
+        <legend>Your hand</legend>
+        <ol>
+          {hand.map(({ card, i }) =>
+            <li key={`${card.rank}-${card.suit}`}>
+              <Card
+                {...card}
+                onClick={onClick(i)}
+                enabled={
+                  chosen.length === 0 ||
+                  chosen.includes(i) ||
+                  (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                }
+              />
+            </li>
           )}
-        </React.Fragment>
-      )}
-    </div>
+        </ol>
+      </fieldset>
+      <input
+        type="submit"
+        disabled={!isActive || chosen.length === 0}
+        value={isDiscard ? 'Discard card' : 'Play card'}
+      />
+    </form>
   );
 }

@@ -48,7 +48,11 @@ export default function WaitForPlayers(props) {
   return (
     <label>
       Invite someone to join the game by sharing this URL:
-      <input readOnly value={joinURL} />
+      <input
+        readOnly
+        value={joinURL}
+        style={{ width: `${joinURL.length}ch` }}
+      />
     </label>
   );
 }

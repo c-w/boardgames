@@ -1,0 +1,48 @@
+@import-normalize;
+
+fieldset,
+fieldset > div {
+  display: block;
+}
+
+fieldset:not(:last-child),
+fieldset > div:not(:last-child) {
+  margin-bottom: 0.25em;
+}
+
+fieldset[disabled] {
+  opacity: 0.45;
+}
+
+input[readonly] {
+  border: 0;
+}
+
+em {
+  background-color: yellow;
+}
+
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+.tower {
+  background-color: #fb6a00;
+  color: #000;
+}
+
+.key {
+  background-color: #c1bfca;
+  color: #000;
+}
+
+.moon {
+  background-color: #2b046f;
+  color: #fefefe;
+}
+
+form {
+  max-width: 20em;
+  margin: 0 auto;
+}
