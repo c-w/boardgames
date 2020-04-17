@@ -37,6 +37,11 @@ export default function Board({ G, ctx, playerID, moves }) {
     setCheckboxes({});
   };
 
+  const discardCard = () => {
+    moves.discardCard(...chosen);
+    setCheckboxes({});
+  };
+
   const onClick = (i) => (even) => {
     setCheckboxes({ ...checkboxes, [i]: even.target.checked });
   };
@@ -44,6 +49,7 @@ export default function Board({ G, ctx, playerID, moves }) {
   const isOver = ctx.gameover != null;
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
+  const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const player = G.players[playerID];
   const tricks = G.tricks[playerID].length;
 
@@ -72,19 +78,28 @@ export default function Board({ G, ctx, playerID, moves }) {
                     enabled={
                       chosen.length === 0 ||
                       chosen.includes(i) ||
-                      (chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                      (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
                     }
                   />
                 </li>
               )}
             </ol>
           </div>
-          <button
-            onClick={playCard}
-            disabled={!isActive}
-          >
-            Play card
-          </button>
+          {isDiscard ? (
+            <button
+              onClick={discardCard}
+              disabled={!isActive}
+            >
+              Discard card
+            </button>
+          ) : (
+            <button
+              onClick={playCard}
+              disabled={!isActive}
+            >
+              Play card
+            </button>
+          )}
         </React.Fragment>
       )}
     </div>

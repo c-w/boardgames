@@ -84,10 +84,28 @@ function checkGameOver(G, ctx) {
     : { winner: opponentID };
 }
 
+function discardCard(G, ctx, i) {
+  const { player } = getPlayers(G, ctx);
+
+  player.hand = player.hand.filter((_, j) => j !== i);
+
+  ctx.events.endStage();
+
+  playCard(G, ctx);
+}
+
 function playCard(G, ctx, i, j) {
   const { playerID, opponentID, player } = getPlayers(G, ctx);
 
-  const card = player.hand[i];
+  let card;
+
+  if (i == null && G.stashed == null) {
+    return INVALID_MOVE;
+  } else if (i == null) {
+    card = G.stashed;
+  } else {
+    card = player.hand[i];
+  }
 
   if (card.rank !== 3 && j != null) {
     return INVALID_MOVE;
@@ -98,6 +116,20 @@ function playCard(G, ctx, i, j) {
   }
 
   const hand = player.hand.filter((_, k) => k !== i);
+
+  if (card.rank === 5) {
+    if (G.stashed == null) {
+      hand.push(G.secret.deck.pop());
+
+      player.hand = hand;
+      G.stashed = card;
+
+      ctx.events.setStage('discard');
+      return;
+    }
+
+    G.stashed = null;
+  }
 
   if (G.played == null) {
     player.hand = hand;
@@ -195,6 +227,7 @@ export default {
   setup: (ctx) => ({
     ...dealCards(ctx),
     played: null,
+    stashed: null,
     scores: {
       [PLAYER_1]: [],
       [PLAYER_2]: [],
@@ -205,6 +238,19 @@ export default {
     playCard: {
       move: playCard,
       client: false,
+    },
+  },
+
+  turn: {
+    stages: {
+      discard: {
+        moves: {
+          discardCard: {
+            move: discardCard,
+            client: false,
+          },
+        },
+      },
     },
   },
 
