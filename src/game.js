@@ -182,7 +182,7 @@ function playCard(G, ctx, i, j) {
   player.hand = hand;
 
   if (player.hand.length === 0) {
-    [playerID, opponentID].forEach(id => {
+    for (const id of [playerID, opponentID]) {
       const tricks = G.tricks.filter(t => t.winner === id);
       const tricksWon = tricks.length;
 
@@ -201,7 +201,7 @@ function playCard(G, ctx, i, j) {
       }
 
       G.scores[id].push(score);
-    });
+    }
 
     const newRound = dealCards(ctx);
     G.secret = newRound.secret;
