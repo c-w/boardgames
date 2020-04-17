@@ -27,10 +27,7 @@ function dealCards(ctx) {
     secret: {
       deck,
     },
-    tricks: {
-      [PLAYER_1]: [],
-      [PLAYER_2]: [],
-    },
+    tricks: [],
     trump,
     players: {
       [PLAYER_1]: {
@@ -117,18 +114,14 @@ function playCard(G, ctx, i, j) {
 
   const hand = player.hand.filter((_, k) => k !== i);
 
-  if (card.rank === 5) {
-    if (G.stashed == null) {
-      hand.push(G.secret.deck.pop());
+  if (card.rank === 5 && G.stashed == null) {
+    hand.push(G.secret.deck.pop());
 
-      player.hand = hand;
-      G.stashed = card;
+    player.hand = hand;
+    G.stashed = card;
 
-      ctx.events.setStage('discard');
-      return;
-    }
-
-    G.stashed = null;
+    ctx.events.setStage('discard');
+    return;
   }
 
   if (G.played == null) {
@@ -151,6 +144,8 @@ function playCard(G, ctx, i, j) {
     return INVALID_MOVE;
   }
 
+  const originalCard = { ...card };
+  const originalPlayed = { ...G.played };
   if ((card.rank === 9 || G.played.rank === 9) && !(card.rank === 9 && G.played.rank === 9)) {
     if (card.rank === 9) {
       card.suit = G.trump.suit;
@@ -181,25 +176,27 @@ function playCard(G, ctx, i, j) {
     next = winnerId;
   }
 
-  player.hand = hand;
-  G.tricks[winnerId].push([G.played.rank, card.rank]);
+  G.tricks.push({ winner: winnerId, cards: [originalPlayed, originalCard] });
   G.played = null;
+  G.stashed = null;
+  player.hand = hand;
 
   if (player.hand.length === 0) {
     [playerID, opponentID].forEach(id => {
-      const tricks = G.tricks[id].length;
+      const tricks = G.tricks.filter(t => t.winner === id);
+      const tricksWon = tricks.length;
 
-      let score = G.tricks[id].flat().filter(rank => rank === 7).length;
+      let score = tricks.map(t => t.cards).flat().filter(c => c.rank === 7).length;
 
-      if (tricks <= 3) {
+      if (tricksWon <= 3) {
         score += 6;
-      } else if (tricks === 4) {
+      } else if (tricksWon === 4) {
         score += 1;
-      } else if (tricks === 5) {
+      } else if (tricksWon === 5) {
         score += 2;
-      } else if (tricks === 6) {
+      } else if (tricksWon === 6) {
         score += 3;
-      } else if (tricks >= 7 && tricks <= 9) {
+      } else if (tricksWon >= 7 && tricksWon <= 9) {
         score += 6;
       }
 

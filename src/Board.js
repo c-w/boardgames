@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { sum } from './utils';
+import { last, sum } from './utils';
 
 function Card({ rank, suit, onClick, enabled }) {
   if (!rank || !suit) {
@@ -51,7 +51,8 @@ export default function Board({ G, ctx, playerID, moves }) {
   const isActive = playerID === ctx.currentPlayer;
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const player = G.players[playerID];
-  const tricks = G.tricks[playerID].length;
+  const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
+  const lastTrick = G.tricks.length >= 1 ? last(G.tricks) : null;
 
   const hand = player.hand.map((card, i) => ({ card, i })).sort((a, b) => {
     return a.card.suit === b.card.suit
@@ -66,7 +67,13 @@ export default function Board({ G, ctx, playerID, moves }) {
       {!isOver && (
         <React.Fragment>
           <div>Trump: <Card {...G.trump} /></div>
-          <div>Tricks: {tricks}</div>
+          <div>Tricks: {tricksWon}</div>
+          <div>Last: {lastTrick && (
+            <React.Fragment>
+              <Card {...lastTrick.cards[0]} /> vs <Card {...lastTrick.cards[1]} />
+              &nbsp;(you {lastTrick.winner === playerID ? 'won' : 'lost'})
+            </React.Fragment>
+          )}</div>
           <div>Current: <Card {...G.played} /></div>
           <div>Hand:
             <ol>
