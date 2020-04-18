@@ -141,6 +141,9 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
                 />&nbsp;
                 <Card {...card} />
               </label>
+              {isDiscard && i === hand.length - 1 && (
+                <span>&nbsp;(new)</span>
+              )}
             </li>
           )}
         </ol>
