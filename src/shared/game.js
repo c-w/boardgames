@@ -160,7 +160,7 @@ export function isMoveInvalid(G, ctx, i, j) {
       .map(c => c.rank)
       .reduce((max, rank) => max < rank ? rank : max, -1);
 
-    if (G.played.rank === 11 && card.rank !== 1 && card.rank !== highestRankInSuit) {
+    if (G.played.rank === 11 && card.rank !== 1 && card.rank !== highestRankInSuit && highestRankInSuit !== -1) {
       return 'must_follow_11';
     }
   }
