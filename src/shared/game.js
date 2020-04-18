@@ -225,9 +225,9 @@ function playCard(G, ctx, i, j) {
   }
 
   if (card.rank === 5 && G.stashed == null) {
-    newHand.push(G.secret.deck.pop());
+    const newCard = G.secret.deck.pop();
 
-    G.players[playerID].hand = newHand;
+    G.players[playerID].hand = [...newHand, newCard];
     G.stashed = card;
 
     ctx.events.setStage('discard');
