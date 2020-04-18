@@ -61,6 +61,26 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
     }
   };
 
+  const canPlay = (i) => {
+    if (!isActive) {
+      return false;
+    }
+
+    if (isDiscard) {
+      return true;
+    }
+
+    if (chosen.includes(i)) {
+      return true;
+    }
+
+    if (isMoveInvalid(G, ctx, ...chosen, i)) {
+      return false;
+    }
+
+    return true;
+  };
+
   const isOver = ctx.gameover != null;
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
@@ -128,16 +148,7 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
               <Card
                 {...card}
                 onClick={onClick(i)}
-                enabled={
-                  isDiscard || (
-                    isActive &&
-                    !isMoveInvalid(G, ctx, i) && (
-                      chosen.length === 0 ||
-                      chosen.includes(i) ||
-                      (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
-                    )
-                  )
-                }
+                enabled={canPlay(i)}
               />
             </li>
           )}
