@@ -5,10 +5,14 @@
   "dependencies": {
     "boardgame.io": "^0.39.7",
     "envalid": "^6.0.1",
-    "esm": "^3.2.25",
+    "koa-static": "^5.0.0",
     "node-persist": "^3.0.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.5",
     "axios": "^0.19.2",
     "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
@@ -22,12 +26,19 @@
   "scripts": {
     "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
     "start-client": "cross-env REACT_APP_SERVER_URL=http://localhost:8000 react-scripts start",
-    "start-server": "cross-env STATE_DIR=state PORT=8000 nodemon -r esm src/backend/server.js",
+    "start-server": "cross-env STATE_DIR=state PORT=8000 nodemon --exec babel-node src/backend/server.js",
     "lint": "eslint --max-warnings=0 src",
-    "build": "react-scripts build"
+    "build-client": "react-scripts build",
+    "build-server": "babel src --ignore src/frontend --ignore src/index.js --out-dir dist",
+    "build": "concurrently \"npm:build-client\" \"npm:build-server\""
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
   "nodemonConfig": {
     "watch": [
