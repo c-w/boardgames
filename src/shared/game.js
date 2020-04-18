@@ -68,6 +68,30 @@ function getCard(G, ctx, i) {
   };
 }
 
+function calculateScore(tricks) {
+  const tricksWon = tricks.length;
+
+  let roundScore;
+
+  if (tricksWon <= 3) {
+    roundScore = 6;
+  } else if (tricksWon === 4) {
+    roundScore = 1;
+  } else if (tricksWon === 5) {
+    roundScore = 2;
+  } else if (tricksWon === 6) {
+    roundScore = 3;
+  } else if (tricksWon >= 7 && tricksWon <= 9) {
+    roundScore = 6;
+  } else {
+    roundScore = 0;
+  }
+
+  const extraScore = tricks.map(t => t.cards).flat().filter(c => c.rank === 7).length;
+
+  return roundScore + extraScore;
+}
+
 function checkGameOver(G, ctx) {
   const { playerID, opponentID } = getPlayers(G, ctx);
 
@@ -227,22 +251,7 @@ function playCard(G, ctx, i, j) {
   if (newHand.length === 0) {
     for (const id of [playerID, opponentID]) {
       const tricks = G.tricks.filter(t => t.winner === id);
-      const tricksWon = tricks.length;
-
-      let score = tricks.map(t => t.cards).flat().filter(c => c.rank === 7).length;
-
-      if (tricksWon <= 3) {
-        score += 6;
-      } else if (tricksWon === 4) {
-        score += 1;
-      } else if (tricksWon === 5) {
-        score += 2;
-      } else if (tricksWon === 6) {
-        score += 3;
-      } else if (tricksWon >= 7 && tricksWon <= 9) {
-        score += 6;
-      }
-
+      const score = calculateScore(tricks);
       G.scores[id].push(score);
     }
 
