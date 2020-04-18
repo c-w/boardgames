@@ -282,7 +282,7 @@ function playCard(G, ctx, i, j) {
 }
 
 export default {
-  name: 'the-fox-in-the-forest',
+  name: 'fitf',
 
   minPlayers: 2,
   maxPlayers: 2,
