@@ -66,7 +66,7 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const isActive = playerID === ctx.currentPlayer;
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const player = G.players[playerID];
-  const opponent = gameMetadata.find(u => u.id !== playerID);
+  const opponent = gameMetadata.find(u => u.id !== Number(playerID));
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const lastTrick = G.tricks.length >= 1 ? last(G.tricks) : null;
