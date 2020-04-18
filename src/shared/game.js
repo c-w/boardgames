@@ -125,7 +125,13 @@ function discardCard(G, ctx, i) {
   playCard(G, ctx);
 }
 
-export function isMoveInvalid(G, ctx, i, j) {
+export function isMoveInvalid(G, ctx, ...cards) {
+  if (cards.length > 2) {
+    return 'played_too_many_cards';
+  }
+
+  const [i, j] = cards;
+
   if (i == null && G.stashed == null) {
     return 'played_no_card';
   }
