@@ -5,6 +5,7 @@ import game from '../shared/game';
 
 export default withRouter(({ history, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
+  const [error, setError] = useState('');
 
   const onChange = (event) => {
     const { value } = event.target;
@@ -26,10 +27,19 @@ export default withRouter(({ history, gameID }) => {
       playerID = 0;
     }
 
-    const response = await http.post(`/${gameID}/join`, {
-      playerID,
-      playerName,
-    });
+    let response;
+    try {
+      response = await http.post(`/${gameID}/join`, {
+        playerID,
+        playerName,
+      });
+    } catch (ex) {
+      if (ex.response?.status === 409) {
+        setError('The game is already full');
+        return;
+      }
+      throw ex;
+    }
 
     history.push(`/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
   };
@@ -45,7 +55,11 @@ export default withRouter(({ history, gameID }) => {
           minLength="1"
         />
       </label>
-      <input type="submit" value={gameID == null ? 'Create game' : 'Join game'} />
+      <input
+        type="submit"
+        value={error || (gameID == null ? 'Create game' : 'Join game')}
+        disabled={error}
+      />
     </form>
   );
 });
