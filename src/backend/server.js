@@ -16,4 +16,4 @@ const server = Server({
 
 server.app.use(serve(path.join(__dirname, '..', '..', 'build')));
 
-server.run(config.PORT, () => console.log(`Server running on port ${config.PORT}`));
+server.run(config.SERVER_PORT);

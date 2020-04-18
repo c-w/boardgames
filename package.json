@@ -15,7 +15,6 @@
     "@babel/preset-env": "^7.9.5",
     "axios": "^0.19.2",
     "concurrently": "^5.1.0",
-    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.3",
     "react": "^16.13.1",
@@ -25,8 +24,8 @@
   },
   "scripts": {
     "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
-    "start-client": "cross-env REACT_APP_SERVER_URL=http://localhost:8000 react-scripts start",
-    "start-server": "cross-env STATE_DIR=state PORT=8000 nodemon --exec babel-node src/backend/server.js",
+    "start-client": "react-scripts start",
+    "start-server": "nodemon --exec babel-node src/backend/server.js",
     "lint": "eslint --max-warnings=0 src",
     "build-client": "react-scripts build",
     "build-server": "babel src --ignore src/frontend --ignore src/index.js --out-dir dist",
