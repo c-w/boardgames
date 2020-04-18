@@ -62,9 +62,9 @@ function getCard(G, ctx, i) {
     ? G.stashed
     : player.hand[i];
 
-  const hand = removeAt(player.hand, i);
+  const newHand = removeAt(player.hand, i);
 
-  return { card, hand };
+  return { card, newHand };
 }
 
 function checkGameOver(G, ctx) {
@@ -109,7 +109,7 @@ export function isMoveInvalid(G, ctx, i, j) {
   }
 
   const { player } = getPlayers(G, ctx);
-  const { card, hand } = getCard(G, ctx, i);
+  const { card, newHand } = getCard(G, ctx, i);
 
   if (card == null) {
     return 'played_unknown_card';
@@ -126,7 +126,7 @@ export function isMoveInvalid(G, ctx, i, j) {
   }
 
   if (G.played != null) {
-    if (card.suit !== G.played.suit && hand.some(c => c.suit === G.played.suit)) {
+    if (card.suit !== G.played.suit && newHand.some(c => c.suit === G.played.suit)) {
       return 'must_follow_suit';
     }
 
@@ -191,7 +191,7 @@ function playCard(G, ctx, i, j) {
 
   const { playerID, opponentID, player } = getPlayers(G, ctx);
 
-  const { card, hand } = getCard(G, ctx, i, j);
+  const { card, newHand } = getCard(G, ctx, i, j);
 
   if (card.rank === 3 && j != null) {
     const oldTrump = { ...G.trump };
@@ -200,9 +200,9 @@ function playCard(G, ctx, i, j) {
   }
 
   if (card.rank === 5 && G.stashed == null) {
-    hand.push(G.secret.deck.pop());
+    newHand.push(G.secret.deck.pop());
 
-    player.hand = hand;
+    player.hand = newHand;
     G.stashed = card;
 
     ctx.events.setStage('discard');
@@ -210,7 +210,7 @@ function playCard(G, ctx, i, j) {
   }
 
   if (G.played == null) {
-    player.hand = hand;
+    player.hand = newHand;
     G.played = card;
     ctx.events.endTurn();
     return;
@@ -221,7 +221,7 @@ function playCard(G, ctx, i, j) {
   G.tricks.push({ winner, cards: [{ ...G.played }, { ...card }] });
   G.played = null;
   G.stashed = null;
-  player.hand = hand;
+  player.hand = newHand;
 
   if (player.hand.length === 0) {
     for (const id of [playerID, opponentID]) {
