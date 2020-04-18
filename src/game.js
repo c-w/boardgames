@@ -55,6 +55,18 @@ function getPlayers(G, ctx) {
   };
 }
 
+function getCard(G, ctx, i) {
+  const { player } = getPlayers(G, ctx);
+
+  const card = i == null
+    ? G.stashed
+    : player.hand[i];
+
+  const hand = removeAt(player.hand, i);
+
+  return { card, hand };
+}
+
 function checkGameOver(G, ctx) {
   const { playerID, opponentID } = getPlayers(G, ctx);
 
@@ -91,28 +103,58 @@ function discardCard(G, ctx, i) {
   playCard(G, ctx);
 }
 
-function playCard(G, ctx, i, j) {
-  const { playerID, opponentID, player } = getPlayers(G, ctx);
-
-  let card;
-
+export function isMoveInvalid(G, ctx, i, j) {
   if (i == null && G.stashed == null) {
-    return INVALID_MOVE;
-  } else if (i == null) {
-    card = G.stashed;
-  } else {
-    card = player.hand[i];
+    return 'played_no_card';
   }
 
-  if (card.rank !== 3 && j != null) {
+  const { player } = getPlayers(G, ctx);
+  const { card, hand } = getCard(G, ctx, i);
+
+  if (player.hand[i] == null) {
+    return 'played_unknown_card';
+  }
+
+  if (j != null) {
+    if (card.rank !== 3) {
+      return 'played_extra_card';
+    }
+
+    if (player.hand[j] == null) {
+      return 'played_unknown_extra_card';
+    }
+  }
+
+  if (G.played != null) {
+    if (card.suit !== G.played.suit && hand.some(c => c.suit === G.played.suit)) {
+      return 'must_follow_suit';
+    }
+
+    const highestRankInSuit = player.hand
+      .filter(c => c.suit === G.played.suit)
+      .map(c => c.rank)
+      .reduce((max, rank) => max < rank ? rank : max, -1);
+
+    if (G.played.rank === 11 && card.rank !== 1 && card.rank !== highestRankInSuit) {
+      return 'must_follow_11';
+    }
+  }
+}
+
+function playCard(G, ctx, i, j) {
+  if (isMoveInvalid(G, ctx, i, j)) {
     return INVALID_MOVE;
-  } else if (card.rank === 3 && j != null) {
+  }
+
+  const { playerID, opponentID, player } = getPlayers(G, ctx);
+
+  const { card, hand } = getCard(G, ctx, i, j);
+
+  if (card.rank === 3 && j != null) {
     const oldTrump = { ...G.trump };
     G.trump = { ...player.hand[j] };
     player.hand[j] = oldTrump;
   }
-
-  const hand = removeAt(player.hand, i);
 
   if (card.rank === 5 && G.stashed == null) {
     hand.push(G.secret.deck.pop());
@@ -131,19 +173,6 @@ function playCard(G, ctx, i, j) {
     return;
   }
 
-  const highestRankInSuit = player.hand
-    .filter(c => c.suit === G.played.suit)
-    .map(c => c.rank)
-    .reduce((max, rank) => max < rank ? rank : max, -1);
-
-  let winnerId;
-
-  if (card.suit !== G.played.suit && hand.some(c => c.suit === G.played.suit)) {
-    return INVALID_MOVE;
-  } else if (G.played.rank === 11 && card.rank !== 1 && card.rank !== highestRankInSuit) {
-    return INVALID_MOVE;
-  }
-
   const originalCard = { ...card };
   const originalPlayed = { ...G.played };
   if ((card.rank === 9 || G.played.rank === 9) && !(card.rank === 9 && G.played.rank === 9)) {
@@ -153,6 +182,8 @@ function playCard(G, ctx, i, j) {
       G.played.suit = G.trump.suit;
     }
   }
+
+  let winnerId;
 
   if (card.suit === G.trump.suit && G.played.suit !== G.trump.suit) {
     winnerId = playerID;

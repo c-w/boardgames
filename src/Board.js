@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { isMoveInvalid } from './game';
 import { last, sum } from './utils';
 
 const CARD_TEXTS = {
@@ -128,9 +129,12 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
                 {...card}
                 onClick={onClick(i)}
                 enabled={
-                  chosen.length === 0 ||
-                  chosen.includes(i) ||
-                  (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                  isActive &&
+                  !isMoveInvalid(G, ctx, i) && (
+                    chosen.length === 0 ||
+                    chosen.includes(i) ||
+                    (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                  )
                 }
               />
             </li>
