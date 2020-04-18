@@ -11,30 +11,11 @@ const CARD_TEXTS = {
   11: 'When you lead this, if your opponent has a card of this suit, they must play either the 1 of this suit or their highest ranked card of this suit.',
 };
 
-function Card({ rank, suit, onClick, enabled }) {
-  if (!rank || !suit) {
-    return null;
-  }
-
-  const card = (
+function Card({ rank, suit }) {
+  return (
     <span className={suit}>
       {rank} of {suit}
     </span>
-  );
-
-  if (!onClick) {
-    return card;
-  }
-
-  return (
-    <label>
-      <input
-        type="checkbox"
-        onClick={onClick}
-        disabled={!enabled}
-      />
-      &nbsp;{card}
-    </label>
   );
 }
 
@@ -152,11 +133,14 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
         <ol>
           {hand.map(({ card, i }) =>
             <li key={`${card.rank}-${card.suit}`}>
-              <Card
-                {...card}
-                onClick={onClick(i)}
-                enabled={canPlay(i)}
-              />
+              <label>
+                <input
+                  type="checkbox"
+                  onClick={onClick(i)}
+                  disabled={!canPlay(i)}
+                />&nbsp;
+                <Card {...card} />
+              </label>
             </li>
           )}
         </ol>
