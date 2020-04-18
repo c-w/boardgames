@@ -129,11 +129,13 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
                 {...card}
                 onClick={onClick(i)}
                 enabled={
-                  isActive &&
-                  !isMoveInvalid(G, ctx, i) && (
-                    chosen.length === 0 ||
-                    chosen.includes(i) ||
-                    (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                  isDiscard || (
+                    isActive &&
+                    !isMoveInvalid(G, ctx, i) && (
+                      chosen.length === 0 ||
+                      chosen.includes(i) ||
+                      (!isDiscard && chosen.length === 1 && player.hand[chosen[0]].rank === 3)
+                    )
                   )
                 }
               />
