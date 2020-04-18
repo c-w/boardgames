@@ -298,7 +298,12 @@ export default {
   playerView: PlayerView.STRIP_SECRETS,
 
   events: {
+    endStage: false,
     endTurn: false,
+    endPhase: false,
     endGame: false,
+    setStage: false,
+    setPhase: false,
+    setActivePlayers: false,
   },
 };
