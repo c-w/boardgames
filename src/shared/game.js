@@ -136,11 +136,19 @@ export function isMoveInvalid(G, ctx, ...cards) {
     return 'played_no_card';
   }
 
-  const { hand } = getPlayers(G, ctx);
+  const { playerID, hand } = getPlayers(G, ctx);
   const { card } = getCard(G, ctx, i);
 
   if (card == null) {
     return 'played_unknown_card';
+  }
+
+  if (ctx.activePlayers && ctx.activePlayers[playerID] === 'discard') {
+    if (j != null) {
+      return 'discarded_extra_card';
+    }
+
+    return;
   }
 
   if (j != null) {
@@ -154,10 +162,7 @@ export function isMoveInvalid(G, ctx, ...cards) {
   }
 
   if (G.played != null) {
-    const canFollowSuit = hand.some((c, k) =>
-      c.suit === G.played.suit &&
-      k !== i &&
-      (G.stashed == null || k !== hand.length - 1));
+    const canFollowSuit = removeAt(hand, i).some(c => c.suit === G.played.suit);
 
     if (card.suit !== G.played.suit && canFollowSuit) {
       return 'must_follow_suit';
