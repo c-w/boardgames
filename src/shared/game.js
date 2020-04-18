@@ -60,11 +60,8 @@ function getCard(G, ctx, i) {
     ? { ...G.stashed }
     : hand[i];
 
-  const newHand = removeAt(hand, i);
-
   return {
     card,
-    newHand,
   };
 }
 
@@ -134,7 +131,7 @@ export function isMoveInvalid(G, ctx, i, j) {
   }
 
   const { hand } = getPlayers(G, ctx);
-  const { card, newHand } = getCard(G, ctx, i);
+  const { card } = getCard(G, ctx, i);
 
   if (card == null) {
     return 'played_unknown_card';
@@ -151,9 +148,10 @@ export function isMoveInvalid(G, ctx, i, j) {
   }
 
   if (G.played != null) {
-    const canFollowSuit = newHand.some((c, k) =>
+    const canFollowSuit = hand.some((c, k) =>
       c.suit === G.played.suit &&
-      (G.stashed == null || k !== newHand.length - 1));
+      k !== i &&
+      (G.stashed == null || k !== hand.length - 1));
 
     if (card.suit !== G.played.suit && canFollowSuit) {
       return 'must_follow_suit';
@@ -219,14 +217,15 @@ function playCard(G, ctx, i, j) {
   }
 
   const { playerID, opponentID, hand } = getPlayers(G, ctx);
-
-  const { card, newHand } = getCard(G, ctx, i, j);
+  const { card } = getCard(G, ctx, i, j);
 
   if (card.rank === 3 && j != null) {
     const oldTrump = { ...G.trump };
     G.trump = { ...hand[j] };
-    G.players[playerID].hand[j] = oldTrump;
+    hand[j] = oldTrump;
   }
+
+  const newHand = removeAt(hand, i);
 
   if (card.rank === 5 && G.stashed == null) {
     const newCard = G.secret.deck.pop();
