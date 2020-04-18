@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import http from './http';
-import game from './game';
+import game from '../shared/game';
 
 export default withRouter(({ history, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');

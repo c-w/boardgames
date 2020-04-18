@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import Board from './Board';
-import config from './config/client';
+import config from './config';
 import http from './http';
-import game from './game';
-import { repeatedly } from './utils';
+import game from '../shared/game';
+import { repeatedly } from '../shared/utils';
 
 const GameClient = Client({
   game,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { isMoveInvalid } from './game';
-import { last, sum } from './utils';
+import { isMoveInvalid } from '../shared/game';
+import { last, sum } from '../shared/utils';
 
 const CARD_TEXTS = {
   1: 'If you play this and lose the trick, you lead the next trick.',

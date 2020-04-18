@@ -22,7 +22,7 @@
   "scripts": {
     "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
     "start-client": "cross-env REACT_APP_SERVER_URL=http://localhost:8000 react-scripts start",
-    "start-server": "cross-env STATE_DIR=state PORT=8000 nodemon -r esm src/server.js",
+    "start-server": "cross-env STATE_DIR=state PORT=8000 nodemon -r esm src/backend/server.js",
     "lint": "eslint --max-warnings=0 src",
     "build": "react-scripts build"
   },
@@ -31,9 +31,8 @@
   },
   "nodemonConfig": {
     "watch": [
-      "src/server.js",
-      "src/game.js",
-      "src/utils.js"
+      "src/backend",
+      "src/shared"
     ]
   },
   "browserslist": {

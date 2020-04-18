@@ -1,6 +1,6 @@
 import { FlatFile, Server } from 'boardgame.io/server';
-import config from './config/server';
-import Game from './game';
+import config from './config';
+import Game from '../shared/game';
 
 const server = Server({
   games: [
