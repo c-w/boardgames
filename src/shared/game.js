@@ -141,6 +141,49 @@ export function isMoveInvalid(G, ctx, i, j) {
   }
 }
 
+function determineTrickWinner(G, ctx, i) {
+  const { playerID, opponentID } = getPlayers(G, ctx);
+  const { card } = getCard(G, ctx, i);
+
+  const trumpSuit = G.trump.suit;
+
+  let { rank, suit } = card;
+  let opponentRank = G.played.rank;
+  let opponentSuit = G.played.suit;
+
+  if ((rank === 9 || opponentRank === 9) && !(rank === 9 && opponentRank === 9)) {
+    if (rank === 9) {
+      suit = trumpSuit;
+    } else if (opponentRank === 9) {
+      opponentSuit = trumpSuit;
+    }
+  }
+
+  let winner;
+
+  if (suit === trumpSuit && opponentSuit !== trumpSuit) {
+    winner = playerID;
+  } else if (suit !== trumpSuit && opponentSuit === trumpSuit) {
+    winner = opponentID;
+  } else if (suit !== opponentSuit) {
+    winner = opponentID;
+  } else {
+    winner = rank > opponentRank ? playerID : opponentID;
+  }
+
+  let next;
+
+  if (opponentRank === 1 && winner !== opponentID) {
+    next = opponentID;
+  } else if (rank === 1 && winner !== playerID) {
+    next = playerID;
+  } else {
+    next = winner;
+  }
+
+  return { winner, next };
+}
+
 function playCard(G, ctx, i, j) {
   if (isMoveInvalid(G, ctx, i, j)) {
     return INVALID_MOVE;
@@ -173,41 +216,9 @@ function playCard(G, ctx, i, j) {
     return;
   }
 
-  const originalCard = { ...card };
-  const originalPlayed = { ...G.played };
-  if ((card.rank === 9 || G.played.rank === 9) && !(card.rank === 9 && G.played.rank === 9)) {
-    if (card.rank === 9) {
-      card.suit = G.trump.suit;
-    } else if (G.played.rank === 9) {
-      G.played.suit = G.trump.suit;
-    }
-  }
+  const { winner, next } = determineTrickWinner(G, ctx, i);
 
-  let winnerId;
-
-  if (card.suit === G.trump.suit && G.played.suit !== G.trump.suit) {
-    winnerId = playerID;
-  } else if (card.suit !== G.trump.suit && G.played.suit === G.trump.suit) {
-    winnerId = opponentID;
-  } else if (card.suit === G.played.suit) {
-    winnerId = card.rank > G.played.rank ? playerID : opponentID;
-  } else if (card.suit !== G.played.suit) {
-    winnerId = opponentID;
-  } else {
-    throw new Error(`Unhandled state card=${card.rank}@${card.suit} played=${G.played.rank}@${G.played.suit}`);
-  }
-
-  let next;
-
-  if (G.played.rank === 1 && winnerId !== opponentID) {
-    next = opponentID;
-  } else if (card.rank === 1 && winnerId !== playerID) {
-    next = playerID;
-  } else {
-    next = winnerId;
-  }
-
-  G.tricks.push({ winner: winnerId, cards: [originalPlayed, originalCard] });
+  G.tricks.push({ winner, cards: [{ ...G.played }, { ...card }] });
   G.played = null;
   G.stashed = null;
   player.hand = hand;
