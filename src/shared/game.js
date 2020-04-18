@@ -151,7 +151,11 @@ export function isMoveInvalid(G, ctx, i, j) {
   }
 
   if (G.played != null) {
-    if (card.suit !== G.played.suit && newHand.some(c => c.suit === G.played.suit)) {
+    const canFollowSuit = newHand.some((c, k) =>
+      c.suit === G.played.suit &&
+      (G.stashed == null || k !== newHand.length - 1));
+
+    if (card.suit !== G.played.suit && canFollowSuit) {
       return 'must_follow_suit';
     }
 
