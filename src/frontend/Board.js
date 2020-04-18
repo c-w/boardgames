@@ -91,6 +91,8 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const lastTrick = G.tricks.length >= 1 ? last(G.tricks) : null;
   const helpText = chosen.length > 0 ? CARD_TEXTS[player.hand[chosen[0]].rank] : null;
+  const playerScore = sum(G.scores[playerID]);
+  const opponentScore = sum(G.scores[opponent.id]);
 
   const hand = player.hand.map((card, i) => ({ card, i })).sort((a, b) => {
     return a.card.suit === b.card.suit
@@ -99,7 +101,12 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   });
 
   if (isOver) {
-    return isWinner ? 'You won' : 'You lost';
+    return (
+      <div>
+        {isWinner ? 'You won!' : 'You lost.'}&nbsp;
+        ({playerScore} vs {opponentScore})
+      </div>
+    );
   }
 
   return (
@@ -107,10 +114,10 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
       <fieldset disabled={!isActive}>
         <legend>Stats</legend>
         <div>
-          Your score: {sum(G.scores[playerID])}
+          Your score: {playerScore}
         </div>
         <div>
-          {opponent.name} score: {sum(G.scores[opponent.id])}
+          {opponent.name} score: {opponentScore}
         </div>
         <div>
           Your tricks: {tricksWon}
