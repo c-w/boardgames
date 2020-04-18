@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Client from './Client';
 import Lobby from './Lobby';
 
@@ -8,6 +8,11 @@ export default function App() {
     <HashRouter>
       <main>
         <Switch>
+          <Route
+            exact
+            path="/"
+            children={<Redirect to="/new" />}
+          />
           <Route
             exact
             path="/new"
