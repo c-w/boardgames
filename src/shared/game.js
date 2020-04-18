@@ -111,7 +111,7 @@ export function isMoveInvalid(G, ctx, i, j) {
   const { player } = getPlayers(G, ctx);
   const { card, hand } = getCard(G, ctx, i);
 
-  if (player.hand[i] == null) {
+  if (card == null) {
     return 'played_unknown_card';
   }
 
