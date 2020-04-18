@@ -136,8 +136,9 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
               <label>
                 <input
                   type="checkbox"
-                  onClick={onClick(i)}
+                  onChange={onClick(i)}
                   disabled={!canPlay(i)}
+                  checked={chosen.includes(i)}
                 />&nbsp;
                 <Card {...card} />
               </label>
