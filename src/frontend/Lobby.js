@@ -9,6 +9,8 @@ export default withRouter(({ history, gameID }) => {
   const [longGame, setLongGame] = useState(localStorage.getItem('longGame') !== 'false');
   const [error, setError] = useState('');
 
+  const isNewGame = gameID == null;
+
   const onChangePlayerName = (event) => {
     const { value } = event.target;
     setPlayerName(value);
@@ -27,7 +29,7 @@ export default withRouter(({ history, gameID }) => {
 
       let playerID;
 
-      if (gameID == null) {
+      if (isNewGame) {
         const response = await http.post('/create', {
           numPlayers: game.maxPlayers,
           setupData: {
@@ -66,8 +68,6 @@ export default withRouter(({ history, gameID }) => {
     }
   };
 
-  const isJoining = gameID != null;
-
   return (
     <form onSubmit={onSubmit}>
       <label>
@@ -81,10 +81,10 @@ export default withRouter(({ history, gameID }) => {
       </label>
       <input
         type="submit"
-        value={error || (isJoining ? 'Join game' : 'Create game')}
+        value={error || (isNewGame ? 'Create game' : 'Join game')}
         disabled={error}
       />
-      {!isJoining && (
+      {isNewGame && (
         <div>
           <label>
             <input
