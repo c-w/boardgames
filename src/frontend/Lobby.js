@@ -47,6 +47,9 @@ export default withRouter(({ history, gameID }) => {
       if (ex.response?.status === 409) {
         setError('The game is already full');
         return;
+      } else if (ex.response?.status === 404) {
+        setError('The game no longer exists');
+        return;
       }
       throw ex;
     }
