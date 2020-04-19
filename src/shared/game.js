@@ -6,8 +6,8 @@ const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const LONG_GAME_WINNING_SCORE = 21;
 const SHORT_GAME_WINNING_SCORE = 16;
 const HAND_SIZE = 13;
-const PLAYER_1 = 0;
-const PLAYER_2 = 1;
+const PLAYER_1 = '0';
+const PLAYER_2 = '1';
 
 function dealCards(ctx) {
   const deck = ctx.random.Shuffle(
@@ -42,8 +42,8 @@ function dealCards(ctx) {
 }
 
 function getPlayers(G, ctx, i) {
-  const opponentID = Object.keys(G.players).find(id => id !== ctx.currentPlayer);
   const playerID = ctx.currentPlayer;
+  const opponentID = playerID === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
   const hand = [...G.players[playerID].hand];
 
