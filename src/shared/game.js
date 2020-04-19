@@ -41,27 +41,20 @@ function dealCards(ctx) {
   };
 }
 
-function getPlayers(G, ctx) {
+function getPlayers(G, ctx, i) {
   const opponentID = Object.keys(G.players).find(id => id !== ctx.currentPlayer);
   const playerID = ctx.currentPlayer;
 
   const hand = [...G.players[playerID].hand];
-
-  return {
-    opponentID,
-    playerID,
-    hand,
-  };
-}
-
-function getCard(G, ctx, i) {
-  const { hand } = getPlayers(G, ctx);
 
   const card = i == null
     ? { ...G.stashed }
     : hand[i];
 
   return {
+    opponentID,
+    playerID,
+    hand,
     card,
   };
 }
@@ -137,8 +130,7 @@ export function isMoveInvalid(G, ctx, ...cards) {
     return 'played_no_card';
   }
 
-  const { playerID, hand } = getPlayers(G, ctx);
-  const { card } = getCard(G, ctx, i);
+  const { playerID, hand, card } = getPlayers(G, ctx, i);
 
   if (card == null) {
     return 'played_unknown_card';
@@ -181,8 +173,7 @@ export function isMoveInvalid(G, ctx, ...cards) {
 }
 
 function determineTrickWinner(G, ctx, i) {
-  const { playerID, opponentID } = getPlayers(G, ctx);
-  const { card } = getCard(G, ctx, i);
+  const { playerID, opponentID, card } = getPlayers(G, ctx, i);
 
   const trumpSuit = G.trump.suit;
 
@@ -228,8 +219,7 @@ function playCard(G, ctx, i, j) {
     return INVALID_MOVE;
   }
 
-  const { playerID, opponentID, hand } = getPlayers(G, ctx);
-  const { card } = getCard(G, ctx, i, j);
+  const { playerID, opponentID, hand, card } = getPlayers(G, ctx, i);
 
   if (card.rank === 3 && j != null) {
     const oldTrump = { ...G.trump };
