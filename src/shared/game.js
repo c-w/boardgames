@@ -229,7 +229,7 @@ function playCard(G, ctx, i, j) {
 
   const newHand = removeAt(hand, i);
 
-  if (card.rank === 5 && G.stashed == null) {
+  if (card.rank === 5 && G.stashed == null && newHand.length !== 0) {
     const newCard = G.secret.deck.pop();
 
     G.players[playerID].hand = [...newHand, newCard];
