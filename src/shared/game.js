@@ -3,7 +3,8 @@ import { last, removeAt, sum } from './utils.js';
 
 const SUITS = ['key', 'tower', 'moon'];
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-const WINNING_SCORE = 16;
+const LONG_GAME_WINNING_SCORE = 21;
+const SHORT_GAME_WINNING_SCORE = 16;
 const HAND_SIZE = 13;
 const PLAYER_1 = 0;
 const PLAYER_2 = 1;
@@ -98,7 +99,7 @@ function checkGameOver(G, ctx) {
   const playerScore = sum(playerScores);
   const opponentScore = sum(opponentScores);
 
-  if (playerScore < WINNING_SCORE && opponentScore < WINNING_SCORE) {
+  if (playerScore < G.winningScore && opponentScore < G.winningScore) {
     return;
   }
 
@@ -287,7 +288,7 @@ export default {
   minPlayers: 2,
   maxPlayers: 2,
 
-  setup: (ctx) => ({
+  setup: (ctx, setupData) => ({
     ...dealCards(ctx),
     played: null,
     stashed: null,
@@ -295,6 +296,9 @@ export default {
       [PLAYER_1]: [],
       [PLAYER_2]: [],
     },
+    winningScore: setupData?.longGame
+      ? LONG_GAME_WINNING_SCORE
+      : SHORT_GAME_WINNING_SCORE,
   }),
 
   moves: {

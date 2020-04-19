@@ -5,12 +5,19 @@ import game from '../shared/game';
 
 export default withRouter(({ history, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
+  const [longGame, setLongGame] = useState(localStorage.getItem('longGame') !== 'false');
   const [error, setError] = useState('');
 
-  const onChange = (event) => {
+  const onChangePlayerName = (event) => {
     const { value } = event.target;
     setPlayerName(value);
     localStorage.setItem('playerName', value);
+  };
+
+  const onChangeLongGame = (event) => {
+    const { checked } = event.target;
+    setLongGame(checked);
+    localStorage.setItem('longGame', checked);
   };
 
   const onSubmit = async (event) => {
@@ -21,6 +28,9 @@ export default withRouter(({ history, gameID }) => {
     if (gameID == null) {
       const response = await http.post('/create', {
         numPlayers: game.numPlayers,
+        setupData: {
+          longGame,
+        },
       });
 
       gameID = response.data.gameID;
@@ -44,12 +54,14 @@ export default withRouter(({ history, gameID }) => {
     history.push(`/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
   };
 
+  const isJoining = gameID != null;
+
   return (
     <form onSubmit={onSubmit}>
       <label>
         Enter your name:
         <input
-          onChange={onChange}
+          onChange={onChangePlayerName}
           value={playerName}
           required
           minLength="1"
@@ -57,9 +69,19 @@ export default withRouter(({ history, gameID }) => {
       </label>
       <input
         type="submit"
-        value={error || (gameID == null ? 'Create game' : 'Join game')}
+        value={error || (isJoining ? 'Join game' : 'Create game')}
         disabled={error}
       />
+      {!isJoining && (
+        <label>
+          <input
+            type="checkbox"
+            onChange={onChangeLongGame}
+            checked={longGame}
+          />
+          Long game
+        </label>
+      )}
     </form>
   );
 });
