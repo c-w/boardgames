@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import http from './http';
 import game from '../shared/game';
+import { getRandomInt } from '../shared/utils';
 
 export default withRouter(({ history, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
@@ -23,18 +24,27 @@ export default withRouter(({ history, gameID }) => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    let playerID = 1;
+    let playerID;
 
     if (gameID == null) {
       const response = await http.post('/create', {
-        numPlayers: game.numPlayers,
+        numPlayers: game.maxPlayers,
         setupData: {
           longGame,
         },
       });
 
       gameID = response.data.gameID;
-      playerID = 0;
+      playerID = getRandomInt(game.maxPlayers);
+    } else {
+      const response = await http.get(`/${gameID}`);
+
+      playerID = response.data.players.find(p => p.name == null)?.id;
+
+      if (playerID == null) {
+        setError('The game is already full');
+        return;
+      }
     }
 
     let response;
