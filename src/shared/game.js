@@ -246,7 +246,7 @@ function playCard(G, ctx, i, j) {
     return;
   }
 
-  const { winner, next } = determineTrickWinner(G, ctx, i);
+  let { winner, next } = determineTrickWinner(G, ctx, i);
 
   G.tricks.push({ winner, cards: [{ ...G.played }, { ...card }] });
   G.played = null;
@@ -265,8 +265,8 @@ function playCard(G, ctx, i, j) {
     G.tricks = newRound.tricks;
     G.trump = newRound.trump;
     G.players = newRound.players;
-    ctx.events.endTurn();
-    return;
+    next = G.startingPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    G.startingPlayer = next;
   }
 
   ctx.events.endTurn({ next });
@@ -286,6 +286,7 @@ export default {
       [PLAYER_1]: [],
       [PLAYER_2]: [],
     },
+    startingPlayer: PLAYER_1,
     winningScore: setupData?.longGame
       ? LONG_GAME_WINNING_SCORE
       : SHORT_GAME_WINNING_SCORE,
