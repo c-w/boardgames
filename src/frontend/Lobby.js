@@ -22,49 +22,48 @@ export default withRouter(({ history, gameID }) => {
   };
 
   const onSubmit = async (event) => {
-    event.preventDefault();
-
-    let playerID;
-
-    if (gameID == null) {
-      const response = await http.post('/create', {
-        numPlayers: game.maxPlayers,
-        setupData: {
-          longGame,
-        },
-      });
-
-      gameID = response.data.gameID;
-      playerID = getRandomInt(game.maxPlayers);
-    } else {
-      const response = await http.get(`/${gameID}`);
-
-      playerID = response.data.players.find(p => p.name == null)?.id;
-
-      if (playerID == null) {
-        setError('The game is already full');
-        return;
-      }
-    }
-
-    let response;
     try {
-      response = await http.post(`/${gameID}/join`, {
+      event.preventDefault();
+
+      let playerID;
+
+      if (gameID == null) {
+        const response = await http.post('/create', {
+          numPlayers: game.maxPlayers,
+          setupData: {
+            longGame,
+          },
+        });
+
+        gameID = response.data.gameID;
+        playerID = getRandomInt(game.maxPlayers);
+      } else {
+        const response = await http.get(`/${gameID}`);
+
+        playerID = response.data.players.find(p => p.name == null)?.id;
+
+        if (playerID == null) {
+          setError('The game is already full');
+          return;
+        }
+      }
+
+      const response = await http.post(`/${gameID}/join`, {
         playerID,
         playerName,
       });
+
+      history.push(`/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
     } catch (ex) {
       if (ex.response?.status === 409) {
         setError('The game is already full');
-        return;
       } else if (ex.response?.status === 404) {
         setError('The game no longer exists');
-        return;
+      } else {
+        setError('Unexpected error');
+        console.error(error);
       }
-      throw ex;
     }
-
-    history.push(`/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
   };
 
   const isJoining = gameID != null;
