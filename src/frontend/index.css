@@ -22,6 +22,10 @@ em {
   background-color: yellow;
 }
 
+fieldset[disabled] em {
+  background-color: transparent;
+}
+
 ol {
   padding: 0;
   list-style: none;
@@ -43,6 +47,46 @@ ol {
 }
 
 main {
-  max-width: 20em;
+  max-width: 400px;
   margin: 0 auto;
+}
+
+.bgio-client form li > label {
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+
+@media screen and (min-width: 400px) {
+  .bgio-client form > div > input {
+    width: 100%;
+    height: 2em;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .bgio-client form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: 2.8vh;
+    min-height: 95vh;
+  }
+
+  .bgio-client form > div {
+    position: relative;
+    padding: 1em;
+  }
+
+  .bgio-client form > div > aside {
+    position: absolute;
+    bottom: 1em;
+    text-align: justify;
+  }
+
+  .bgio-client form > div > input {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 4em;
+  }
 }

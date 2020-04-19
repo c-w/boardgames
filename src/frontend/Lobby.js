@@ -73,14 +73,16 @@ export default withRouter(({ history, gameID }) => {
         disabled={error}
       />
       {!isJoining && (
-        <label>
-          <input
-            type="checkbox"
-            onChange={onChangeLongGame}
-            checked={longGame}
-          />
-          Long game
-        </label>
+        <div>
+          <label>
+            <input
+              type="checkbox"
+              onChange={onChangeLongGame}
+              checked={longGame}
+            />
+            Long game
+          </label>
+        </div>
       )}
     </form>
   );

@@ -149,16 +149,18 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
           )}
         </ol>
       </fieldset>
-      <input
-        type="submit"
-        disabled={!isActive || chosen.length === 0}
-        value={isDiscard ? 'Discard card' : 'Play card'}
-      />
-      {helpText && (
-        <aside>
-          {helpText}
-        </aside>
-      )}
+      <div>
+        <input
+          type="submit"
+          disabled={!isActive || chosen.length === 0}
+          value={isDiscard ? 'Discard card' : 'Play card'}
+        />
+        {helpText && (
+          <aside>
+            {helpText}
+          </aside>
+        )}
+      </div>
     </form>
   );
 }
