@@ -11,6 +11,7 @@ const server = Server({
 
   db: new FlatFile({
     dir: config.STATE_DIR,
+    ttl: config.STATE_TTL,
   }),
 });
 
