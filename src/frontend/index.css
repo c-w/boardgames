@@ -22,8 +22,12 @@ em {
   background-color: yellow;
 }
 
+fieldset[disabled] .tower,
+fieldset[disabled] .key,
+fieldset[disabled] .moon,
 fieldset[disabled] em {
   background-color: transparent;
+  color: #000;
 }
 
 ol {
