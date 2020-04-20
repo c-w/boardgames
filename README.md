@@ -21,7 +21,7 @@ yarn start
 [ vm ] sudo setcap cap_net_bind_service=+ep /usr/bin/node
 [ vm ] mkdir -p fitf/git
 [ vm ] cd fitf/git && git init --bare && cd -
-[ vm ] cd fitf && git clone ./git ./code
+[ vm ] cd fitf && git clone ./git ./code && cd ./code
 [host] git remote add vm ssh://clewolff@fitf.justamouse.com:/home/clewolff/fitf/git
 [host] git push vm master
 [ vm ] git pull
