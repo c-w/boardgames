@@ -1,4 +1,5 @@
 import { FlatFile, Server } from 'boardgame.io/server';
+import fs from 'fs';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
@@ -13,6 +14,11 @@ const server = Server({
     dir: config.STATE_DIR,
     ttl: config.STATE_TTL,
   }),
+
+  https: config.HTTPS ? {
+    cert: fs.readFileSync(config.SSL_CRT_FILE),
+    key: fs.readFileSync(config.SSL_KEY_FILE),
+  } : null,
 });
 
 server.app.use(serve(path.join(__dirname, '..', '..', 'build')));
