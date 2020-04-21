@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import Board from './Board';
@@ -18,6 +19,7 @@ export default function WaitForPlayers(props) {
   const { gameID } = props;
 
   const [status, setStatus] = useState({});
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const refreshInterval = repeatedly(async () => {
@@ -35,6 +37,10 @@ export default function WaitForPlayers(props) {
     return () => clearInterval(refreshInterval);
   }, [gameID]);
 
+  const onCopy = () => {
+    setCopied(true);
+  };
+
   if (status.isLoading) {
     return null;
   }
@@ -48,11 +54,22 @@ export default function WaitForPlayers(props) {
   return (
     <label>
       Invite someone to join the game by sharing this URL:
-      <input
-        readOnly
-        value={joinURL}
-        style={{ width: `${joinURL.length}ch` }}
-      />
+
+      <CopyToClipboard
+        text={joinURL}
+        onCopy={onCopy}
+      >
+        <input
+          readOnly
+          value={joinURL}
+          style={{ width: `${joinURL.length}ch` }}
+        />
+      </CopyToClipboard>
+      {copied && (
+        <div>
+          <em>Copied to clipboard</em>
+        </div>
+      )}
     </label>
   );
 }
