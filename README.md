@@ -32,6 +32,7 @@ yarn start
 [ vm ] git pull
 [ vm ] echo "REACT_APP_SERVER_URL=https://fitf.justamouse.com" > .env
 [ vm ] echo "SERVER_PORT=443" >> .env
+[ vm ] echo "SECONDARY_PORT=80" >> .env
 [ vm ] echo "HTTPS=true" >> .env
 [ vm ] echo "SSL_CRT_FILE=/etc/letsencrypt/live/fitf.justamouse.com/fullchain.pem" >> .env
 [ vm ] echo "SSL_KEY_FILE=/etc/letsencrypt/live/fitf.justamouse.com/privkey.pem" >> .env

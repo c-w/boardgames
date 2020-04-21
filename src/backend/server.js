@@ -1,5 +1,6 @@
 import { FlatFile, Server } from 'boardgame.io/server';
 import fs from 'fs';
+import Koa from 'koa';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
@@ -22,5 +23,16 @@ const server = Server({
 });
 
 server.app.use(serve(path.join(__dirname, '..', '..', 'build')));
+
+if (config.HTTPS && config.SECONDARY_PORT) {
+  const httpServer = new Koa();
+  httpServer.use(ctx => {
+    ctx.status = 302;
+    ctx.redirect(`https://${ctx.request.hostname}:${config.SERVER_PORT}${ctx.request.path}`);
+  });
+  new Promise(() => {
+    httpServer.listen(config.SECONDARY_PORT);
+  });
+}
 
 server.run(config.SERVER_PORT);
