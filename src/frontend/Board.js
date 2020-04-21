@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { isMoveInvalid } from '../shared/game';
 import { last, sum } from '../shared/utils';
 
@@ -21,6 +21,7 @@ function Card({ rank, suit }) {
 }
 
 export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
+  const history = useHistory();
   const [chosen, setChosen] = useState([]);
   const [showEndOfRoundScreen, setShowEndOfRoundScreen] = useState(false);
 
@@ -69,6 +70,11 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
     setShowEndOfRoundScreen(false);
   };
 
+  const goToNewGame = (event) => {
+    event.preventDefault();
+    history.push('/new');
+  };
+
   const isOver = ctx.gameover != null;
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
@@ -80,8 +86,6 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const lastTrick = isEndOfRound && showEndOfRoundScreen ? last(last(G.history)) : G.tricks.length >= 1 ? last(G.tricks) : null;
   const helpText = chosen.length > 0 ? CARD_TEXTS[player.hand[chosen[0]].rank] : null;
-  const playerScore = sum(G.scores[playerID]);
-  const opponentScore = sum(G.scores[opponent.id]);
 
   useEffect(() => {
     if (isEndOfRound) {
@@ -95,21 +99,35 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
       : a.card.suit.localeCompare(b.card.suit);
   });
 
-  const Stats = ({ disabled }) => (
+  const Stats = ({ disabled, showHistory, hideTricks }) => (
     <fieldset disabled={disabled}>
       <legend>Stats</legend>
       <div>
-        Your score: {playerScore}
+        Your score: {sum(G.scores[playerID])}
+        {showHistory && (
+          <span>
+            &nbsp;(+ {last(G.scores[playerID])})
+          </span>
+        )}
       </div>
       <div>
-        {opponent.name} score: {opponentScore}
+        {opponent.name} score: {sum(G.scores[opponent.id])}
+        {showHistory && (
+          <span>
+            &nbsp;(+ {last(G.scores[opponent.id])})
+          </span>
+        )}
       </div>
-      <div>
-        Your tricks: {tricksWon}
-      </div>
-      <div>
-        {opponent.name} tricks: {tricksLost}
-      </div>
+      {!hideTricks && (
+        <div>
+          Your tricks: {tricksWon}
+        </div>
+      )}
+      {!hideTricks && (
+        <div>
+          {opponent.name} tricks: {tricksLost}
+        </div>
+      )}
       {lastTrick && (
         <div>
           Last trick:&nbsp;
@@ -122,20 +140,23 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
 
   if (isOver) {
     return (
-      <div>
-        {isWinner ? 'You won!' : 'You lost.'}&nbsp;
-        ({playerScore} vs {opponentScore})
+      <form onSubmit={goToNewGame}>
+        <Stats showHistory hideTricks />
         <div>
-          <Link to="/new">Play another.</Link>
+          <em>{isWinner ? 'You won!' : 'You lost.'}</em>
         </div>
-      </div>
+        <input
+          type="submit"
+          value="Click to play another game"
+        />
+      </form>
     );
   }
 
   if (showEndOfRoundScreen) {
     return (
       <form onSubmit={goToNextRound}>
-        <Stats disabled={false} />
+        <Stats showHistory hideTricks />
         <input
           type="submit"
           value="Ok, proceed to next round"
