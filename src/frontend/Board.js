@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { isMoveInvalid } from '../shared/game';
 import { last, sum } from '../shared/utils';
 
@@ -86,6 +87,9 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
       <div>
         {isWinner ? 'You won!' : 'You lost.'}&nbsp;
         ({playerScore} vs {opponentScore})
+        <div>
+          <Link to="/new">Play another.</Link>
+        </div>
       </div>
     );
   }
