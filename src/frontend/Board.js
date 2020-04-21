@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { isMoveInvalid } from '../shared/game';
 import { last, sum } from '../shared/utils';
@@ -22,6 +22,7 @@ function Card({ rank, suit }) {
 
 export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const [chosen, setChosen] = useState([]);
+  const [showEndOfRoundScreen, setShowEndOfRoundScreen] = useState(false);
 
   const playCard = (event) => {
     event.preventDefault();
@@ -63,24 +64,61 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
     return true;
   };
 
+  const goToNextRound = (event) => {
+    event.preventDefault();
+    setShowEndOfRoundScreen(false);
+  };
+
   const isOver = ctx.gameover != null;
   const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
+  const isEndOfRound = G.tricks.length === 0 && G.history.length > 0;
   const player = G.players[playerID];
   const opponent = gameMetadata.find(u => u.id !== Number(playerID));
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
-  const lastTrick = G.tricks.length >= 1 ? last(G.tricks) : null;
+  const lastTrick = isEndOfRound && showEndOfRoundScreen ? last(last(G.history)) : G.tricks.length >= 1 ? last(G.tricks) : null;
   const helpText = chosen.length > 0 ? CARD_TEXTS[player.hand[chosen[0]].rank] : null;
   const playerScore = sum(G.scores[playerID]);
   const opponentScore = sum(G.scores[opponent.id]);
+
+  useEffect(() => {
+    if (isEndOfRound) {
+      setShowEndOfRoundScreen(true);
+    }
+  }, [setShowEndOfRoundScreen, isEndOfRound]);
 
   const hand = player.hand.map((card, i) => ({ card, i })).sort((a, b) => {
     return a.card.suit === b.card.suit
       ? a.card.rank - b.card.rank
       : a.card.suit.localeCompare(b.card.suit);
   });
+
+  const Stats = ({ disabled }) => (
+    <fieldset disabled={disabled}>
+      <legend>Stats</legend>
+      <div>
+        Your score: {playerScore}
+      </div>
+      <div>
+        {opponent.name} score: {opponentScore}
+      </div>
+      <div>
+        Your tricks: {tricksWon}
+      </div>
+      <div>
+        {opponent.name} tricks: {tricksLost}
+      </div>
+      {lastTrick && (
+        <div>
+          Last trick:&nbsp;
+          <Card {...lastTrick.cards[0]} /> vs <Card {...lastTrick.cards[1]} />&nbsp;
+          (you {lastTrick.winner === playerID ? 'won' : 'lost'})
+        </div>
+      )}
+    </fieldset>
+  );
 
   if (isOver) {
     return (
@@ -94,30 +132,21 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
     );
   }
 
+  if (showEndOfRoundScreen) {
+    return (
+      <form onSubmit={goToNextRound}>
+        <Stats disabled={false} />
+        <input
+          type="submit"
+          value="Ok, proceed to next round"
+        />
+      </form>
+    );
+  }
+
   return (
     <form onSubmit={isDiscard ? discardCard : playCard}>
-      <fieldset disabled={!isActive}>
-        <legend>Stats</legend>
-        <div>
-          Your score: {playerScore}
-        </div>
-        <div>
-          {opponent.name} score: {opponentScore}
-        </div>
-        <div>
-          Your tricks: {tricksWon}
-        </div>
-        <div>
-          {opponent.name} tricks: {tricksLost}
-        </div>
-        {lastTrick && (
-          <div>
-            Last trick:&nbsp;
-            <Card {...lastTrick.cards[0]} /> vs <Card {...lastTrick.cards[1]} />&nbsp;
-            (you {lastTrick.winner === playerID ? 'won' : 'lost'})
-          </div>
-        )}
-      </fieldset>
+      <Stats disabled={!isActive} />
       <fieldset disabled={!isActive}>
         <legend>This trick</legend>
         <div>

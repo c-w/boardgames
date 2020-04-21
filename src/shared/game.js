@@ -261,6 +261,7 @@ function playCard(G, ctx, i, j) {
     }
 
     const newRound = dealCards(ctx);
+    G.history.push(G.tricks);
     G.secret = newRound.secret;
     G.tricks = newRound.tricks;
     G.trump = newRound.trump;
@@ -286,6 +287,7 @@ export default {
       [PLAYER_1]: [],
       [PLAYER_2]: [],
     },
+    history: [],
     startingPlayer: PLAYER_1,
     winningScore: setupData?.longGame
       ? LONG_GAME_WINNING_SCORE
