@@ -33,9 +33,11 @@ function dealCards(ctx) {
     players: {
       [PLAYER_1]: {
         hand: hand1,
+        stashed: null,
       },
       [PLAYER_2]: {
         hand: hand2,
+        stashed: null,
       },
     },
   };
@@ -48,7 +50,7 @@ function getPlayers(G, ctx, i) {
   const hand = [...G.players[playerID].hand];
 
   const card = i == null
-    ? { ...G.stashed }
+    ? { ...G.players[playerID].stashed }
     : hand[i];
 
   return {
@@ -125,12 +127,11 @@ export function isMoveInvalid(G, ctx, ...cards) {
   }
 
   const [i, j] = cards;
+  const { playerID, hand, card } = getPlayers(G, ctx, i);
 
-  if (i == null && G.stashed == null) {
+  if (i == null && G.players[playerID].stashed == null) {
     return 'played_no_card';
   }
-
-  const { playerID, hand, card } = getPlayers(G, ctx, i);
 
   if (card == null) {
     return 'played_unknown_card';
@@ -229,17 +230,18 @@ function playCard(G, ctx, i, j) {
 
   const newHand = removeAt(hand, i);
 
-  if (card.rank === 5 && G.stashed == null && newHand.length !== 0) {
+  if (card.rank === 5 && G.players[playerID].stashed == null && newHand.length !== 0) {
     const newCard = G.secret.deck.pop();
 
     G.players[playerID].hand = [...newHand, newCard];
-    G.stashed = card;
+    G.players[playerID].stashed = card;
 
     ctx.events.setStage('discard');
     return;
   }
 
   if (G.played == null) {
+    G.players[playerID].stashed = null;
     G.players[playerID].hand = newHand;
     G.played = card;
     ctx.events.endTurn();
@@ -250,7 +252,7 @@ function playCard(G, ctx, i, j) {
 
   G.tricks.push({ winner, cards: [{ ...G.played }, { ...card }] });
   G.played = null;
-  G.stashed = null;
+  G.players[playerID].stashed = null;
   G.players[playerID].hand = newHand;
 
   if (newHand.length === 0) {
@@ -282,7 +284,6 @@ export default {
   setup: (ctx, setupData) => ({
     ...dealCards(ctx),
     played: null,
-    stashed: null,
     scores: {
       [PLAYER_1]: [],
       [PLAYER_2]: [],
