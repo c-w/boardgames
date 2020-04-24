@@ -50,12 +50,12 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
       return false;
     }
 
-    if (isDiscard) {
+    if (chosen.includes(i)) {
       return true;
     }
 
-    if (chosen.includes(i)) {
-      return true;
+    if (isDiscard) {
+      return chosen.length === 0;
     }
 
     if (isMoveInvalid(G, ctx, ...chosen, i)) {
