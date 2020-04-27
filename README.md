@@ -9,6 +9,11 @@ yarn start
 
 ## Production setup
 
+1. Create VM with Managed Identity
+2. Create Storage Account
+3. Assign Storage Blob Data Contributor permissions to VM
+4. Set up VM with script below
+
 ```txt
 [host] ssh clewolff@fitf.justamouse.com
 [ vm ] sudo apt-get update
@@ -36,8 +41,7 @@ yarn start
 [ vm ] echo "HTTPS=true" >> .env
 [ vm ] echo "SSL_CRT_FILE=/etc/letsencrypt/live/fitf.justamouse.com/fullchain.pem" >> .env
 [ vm ] echo "SSL_KEY_FILE=/etc/letsencrypt/live/fitf.justamouse.com/privkey.pem" >> .env
-[ vm ] echo "STATE_DIR=state" >> .env
-[ vm ] echo "STATE_TTL=true" >> .env
+[ vm ] echo "AZURE_STORAGE_ACCOUNT=fitf" >> .env
 [ vm ] yarn install
 [ vm ] yarn run build
 [ vm ] sudo npm install -g pm2@latest

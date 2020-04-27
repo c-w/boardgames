@@ -1,4 +1,7 @@
+import { DefaultAzureCredential } from '@azure/identity';
+import { BlobServiceClient } from '@azure/storage-blob';
 import { FlatFile, Server } from 'boardgame.io/server';
+import { AzureStorage } from 'bgio-azure-storage';
 import fs from 'fs';
 import Koa from 'koa';
 import serve from 'koa-static';
@@ -6,15 +9,29 @@ import path from 'path';
 import config from './config';
 import Game from '../shared/game';
 
+let db;
+
+if (config.AZURE_STORAGE_ACCOUNT) {
+  db = new AzureStorage({
+    client: new BlobServiceClient(
+      `https://${config.AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`,
+      new DefaultAzureCredential(),
+    ),
+    container: 'fitf',
+  });
+} else {
+  db = new FlatFile({
+    dir: config.STATE_DIR,
+    ttl: config.STATE_TTL,
+  });
+}
+
 const server = Server({
   games: [
     Game
   ],
 
-  db: new FlatFile({
-    dir: config.STATE_DIR,
-    ttl: config.STATE_TTL,
-  }),
+  db,
 
   https: config.HTTPS ? {
     cert: fs.readFileSync(config.SSL_CRT_FILE),
