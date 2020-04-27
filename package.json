@@ -25,15 +25,19 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "shx": "^0.3.2"
   },
   "scripts": {
+    "prestart": "yarn run ensure-env",
     "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
     "start-client": "react-scripts start",
     "start-server": "nodemon --exec babel-node src/backend/server.js",
+    "ensure-env": "shx cp -n .env.example .env",
     "lint": "eslint --max-warnings=0 src",
     "build-client": "react-scripts build",
     "build-server": "babel src --ignore src/frontend --ignore src/index.js --out-dir dist",
+    "prebuild": "yarn run ensure-env",
     "build": "concurrently \"npm:build-client\" \"npm:build-server\""
   },
   "eslintConfig": {
