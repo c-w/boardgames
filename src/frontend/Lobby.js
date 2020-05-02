@@ -7,6 +7,7 @@ import { getRandomInt } from '../shared/utils';
 export default withRouter(({ history, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
   const [longGame, setLongGame] = useState(localStorage.getItem('longGame') !== 'false');
+  const [unlisted, setUnlisted] = useState(localStorage.getItem('unlisted') !== 'false');
   const [error, setError] = useState('');
 
   const isNewGame = gameID == null;
@@ -23,6 +24,12 @@ export default withRouter(({ history, gameID }) => {
     localStorage.setItem('longGame', checked);
   };
 
+  const onChangeUnlisted = (event) => {
+    const { checked } = event.target;
+    setUnlisted(checked);
+    localStorage.setItem('unlisted', checked);
+  };
+
   const onSubmit = async (event) => {
     try {
       event.preventDefault();
@@ -35,6 +42,7 @@ export default withRouter(({ history, gameID }) => {
           setupData: {
             longGame,
           },
+          unlisted,
         });
 
         gameID = response.data.gameID;
@@ -93,6 +101,14 @@ export default withRouter(({ history, gameID }) => {
               checked={longGame}
             />
             Long game
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              onChange={onChangeUnlisted}
+              checked={unlisted}
+            />
+            Unlisted
           </label>
         </div>
       )}

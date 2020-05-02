@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Client from './Client';
 import Lobby from './Lobby';
+import RoomList from './RoomList';
 
 export default function App() {
   return (
@@ -11,12 +12,17 @@ export default function App() {
           <Route
             exact
             path="/"
-            children={<Redirect to="/new" />}
+            children={<Redirect to="/join" />}
           />
           <Route
             exact
             path="/new"
             children={Lobby}
+          />
+          <Route
+            exact
+            path="/join"
+            children={<RoomList />}
           />
           <Route
             exact

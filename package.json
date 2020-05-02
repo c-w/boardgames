@@ -5,8 +5,8 @@
   "dependencies": {
     "@azure/identity": "^1.0.2",
     "@azure/storage-blob": "^12.1.1",
-    "bgio-azure-storage": "^0.0.1",
-    "boardgame.io": "^0.39.9",
+    "bgio-azure-storage": "^0.0.2",
+    "boardgame.io": "^0.39.10",
     "envalid": "^6.0.1",
     "koa": "^2.11.0",
     "koa-static": "^5.0.0",
