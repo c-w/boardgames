@@ -84,6 +84,8 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const opponent = gameMetadata.find(u => u.id !== Number(playerID));
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
+  const trump = last(G.trumps);
+  const previousTrump = trump.turn > 0 && ctx.turn - trump.turn <= 1 ? G.trumps[G.trumps.length - 2] : null;
   const lastTrick = isEndOfRound && showEndOfRoundScreen ? last(last(G.history)) : G.tricks.length >= 1 ? last(G.tricks) : null;
   const helpText = chosen.length > 0 ? CARD_TEXTS[player.hand[chosen[0]].rank] : null;
 
@@ -172,7 +174,12 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
         <legend>This trick</legend>
         <div>
           Trump:&nbsp;
-          <Card {...G.trump} />
+          <Card {...trump} />
+          {previousTrump && (
+            <React.Fragment>
+              &nbsp;(was <Card {...previousTrump} />)
+            </React.Fragment>
+          )}
         </div>
         {G.played && (
           <div>

@@ -14,7 +14,7 @@ function dealCards(ctx) {
     SUITS.map(suit => RANKS.map(rank => ({ suit, rank }))).flat()
   );
 
-  const trump = deck.pop();
+  const trumps = [{ ...deck.pop(), turn: 0 }];
 
   const hand1 = [];
   const hand2 = [];
@@ -29,7 +29,7 @@ function dealCards(ctx) {
       deck,
     },
     tricks: [],
-    trump,
+    trumps,
     players: {
       [PLAYER_1]: {
         hand: hand1,
@@ -176,7 +176,7 @@ export function isMoveInvalid(G, ctx, ...cards) {
 function determineTrickWinner(G, ctx, i) {
   const { playerID, opponentID, card } = getPlayers(G, ctx, i);
 
-  const trumpSuit = G.trump.suit;
+  const trumpSuit = last(G.trumps).suit;
 
   let { rank, suit } = card;
   let opponentRank = G.played.rank;
@@ -223,8 +223,8 @@ function playCard(G, ctx, i, j) {
   const { playerID, opponentID, hand, card } = getPlayers(G, ctx, i);
 
   if (card.rank === 3 && j != null) {
-    const oldTrump = { ...G.trump };
-    G.trump = { ...hand[j] };
+    const oldTrump = { ...last(G.trumps) };
+    G.trumps.push({ ...hand[j], turn: ctx.turn });
     hand[j] = oldTrump;
   }
 
@@ -266,7 +266,7 @@ function playCard(G, ctx, i, j) {
     G.history.push(G.tricks);
     G.secret = newRound.secret;
     G.tricks = newRound.tricks;
-    G.trump = newRound.trump;
+    G.trumps = newRound.trumps;
     G.players = newRound.players;
     next = G.startingPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1;
     G.startingPlayer = next;
