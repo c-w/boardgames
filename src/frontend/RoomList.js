@@ -33,14 +33,17 @@ export default function RoomList() {
   }
 
   return (
-    <ul>
-      {openRooms.map(room => (
-        <li key={room.gameID}>
-          <Link to={`/join/${room.gameID}`}>
-            Join game by {room.players.find(player => player.name).name}
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <React.Fragment>
+      <Link to="/new">Start your own game</Link> or join one of the games below.
+      <ul>
+        {openRooms.map(room => (
+          <li key={room.gameID}>
+            <Link to={`/join/${room.gameID}`}>
+              Join game by {room.players.find(player => player.name).name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </React.Fragment>
   );
 }
