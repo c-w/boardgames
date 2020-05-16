@@ -35,7 +35,6 @@ yarn start
 [host] git remote add vm ssh://clewolff@fitf.justamouse.com:/home/clewolff/fitf/git
 [host] git push vm master
 [ vm ] git pull
-[ vm ] echo "REACT_APP_SERVER_URL=https://fitf.justamouse.com" > .env
 [ vm ] echo "SERVER_PORT=443" >> .env
 [ vm ] echo "SECONDARY_PORT=80" >> .env
 [ vm ] echo "HTTPS=true" >> .env
