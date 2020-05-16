@@ -1,6 +1,6 @@
 import { DefaultAzureCredential } from '@azure/identity';
 import { BlobServiceClient } from '@azure/storage-blob';
-import { FlatFile, Server } from 'boardgame.io/server';
+import { FlatFile, Server, SocketIO } from 'boardgame.io/server';
 import { AzureStorage } from 'bgio-azure-storage';
 import fs from 'fs';
 import Koa from 'koa';
@@ -26,6 +26,14 @@ if (config.AZURE_STORAGE_ACCOUNT) {
   });
 }
 
+const transport = new SocketIO({
+  auth: true,
+  https: config.HTTPS ? {
+    cert: fs.readFileSync(config.SSL_CRT_FILE),
+    key: fs.readFileSync(config.SSL_KEY_FILE),
+  } : null,
+});
+
 const server = Server({
   games: [
     Game
@@ -33,10 +41,7 @@ const server = Server({
 
   db,
 
-  https: config.HTTPS ? {
-    cert: fs.readFileSync(config.SSL_CRT_FILE),
-    key: fs.readFileSync(config.SSL_KEY_FILE),
-  } : null,
+  transport,
 });
 
 server.app.use(serve(path.join(__dirname, '..', '..', 'build')));
