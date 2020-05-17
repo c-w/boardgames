@@ -17,7 +17,7 @@ if (config.AZURE_STORAGE_ACCOUNT) {
       `https://${config.AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`,
       new DefaultAzureCredential(),
     ),
-    container: 'fitf',
+    container: config.AZURE_STORAGE_CONTAINER,
   });
 } else {
   db = new FlatFile({
