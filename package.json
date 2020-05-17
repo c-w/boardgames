@@ -19,6 +19,7 @@
     "@babel/preset-env": "^7.9.5",
     "axios": "^0.19.2",
     "concurrently": "^5.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "http-proxy-middleware": "^1.0.3",
     "nodemon": "^2.0.3",
@@ -32,8 +33,8 @@
   "scripts": {
     "prestart": "yarn run ensure-env",
     "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
-    "start-client": "react-scripts start",
-    "start-server": "nodemon --exec babel-node src/backend/server.js",
+    "start-client": "cross-env PORT=3000 react-scripts start",
+    "start-server": "cross-env PORT=8000 nodemon --exec babel-node src/backend/server.js",
     "ensure-env": "shx cp -n .env.example .env",
     "lint": "eslint --max-warnings=0 src",
     "build-client": "react-scripts build",

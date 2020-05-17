@@ -50,11 +50,11 @@ if (config.HTTPS && config.SECONDARY_PORT) {
   const httpServer = new Koa();
   httpServer.use(ctx => {
     ctx.status = 302;
-    ctx.redirect(`https://${ctx.request.hostname}:${config.SERVER_PORT}${ctx.request.path}`);
+    ctx.redirect(`https://${ctx.request.hostname}:${config.PORT}${ctx.request.path}`);
   });
   new Promise(() => {
     httpServer.listen(config.SECONDARY_PORT);
   });
 }
 
-server.run(config.SERVER_PORT);
+server.run(config.PORT);

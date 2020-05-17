@@ -35,7 +35,7 @@ yarn start
 [host] git remote add vm ssh://clewolff@fitf.justamouse.com:/home/clewolff/fitf/git
 [host] git push vm master
 [ vm ] git pull
-[ vm ] echo "SERVER_PORT=443" >> .env
+[ vm ] echo "PORT=443" >> .env
 [ vm ] echo "SECONDARY_PORT=80" >> .env
 [ vm ] echo "HTTPS=true" >> .env
 [ vm ] echo "SSL_CRT_FILE=/etc/letsencrypt/live/fitf.justamouse.com/fullchain.pem" >> .env
