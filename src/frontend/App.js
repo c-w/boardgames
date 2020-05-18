@@ -1,8 +1,9 @@
 import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
-import Client from './Client';
 import Lobby from './Lobby';
+import Play from './Play';
 import RoomList from './RoomList';
+import Wait from './Wait';
 
 const gameName = 'fitf'; // TODO: make this dynamic
 
@@ -33,8 +34,13 @@ export default function App() {
           />
           <Route
             exact
+            path="/:gameName/wait/:gameID/:playerID/:credentials"
+            children={({ match }) => <Wait {...match.params} />}
+          />
+          <Route
+            exact
             path="/:gameName/play/:gameID/:playerID/:credentials"
-            children={({ match }) => <Client {...match.params} />}
+            children={({ match }) => <Play {...match.params} />}
           />
         </Switch>
       </main>

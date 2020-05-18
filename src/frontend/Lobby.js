@@ -98,7 +98,7 @@ export default withRouter(({ history, gameName, gameID }) => {
         playerName,
       });
 
-      history.push(`/${game.name}/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
+      history.push(`/${game.name}/${isNewGame ? 'wait' : 'play'}/${gameID}/${playerID}/${response.data.playerCredentials}`);
     } catch (ex) {
       if (ex.response?.status === 409) {
         setError('The game is already full');

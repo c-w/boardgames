@@ -1,18 +1,13 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Client } from 'boardgame.io/react';
-import { SocketIO } from 'boardgame.io/multiplayer';
-import loadBoard from './boards';
 import config from './config';
 import newHttpClient from './http';
 import { useGame } from './hooks';
 import { repeatedly } from '../shared/utils';
 
-export default function WaitForPlayers(props) {
-  const { gameName, gameID } = props;
-
+export default function Wait({ gameName, gameID, playerID, credentials }) {
   const game = useGame(gameName);
-  const board = loadBoard(gameName);
 
   const [status, setStatus] = useState({});
   const [copied, setCopied] = useState(false);
@@ -48,17 +43,8 @@ export default function WaitForPlayers(props) {
   }
 
   if (status.isReady) {
-    const GameClient = Client({
-      game,
-      board,
-      multiplayer: SocketIO({ server: config.REACT_APP_SERVER_URL }),
-      debug: false,
-    });
-
     return (
-      <Suspense fallback={null}>
-        <GameClient {...props} />
-      </Suspense>
+      <Redirect to={`/${game.name}/play/${gameID}/${playerID}/${credentials}`} />
     );
   }
 
