@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { isMoveInvalid } from '../shared/game';
-import { last, sum } from '../shared/utils';
+import { isMoveInvalid } from '../../shared/games/fitf';
+import { last, sum } from '../../shared/utils';
 
 const CARD_TEXTS = {
   1: 'If you play this and lose the trick, you lead the next trick.',
@@ -72,7 +72,7 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
 
   const goToNewGame = (event) => {
     event.preventDefault();
-    history.push('/new');
+    history.push('/new/fitf');
   };
 
   const isOver = ctx.gameover != null;

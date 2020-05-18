@@ -4,6 +4,8 @@ import Client from './Client';
 import Lobby from './Lobby';
 import RoomList from './RoomList';
 
+const gameName = 'fitf'; // TODO: make this dynamic
+
 export default function App() {
   return (
     <HashRouter>
@@ -12,26 +14,26 @@ export default function App() {
           <Route
             exact
             path="/"
-            children={<Redirect to="/join" />}
+            children={<Redirect to={`/${gameName}/join`} />}
           />
           <Route
             exact
-            path="/new"
-            children={Lobby}
-          />
-          <Route
-            exact
-            path="/join"
-            children={<RoomList />}
-          />
-          <Route
-            exact
-            path="/join/:gameID"
+            path="/:gameName/new"
             children={({ match }) => <Lobby {...match.params} />}
           />
           <Route
             exact
-            path="/play/:gameID/:playerID/:credentials"
+            path="/:gameName/join"
+            children={({ match }) => <RoomList {...match.params} />}
+          />
+          <Route
+            exact
+            path="/:gameName/join/:gameID"
+            children={({ match }) => <Lobby {...match.params} />}
+          />
+          <Route
+            exact
+            path="/:gameName/play/:gameID/:playerID/:credentials"
             children={({ match }) => <Client {...match.params} />}
           />
         </Switch>

@@ -7,7 +7,7 @@ import Koa from 'koa';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
-import Game from '../shared/game';
+import fitf from '../shared/games/fitf';
 
 let db;
 
@@ -39,7 +39,7 @@ const transport = new SocketIO({
 
 const server = Server({
   games: [
-    Game
+    fitf,
   ],
 
   db,

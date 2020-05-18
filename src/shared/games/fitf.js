@@ -1,5 +1,5 @@
 import { PlayerView, INVALID_MOVE } from 'boardgame.io/core';
-import { last, removeAt, sum } from './utils.js';
+import { last, removeAt, sum } from '../utils.js';
 
 const SUITS = ['key', 'tower', 'moon'];
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];

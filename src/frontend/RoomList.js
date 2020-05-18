@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import config from './config';
-import http from './http';
-import game from '../shared/game';
+import newHttpClient from './http';
+import { useGame } from './lazyload';
 import { repeatedly } from '../shared/utils';
 
-export default function RoomList() {
+export default function RoomList({ gameName }) {
   const [rooms, setRooms] = useState();
+  const game = useGame(gameName);
 
   useEffect(() => {
+    const http = newHttpClient(gameName);
+
     const refreshInterval = repeatedly(async () => {
       const response = await http.get('/');
       setRooms(response.data.rooms);
     }, config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
     return () => clearInterval(refreshInterval);
-  }, [setRooms]);
+  }, [setRooms, gameName]);
 
 
-  if (rooms == null) {
+  if (rooms == null || game == null) {
     return null;
   }
 
@@ -27,18 +30,18 @@ export default function RoomList() {
   if (openRooms.length === 0) {
     return (
       <span>
-        There are currently no games waiting for players. <Link to="/new">Start your own game.</Link>
+        There are currently no games waiting for players. <Link to={`/${game.name}/new`}>Start your own game.</Link>
       </span>
     );
   }
 
   return (
     <React.Fragment>
-      <Link to="/new">Start your own game</Link> or join one of the games below.
+      <Link to={`/${game.name}/new`}>Start your own game</Link> or join one of the games below.
       <ul>
         {openRooms.map(room => (
           <li key={room.gameID}>
-            <Link to={`/join/${room.gameID}`}>
+            <Link to={`/${game.name}/join/${room.gameID}`}>
               Join game by {room.players.find(player => player.name).name}
             </Link>
           </li>

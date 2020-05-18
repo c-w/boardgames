@@ -1,28 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
-import Board from './Board';
 import config from './config';
-import http from './http';
-import game from '../shared/game';
+import newHttpClient from './http';
+import { loadBoard, useGame } from './lazyload';
 import { repeatedly } from '../shared/utils';
 
-const GameClient = Client({
-  game,
-  board: Board,
-  multiplayer: SocketIO({ server: config.REACT_APP_SERVER_URL }),
-  debug: false,
-});
-
 export default function WaitForPlayers(props) {
-  const { gameID } = props;
+  const { gameName, gameID } = props;
+
+  const game = useGame(gameName);
+  const board = loadBoard(gameName);
 
   const [status, setStatus] = useState({});
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    const http = newHttpClient(gameName);
+
     const refreshInterval = repeatedly(async () => {
+      if (game == null) {
+        return;
+      }
+
       const response = await http.get(`/${gameID}`);
 
       const isReady = response.data.players.filter(p => p.name != null).length === game.minPlayers;
@@ -35,7 +36,7 @@ export default function WaitForPlayers(props) {
     }, config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
     return () => clearInterval(refreshInterval);
-  }, [gameID]);
+  }, [gameID, game, gameName]);
 
   const onCopy = () => {
     setCopied(true);
@@ -46,10 +47,21 @@ export default function WaitForPlayers(props) {
   }
 
   if (status.isReady) {
-    return <GameClient {...props} />;
+    const GameClient = Client({
+      game,
+      board,
+      multiplayer: SocketIO({ server: config.REACT_APP_SERVER_URL }),
+      debug: false,
+    });
+
+    return (
+      <Suspense fallback={null}>
+        <GameClient {...props} />
+      </Suspense>
+    );
   }
 
-  const joinURL = `${window.location.href.split('#')[0]}#/join/${gameID}`;
+  const joinURL = `${window.location.href.split('#')[0]}#/${gameName}/join/${gameID}`;
 
   return (
     <label>

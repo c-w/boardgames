@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import http from './http';
-import game from '../shared/game';
+import newHttpClient from './http';
+import { useGame } from './lazyload';
 import { getRandomInt } from '../shared/utils';
 
-export default withRouter(({ history, gameID }) => {
+export default withRouter(({ history, gameName, gameID }) => {
   const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
-  const [longGame, setLongGame] = useState(localStorage.getItem('longGame') !== 'false');
+  const [longGame, setLongGame] = useState(localStorage.getItem('longGame') !== 'false'); // TODO: make this dynamic
   const [unlisted, setUnlisted] = useState(localStorage.getItem('unlisted') !== 'false');
   const [error, setError] = useState('');
+  const game = useGame(gameName);
 
+  const http = newHttpClient(gameName);
   const isNewGame = gameID == null;
 
   const onChangePlayerName = (event) => {
@@ -63,7 +65,7 @@ export default withRouter(({ history, gameID }) => {
         playerName,
       });
 
-      history.push(`/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
+      history.push(`/${game.name}/play/${gameID}/${playerID}/${response.data.playerCredentials}`);
     } catch (ex) {
       if (ex.response?.status === 409) {
         setError('The game is already full');
@@ -75,6 +77,10 @@ export default withRouter(({ history, gameID }) => {
       }
     }
   };
+
+  if (game == null) {
+    return null;
+  }
 
   return (
     <form onSubmit={onSubmit}>
