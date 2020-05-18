@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import config from './config';
 import newHttpClient from './http';
-import { useGame } from './lazyload';
+import { useGame } from './hooks';
 import { repeatedly } from '../shared/utils';
 
 export default function RoomList({ gameName }) {

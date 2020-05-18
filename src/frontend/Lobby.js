@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Form from '@rjsf/core';
 import newHttpClient from './http';
-import { useGame } from './lazyload';
+import { useGame } from './hooks';
 import { getRandomInt } from '../shared/utils';
 
 const GAME_DATA_SCHEMA = {

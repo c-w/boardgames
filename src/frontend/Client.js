@@ -2,9 +2,10 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
+import loadBoard from './boards';
 import config from './config';
 import newHttpClient from './http';
-import { loadBoard, useGame } from './lazyload';
+import { useGame } from './hooks';
 import { repeatedly } from '../shared/utils';
 
 export default function WaitForPlayers(props) {
