@@ -1,38 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import Form from '@rjsf/core';
 import newHttpClient from './http';
 import { useGame } from './lazyload';
 import { getRandomInt } from '../shared/utils';
 
+const GAME_DATA_SCHEMA = {
+  required: [
+    'playerName',
+  ],
+  properties: {
+    playerName: {
+      title: 'Enter your name',
+      type: 'string',
+      minLength: 1,
+    },
+    unlisted: {
+      title: 'Unlisted',
+      type: 'boolean',
+    },
+  },
+};
+
 export default withRouter(({ history, gameName, gameID }) => {
-  const [playerName, setPlayerName] = useState(localStorage.getItem('playerName') || '');
-  const [longGame, setLongGame] = useState(localStorage.getItem('longGame') !== 'false'); // TODO: make this dynamic
-  const [unlisted, setUnlisted] = useState(localStorage.getItem('unlisted') !== 'false');
+  const [schema, setSchema] = useState();
   const [error, setError] = useState('');
   const game = useGame(gameName);
 
   const http = newHttpClient(gameName);
   const isNewGame = gameID == null;
+  const formDataKey = `${gameName}-formData`;
+  const formData = JSON.parse(localStorage.getItem(formDataKey));
 
-  const onChangePlayerName = (event) => {
-    const { value } = event.target;
-    setPlayerName(value);
-    localStorage.setItem('playerName', value);
-  };
+  useEffect(() => {
+    if (game == null) {
+      return;
+    }
 
-  const onChangeLongGame = (event) => {
-    const { checked } = event.target;
-    setLongGame(checked);
-    localStorage.setItem('longGame', checked);
-  };
+    if (!isNewGame) {
+      setSchema({
+        type: 'object',
+        required: [
+          'playerName',
+        ],
+        properties: {
+          playerName: GAME_DATA_SCHEMA.properties.playerName,
+        },
+      });
+      return;
+    }
 
-  const onChangeUnlisted = (event) => {
-    const { checked } = event.target;
-    setUnlisted(checked);
-    localStorage.setItem('unlisted', checked);
-  };
+    setSchema({
+      type: 'object',
+      required: [
+        ...GAME_DATA_SCHEMA.required,
+        ...game.setupDataSchema.required,
+      ],
+      properties: {
+        ...GAME_DATA_SCHEMA.properties,
+        ...game.setupDataSchema.properties,
+      },
+    });
+  }, [game, isNewGame]);
 
-  const onSubmit = async (event) => {
+  const onSubmit = async ({ formData }, event) => {
+    localStorage.setItem(formDataKey, JSON.stringify(formData));
+
+    const { playerName, unlisted, ...setupData } = formData;
+
     try {
       event.preventDefault();
 
@@ -41,9 +76,7 @@ export default withRouter(({ history, gameName, gameID }) => {
       if (isNewGame) {
         const response = await http.post('/create', {
           numPlayers: game.maxPlayers,
-          setupData: {
-            longGame,
-          },
+          setupData,
           unlisted,
         });
 
@@ -78,46 +111,17 @@ export default withRouter(({ history, gameName, gameID }) => {
     }
   };
 
-  if (game == null) {
+  if (game == null || schema == null) {
     return null;
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <label>
-        Enter your name:
-        <input
-          onChange={onChangePlayerName}
-          value={playerName}
-          required
-          minLength="1"
-        />
-      </label>
+    <Form schema={schema} onSubmit={onSubmit} formData={formData}>
       <input
         type="submit"
         value={error || (isNewGame ? 'Create game' : 'Join game')}
         disabled={error}
       />
-      {isNewGame && (
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              onChange={onChangeLongGame}
-              checked={longGame}
-            />
-            Long game
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              onChange={onChangeUnlisted}
-              checked={unlisted}
-            />
-            Unlisted
-          </label>
-        </div>
-      )}
-    </form>
+    </Form>
   );
 });

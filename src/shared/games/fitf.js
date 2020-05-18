@@ -281,6 +281,16 @@ export default {
   minPlayers: 2,
   maxPlayers: 2,
 
+  setupDataSchema: {
+    required: [],
+    properties: {
+      longGame: {
+        title: 'Long game',
+        type: 'boolean',
+      },
+    },
+  },
+
   setup: (ctx, setupData) => ({
     ...dealCards(ctx),
     played: null,
