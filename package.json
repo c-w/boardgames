@@ -38,7 +38,7 @@
     "ensure-env": "shx cp -n .env.example .env",
     "lint": "eslint --max-warnings=0 src",
     "build-client": "react-scripts build",
-    "build-server": "babel src --ignore src/frontend --ignore src/index.js --out-dir dist",
+    "build-server": "babel src --ignore src/frontend --ignore src/index.js --ignore src/setupProxy.js --out-dir dist",
     "prebuild": "yarn run ensure-env",
     "build": "run-p build-client build-server"
   },
