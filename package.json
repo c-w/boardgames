@@ -18,11 +18,11 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.5",
     "axios": "^0.19.2",
-    "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "http-proxy-middleware": "^1.0.3",
     "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
@@ -32,7 +32,7 @@
   },
   "scripts": {
     "prestart": "yarn run ensure-env",
-    "start": "concurrently \"npm:start-client\" \"npm:start-server\"",
+    "start": "run-p start-client start-server",
     "start-client": "cross-env PORT=3000 react-scripts start",
     "start-server": "cross-env PORT=8000 nodemon --exec babel-node src/backend/server.js",
     "ensure-env": "shx cp -n .env.example .env",
@@ -40,7 +40,7 @@
     "build-client": "react-scripts build",
     "build-server": "babel src --ignore src/frontend --ignore src/index.js --out-dir dist",
     "prebuild": "yarn run ensure-env",
-    "build": "concurrently \"npm:build-client\" \"npm:build-server\""
+    "build": "run-p build-client build-server"
   },
   "eslintConfig": {
     "extends": "react-app"
