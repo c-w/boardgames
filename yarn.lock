@@ -2070,6 +2070,14 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
+"@use-hooks/interval@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@use-hooks/interval/-/interval-1.0.1.tgz#f024dabe68573a2e36a19a40462ca2343ed61c0a"
+  integrity sha512-W/g+WewM+Qdr/52VZ32Z7gvAzzvNrJ6uPNgzE4TNmJAD77d8zVOD3KcuOfYXnG1spx4kqRJr7hgIOszcmyHJHg==
+  dependencies:
+    react "^16.8.1"
+    react-dom "^16.8.1"
+
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.8.5.tgz#51b1c5fe6576a34953bf4b253df9f0d490d9e359"
@@ -9977,7 +9985,7 @@ react-dev-utils@^10.2.1:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
-react-dom@^16.13.1:
+react-dom@^16.13.1, react-dom@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
   integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
@@ -10091,7 +10099,7 @@ react-scripts@3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
-react@^16.13.1:
+react@^16.13.1, react@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==

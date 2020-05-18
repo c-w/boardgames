@@ -1,25 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useInterval from '@use-hooks/interval';
 import config from './config';
 import newHttpClient from './http';
 import { useGame } from './hooks';
-import { repeatedly } from '../shared/utils';
 
 export default function RoomList({ gameName }) {
   const [rooms, setRooms] = useState();
   const game = useGame(gameName);
 
-  useEffect(() => {
+  useInterval(useCallback(async () => {
     const http = newHttpClient(gameName);
-
-    const refreshInterval = repeatedly(async () => {
-      const response = await http.get('/');
-      setRooms(response.data.rooms);
-    }, config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
-
-    return () => clearInterval(refreshInterval);
-  }, [setRooms, gameName]);
-
+    const response = await http.get('/');
+    setRooms(response.data.rooms);
+  }, [gameName, setRooms]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
   if (rooms == null || game == null) {
     return null;

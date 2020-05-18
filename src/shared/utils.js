@@ -10,11 +10,6 @@ export function removeAt(items, i) {
   return items.filter((_, j) => j !== i);
 }
 
-export function repeatedly(func, ms) {
-  func();
-  return setInterval(func, ms);
-}
-
 export function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }

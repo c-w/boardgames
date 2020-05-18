@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import useInterval from '@use-hooks/interval';
 import config from './config';
 import newHttpClient from './http';
 import { useGame } from './hooks';
-import { repeatedly } from '../shared/utils';
 
 export default function Wait({ gameName, gameID, playerID, credentials }) {
   const game = useGame(gameName);
@@ -12,27 +12,19 @@ export default function Wait({ gameName, gameID, playerID, credentials }) {
   const [status, setStatus] = useState({});
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    const http = newHttpClient(gameName);
+  useInterval(useCallback(async () => {
+    if (game == null) {
+      return;
+    }
 
-    const refreshInterval = repeatedly(async () => {
-      if (game == null) {
-        return;
-      }
+    const http = newHttpClient(game.name);
 
-      const response = await http.get(`/${gameID}`);
+    const response = await http.get(`/${gameID}`);
 
-      const isReady = response.data.players.filter(p => p.name != null).length === game.minPlayers;
+    const isReady = response.data.players.filter(p => p.name != null).length === game.minPlayers;
 
-      if (isReady) {
-        clearInterval(refreshInterval);
-      }
-
-      setStatus({ isLoading: false, isReady });
-    }, config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
-
-    return () => clearInterval(refreshInterval);
-  }, [gameID, game, gameName]);
+    setStatus({ isLoading: false, isReady });
+  }, [game, gameID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
   const onCopy = () => {
     setCopied(true);
