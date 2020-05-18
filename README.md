@@ -9,6 +9,22 @@ yarn start
 
 ## Production setup
 
+### Azure AppService
+
+```sh
+# package application
+yarn install --production
+zip -qr deploy.zip ./build ./dist ./node_modules
+
+# update infrastructure
+export TF_VAR_name="fitf"
+export TF_VAR_subscription_id="5990203f-f212-4e0f-a0dd-1e57b4e10b66"
+terraform init ./infrastructure
+terraform apply -var code_zip=deploy.zip ./infrastructure
+```
+
+### Azure VM
+
 1. Create VM with Managed Identity
 2. Create Storage Account
 3. Assign Storage Blob Data Contributor permissions to VM

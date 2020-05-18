@@ -32,6 +32,9 @@ const transport = new SocketIO({
     cert: fs.readFileSync(config.SSL_CRT_FILE),
     key: fs.readFileSync(config.SSL_KEY_FILE),
   } : null,
+  socketOpts: {
+    perMessageDeflate: config.SOCKET_PER_MESSAGE_DEFLATE,
+  },
 });
 
 const server = Server({
