@@ -72,7 +72,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   const goToNewGame = (event) => {
     event.preventDefault();
-    history.push('/new/fitf');
+    history.push('/fitf/new');
   };
 
   const isOver = ctx.gameover != null;
