@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { isMoveInvalid } from '../../shared/games/fitf';
 import { last, sum } from '../../shared/utils';
+import './fitf.scoped.css';
 
 const CARD_TEXTS = {
   1: 'If you play this and lose the trick, you lead the next trick.',

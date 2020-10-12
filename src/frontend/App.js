@@ -4,6 +4,7 @@ import Lobby from './Lobby';
 import Play from './Play';
 import MatchList from './MatchList';
 import Wait from './Wait';
+import './App.scoped.css';
 
 const gameName = 'fitf'; // TODO: make this dynamic
 

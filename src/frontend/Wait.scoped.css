@@ -1,0 +1,7 @@
+input[readonly] {
+  border: 0;
+}
+
+em {
+  background-color: yellow;
+}

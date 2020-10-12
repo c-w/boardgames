@@ -5,6 +5,7 @@ import useInterval from '@use-hooks/interval';
 import config from './config';
 import newHttpClient from './http';
 import { useGame } from './hooks';
+import './Wait.scoped.css';
 
 export default function Wait({ gameName, matchID, playerID, credentials }) {
   const game = useGame(gameName);
