@@ -1,4 +1,10 @@
-# FitF
+# Boardgames
+
+## What's this?
+
+This repository hosts a collection of multiplayer boardgames:
+
+- [The Fox in the Forest](https://boardgamegeek.com/boardgame/221965/)
 
 ## Development setup
 
@@ -17,7 +23,7 @@ yarn install --production
 zip -qr deploy.zip ./build ./dist ./node_modules
 
 # update infrastructure
-export TF_VAR_name="fitf"
+export TF_VAR_name="boardgames"
 export TF_VAR_subscription_id="5990203f-f212-4e0f-a0dd-1e57b4e10b66"
 terraform init ./infrastructure
 terraform apply -var code_zip=deploy.zip ./infrastructure
@@ -31,7 +37,7 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 4. Set up VM with script below
 
 ```txt
-[host] ssh clewolff@fitf.justamouse.com
+[host] ssh clewolff@boardgames.justamouse.com
 [ vm ] sudo apt-get update
 [ vm ] sudo apt-get upgrade -y
 [ vm ] curl -sL https://deb.nodesource.com/setup_12.x | sudo bash
@@ -45,18 +51,18 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 [ vm ] echo "30 0 1,15 * * pm2 restart 0 2>&1 | /usr/bin/logger -t update_letsencrypt_renewal" | crontab
 [ vm ] sudo chmod 0755 /etc/letsencrypt/{live,archive}
 [ vm ] sudo setcap cap_net_bind_service=+ep /usr/bin/node
-[ vm ] mkdir -p fitf/git
-[ vm ] cd fitf/git && git init --bare && cd -
-[ vm ] cd fitf && git clone ./git ./code && cd ./code
-[host] git remote add vm ssh://clewolff@fitf.justamouse.com:/home/clewolff/fitf/git
+[ vm ] mkdir -p boardgames/git
+[ vm ] cd boardgames/git && git init --bare && cd -
+[ vm ] cd boardgames && git clone ./git ./code && cd ./code
+[host] git remote add vm ssh://clewolff@boardgames.justamouse.com:/home/clewolff/boardgames/git
 [host] git push vm master
 [ vm ] git pull
 [ vm ] echo "PORT=443" >> .env
 [ vm ] echo "HTTPS=true" >> .env
-[ vm ] echo "SSL_CRT_FILE=/etc/letsencrypt/live/fitf.justamouse.com/fullchain.pem" >> .env
-[ vm ] echo "SSL_KEY_FILE=/etc/letsencrypt/live/fitf.justamouse.com/privkey.pem" >> .env
-[ vm ] echo "AZURE_STORAGE_ACCOUNT=fitf" >> .env
-[ vm ] echo "AZURE_STORAGE_CONTAINER=fitf" >> .env
+[ vm ] echo "SSL_CRT_FILE=/etc/letsencrypt/live/boardgames.justamouse.com/fullchain.pem" >> .env
+[ vm ] echo "SSL_KEY_FILE=/etc/letsencrypt/live/boardgames.justamouse.com/privkey.pem" >> .env
+[ vm ] echo "AZURE_STORAGE_ACCOUNT=boardgames" >> .env
+[ vm ] echo "AZURE_STORAGE_CONTAINER=boardgames" >> .env
 [ vm ] yarn install
 [ vm ] yarn run build
 [ vm ] sudo npm install -g pm2@latest
