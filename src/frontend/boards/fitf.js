@@ -20,7 +20,7 @@ function Card({ rank, suit }) {
   );
 }
 
-export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
+export default function Board({ G, ctx, playerID, moves, matchData }) {
   const history = useHistory();
   const [chosen, setChosen] = useState([]);
   const [showEndOfRoundScreen, setShowEndOfRoundScreen] = useState(false);
@@ -81,7 +81,7 @@ export default function Board({ G, ctx, playerID, moves, gameMetadata }) {
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const isEndOfRound = G.tricks.length === 0 && G.history.length > 0;
   const player = G.players[playerID];
-  const opponent = gameMetadata.find(u => u.id !== Number(playerID));
+  const opponent = matchData.find(u => u.id !== Number(playerID));
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const trump = last(G.trumps);

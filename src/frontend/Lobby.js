@@ -22,13 +22,13 @@ const GAME_DATA_SCHEMA = {
   },
 };
 
-export default withRouter(({ history, gameName, gameID }) => {
+export default withRouter(({ history, gameName, matchID }) => {
   const [schema, setSchema] = useState();
   const [error, setError] = useState('');
   const game = useGame(gameName);
 
   const http = newHttpClient(gameName);
-  const isNewGame = gameID == null;
+  const isNewMatch = matchID == null;
   const formDataKey = `${gameName}-formData`;
   const formData = JSON.parse(localStorage.getItem(formDataKey));
 
@@ -37,7 +37,7 @@ export default withRouter(({ history, gameName, gameID }) => {
       return;
     }
 
-    if (!isNewGame) {
+    if (!isNewMatch) {
       setSchema({
         type: 'object',
         required: [
@@ -61,7 +61,7 @@ export default withRouter(({ history, gameName, gameID }) => {
         ...game.setupDataSchema.properties,
       },
     });
-  }, [game, isNewGame]);
+  }, [game, isNewMatch]);
 
   const onSubmit = async ({ formData }, event) => {
     localStorage.setItem(formDataKey, JSON.stringify(formData));
@@ -73,17 +73,17 @@ export default withRouter(({ history, gameName, gameID }) => {
 
       let playerID;
 
-      if (isNewGame) {
+      if (isNewMatch) {
         const response = await http.post('/create', {
           numPlayers: game.maxPlayers,
           setupData,
           unlisted,
         });
 
-        gameID = response.data.gameID;
+        matchID = response.data.matchID;
         playerID = getRandomInt(game.maxPlayers);
       } else {
-        const response = await http.get(`/${gameID}`);
+        const response = await http.get(`/${matchID}`);
 
         playerID = response.data.players.find(p => p.name == null)?.id;
 
@@ -93,12 +93,12 @@ export default withRouter(({ history, gameName, gameID }) => {
         }
       }
 
-      const response = await http.post(`/${gameID}/join`, {
+      const response = await http.post(`/${matchID}/join`, {
         playerID,
         playerName,
       });
 
-      history.push(`/${game.name}/${isNewGame ? 'wait' : 'play'}/${gameID}/${playerID}/${response.data.playerCredentials}`);
+      history.push(`/${game.name}/${isNewMatch ? 'wait' : 'play'}/${matchID}/${playerID}/${response.data.playerCredentials}`);
     } catch (ex) {
       if (ex.response?.status === 409) {
         setError('The game is already full');
@@ -119,7 +119,7 @@ export default withRouter(({ history, gameName, gameID }) => {
     <Form schema={schema} onSubmit={onSubmit} formData={formData}>
       <input
         type="submit"
-        value={error || (isNewGame ? 'Create game' : 'Join game')}
+        value={error || (isNewMatch ? 'Create game' : 'Join game')}
         disabled={error}
       />
     </Form>

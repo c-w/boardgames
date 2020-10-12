@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Lobby from './Lobby';
 import Play from './Play';
-import RoomList from './RoomList';
+import MatchList from './MatchList';
 import Wait from './Wait';
 
 const gameName = 'fitf'; // TODO: make this dynamic
@@ -25,21 +25,21 @@ export default function App() {
           <Route
             exact
             path="/:gameName/join"
-            children={({ match }) => <RoomList {...match.params} />}
+            children={({ match }) => <MatchList {...match.params} />}
           />
           <Route
             exact
-            path="/:gameName/join/:gameID"
+            path="/:gameName/join/:matchID"
             children={({ match }) => <Lobby {...match.params} />}
           />
           <Route
             exact
-            path="/:gameName/wait/:gameID/:playerID/:credentials"
+            path="/:gameName/wait/:matchID/:playerID/:credentials"
             children={({ match }) => <Wait {...match.params} />}
           />
           <Route
             exact
-            path="/:gameName/play/:gameID/:playerID/:credentials"
+            path="/:gameName/play/:matchID/:playerID/:credentials"
             children={({ match }) => <Play {...match.params} />}
           />
         </Switch>

@@ -6,7 +6,7 @@ import config from './config';
 import newHttpClient from './http';
 import { useGame } from './hooks';
 
-export default function Wait({ gameName, gameID, playerID, credentials }) {
+export default function Wait({ gameName, matchID, playerID, credentials }) {
   const game = useGame(gameName);
 
   const [status, setStatus] = useState({});
@@ -19,12 +19,12 @@ export default function Wait({ gameName, gameID, playerID, credentials }) {
 
     const http = newHttpClient(game.name);
 
-    const response = await http.get(`/${gameID}`);
+    const response = await http.get(`/${matchID}`);
 
     const isReady = response.data.players.filter(p => p.name != null).length === game.minPlayers;
 
     setStatus({ isLoading: false, isReady });
-  }, [game, gameID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
+  }, [game, matchID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
   const onCopy = () => {
     setCopied(true);
@@ -36,11 +36,11 @@ export default function Wait({ gameName, gameID, playerID, credentials }) {
 
   if (status.isReady) {
     return (
-      <Redirect to={`/${game.name}/play/${gameID}/${playerID}/${credentials}`} />
+      <Redirect to={`/${game.name}/play/${matchID}/${playerID}/${credentials}`} />
     );
   }
 
-  const joinURL = `${window.location.href.split('#')[0]}#/${gameName}/join/${gameID}`;
+  const joinURL = `${window.location.href.split('#')[0]}#/${gameName}/join/${matchID}`;
 
   return (
     <label>
