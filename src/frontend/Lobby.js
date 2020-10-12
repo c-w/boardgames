@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { LobbyClient } from 'boardgame.io/client';
 import Form from '@rjsf/core';
-import newHttpClient from './http';
+import config from './config';
 import { useGame } from './hooks';
 import { getRandomInt } from '../shared/utils';
 
@@ -27,7 +28,7 @@ export default withRouter(({ history, gameName, matchID }) => {
   const [error, setError] = useState('');
   const game = useGame(gameName);
 
-  const http = newHttpClient(gameName);
+  const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
   const isNewMatch = matchID == null;
   const formDataKey = `${gameName}-formData`;
   const formData = JSON.parse(localStorage.getItem(formDataKey));
@@ -74,18 +75,18 @@ export default withRouter(({ history, gameName, matchID }) => {
       let playerID;
 
       if (isNewMatch) {
-        const response = await http.post('/create', {
+        const data = await client.createMatch(game.name, {
           numPlayers: game.maxPlayers,
           setupData,
           unlisted,
         });
 
-        matchID = response.data.matchID;
+        matchID = data.matchID;
         playerID = getRandomInt(game.maxPlayers);
       } else {
-        const response = await http.get(`/${matchID}`);
+        const data = await client.getMatch(game.name, matchID);
 
-        playerID = response.data.players.find(p => p.name == null)?.id;
+        playerID = data.players.find(p => p.name == null)?.id;
 
         if (playerID == null) {
           setError('The game is already full');
@@ -93,16 +94,16 @@ export default withRouter(({ history, gameName, matchID }) => {
         }
       }
 
-      const response = await http.post(`/${matchID}/join`, {
-        playerID,
+      const data = await client.joinMatch(game.name, matchID, {
+        playerID: `${playerID}`,
         playerName,
       });
 
-      history.push(`/${game.name}/${isNewMatch ? 'wait' : 'play'}/${matchID}/${playerID}/${response.data.playerCredentials}`);
+      history.push(`/${game.name}/${isNewMatch ? 'wait' : 'play'}/${matchID}/${playerID}/${data.playerCredentials}`);
     } catch (ex) {
-      if (ex.response?.status === 409) {
+      if (ex.message === 'HTTP status 409') {
         setError('The game is already full');
-      } else if (ex.response?.status === 404) {
+      } else if (ex.message === 'HTTP status 404') {
         setError('The game no longer exists');
       } else {
         setError('Unexpected error');

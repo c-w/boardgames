@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
 import config from './config';
-import newHttpClient from './http';
 import { useGame } from './hooks';
 import './Wait.scoped.css';
 
@@ -18,11 +18,11 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
       return;
     }
 
-    const http = newHttpClient(game.name);
+    const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
-    const response = await http.get(`/${matchID}`);
+    const data = await client.getMatch(game.name, matchID);
 
-    const isReady = response.data.players.filter(p => p.name != null).length === game.minPlayers;
+    const isReady = data.players.filter(p => p.name != null).length === game.minPlayers;
 
     setStatus({ isLoading: false, isReady });
   }, [game, matchID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
 import config from './config';
-import newHttpClient from './http';
 import { useGame } from './hooks';
 
 export default function MatchList({ gameName }) {
@@ -10,9 +10,9 @@ export default function MatchList({ gameName }) {
   const game = useGame(gameName);
 
   useInterval(useCallback(async () => {
-    const http = newHttpClient(gameName);
-    const response = await http.get('/');
-    setMatches(response.data.matches);
+    const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
+    const data = await client.listMatches(gameName);
+    setMatches(data.matches);
   }, [gameName, setMatches]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
   if (matches == null || game == null) {
@@ -36,7 +36,7 @@ export default function MatchList({ gameName }) {
         {openMatches.map(match => (
           <li key={match.matchID}>
             <Link to={`/${game.name}/join/${match.matchID}`}>
-              Join game by {match.players.find(player => player.name).name}
+              Join game by {match.players.find(player => player.name)?.name || 'unknown'}
             </Link>
           </li>
         ))}
