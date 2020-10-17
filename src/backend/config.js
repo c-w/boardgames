@@ -7,7 +7,7 @@ export default envalid.cleanEnv(process.env, {
   AZURE_STORAGE_CONTAINER: envalid.str({ default: '' }),
   SOCKET_PER_MESSAGE_DEFLATE: envalid.bool({ default: true }),
   PORT: envalid.port(),
-  SECONDARY_PORT: envalid.num({ default: null }),
+  SECONDARY_PORT: envalid.num({ default: undefined }),
   HTTPS: envalid.bool({ default: false }),
   SSL_CRT_FILE: envalid.str({ default: '' }),
   SSL_KEY_FILE: envalid.str({ default: '' }),

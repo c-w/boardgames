@@ -4,6 +4,11 @@ import { isMoveInvalid } from '../../shared/games/fitf';
 import { last, sum } from '../../shared/utils';
 import './fitf.scoped.css';
 
+/** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
+/** @typedef {import('boardgame.io/dist/types/src/types').LobbyAPI.Match} Match **/
+/** @typedef {import('../../shared/games/fitf').Card} Card */
+/** @typedef {import('../../shared/games/fitf').G} G */
+
 const CARD_TEXTS = {
   1: 'If you play this and lose the trick, you lead the next trick.',
   3: 'When you play this, you may exchange the trump card with a card from your hand.',
@@ -13,6 +18,9 @@ const CARD_TEXTS = {
   11: 'When you lead this, if your opponent has a card of this suit, they must play either the 1 of this suit or their highest ranked card of this suit.',
 };
 
+/**
+ * @param {Card} props
+ */
 function Card({ rank, suit }) {
   return (
     <span className={suit}>
@@ -21,6 +29,14 @@ function Card({ rank, suit }) {
   );
 }
 
+/**
+ * @param {Object} props
+ * @param {G} props.G
+ * @param {Ctx} props.ctx
+ * @param {string} props.playerID
+ * @param {any} props.moves
+ * @param {Match['players']} props.matchData
+ */
 export default function Board({ G, ctx, playerID, moves, matchData }) {
   const history = useHistory();
   const [chosen, setChosen] = useState([]);
@@ -102,7 +118,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       : a.card.suit.localeCompare(b.card.suit);
   });
 
-  const Stats = ({ disabled, showHistory, hideTricks }) => (
+  const Stats = ({ disabled=false, showHistory=false, hideTricks=false }) => (
     <fieldset disabled={disabled}>
       <legend>Stats</legend>
       <div>

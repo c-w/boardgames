@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+/**
+ * @param {string} gameName
+ */
 function importGame(gameName) {
   switch (gameName) {
     case 'fitf':
@@ -10,8 +13,11 @@ function importGame(gameName) {
   }
 }
 
+/**
+ * @param {string} gameName
+ */
 export function useGame(gameName) {
-  const [imported, setImported] = useState();
+  const [imported, setImported] = useState(null);
 
   useEffect(() => {
     importGame(gameName).then(module => {

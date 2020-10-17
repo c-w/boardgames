@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { LobbyClient } from 'boardgame.io/client';
 import Form from '@rjsf/core';
 import config from './config';
@@ -23,9 +23,15 @@ const GAME_DATA_SCHEMA = {
   },
 };
 
-export default withRouter(({ history, gameName, matchID }) => {
-  const [schema, setSchema] = useState();
-  const [error, setError] = useState('');
+/**
+ * @param {Object} props
+ * @param {string} props.gameName
+ * @param {string} props.matchID
+ */
+export default function Lobby({ gameName, matchID }) {
+  const [schema, setSchema] = useState(null);
+  const [error, setError] = useState(null);
+  const history = useHistory();
   const game = useGame(gameName);
 
   const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
@@ -117,12 +123,13 @@ export default withRouter(({ history, gameName, matchID }) => {
   }
 
   return (
+    // @ts-ignore
     <Form schema={schema} onSubmit={onSubmit} formData={formData}>
       <input
         type="submit"
         value={error || (isNewMatch ? 'Create game' : 'Join game')}
-        disabled={error}
+        disabled={error != null}
       />
     </Form>
   );
-});
+}

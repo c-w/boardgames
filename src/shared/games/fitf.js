@@ -1,6 +1,51 @@
 import { PlayerView, INVALID_MOVE } from 'boardgame.io/core';
 import { last, removeAt, sum } from '../utils.js';
 
+/** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
+/** @typedef {import('boardgame.io/dist/types/packages/core').INVALID_MOVE} INVALID_MOVE **/
+
+/**
+ * @typedef {{
+ *  suit: string,
+ *  rank: number,
+ * }} Card
+ *
+ * @typedef {{
+ *   winner: string,
+ *   cards: Card[],
+ * }[]} Tricks
+ *
+ * @typedef {{
+ *   secret: {
+ *     deck: Card[],
+ *   },
+ *   tricks: Tricks,
+ *   trumps: (Card & { turn: number })[],
+ *   players: {
+ *     [player: string]: {
+ *       hand: Card[],
+ *       stashed?: Card,
+ *     },
+ *   },
+ * }} GameState
+ *
+ * @typedef {{
+ *   played?: Card,
+ *   scores: {
+ *     [player: string]: number[],
+ *   },
+ *   history: Tricks[],
+ *   startingPlayer: string,
+ *   winningScore: number,
+ * }} GameContext
+ *
+ * @typedef {GameState & GameContext} G
+ *
+ * @typedef {{
+ *   longGame?: boolean,
+ * }} SetupData
+ */
+
 const SUITS = ['key', 'tower', 'moon'];
 const RANKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const LONG_GAME_WINNING_SCORE = 21;
@@ -9,6 +54,10 @@ const HAND_SIZE = 13;
 const PLAYER_1 = '0';
 const PLAYER_2 = '1';
 
+/**
+ * @param {Ctx} ctx
+ * @returns {GameState}
+ */
 function dealCards(ctx) {
   const deck = ctx.random.Shuffle(
     SUITS.map(suit => RANKS.map(rank => ({ suit, rank }))).flat()
@@ -43,7 +92,18 @@ function dealCards(ctx) {
   };
 }
 
-function getPlayers(G, ctx, i) {
+/**
+ * @param {G} G
+ * @param {Ctx} ctx
+ * @param {number?} i
+ * @returns {{
+ *   opponentID: string,
+ *   playerID: string,
+ *   hand: Card[],
+ *   card: Card,
+ * }}
+ */
+function getPlayers(G, ctx, i=null) {
   const playerID = ctx.currentPlayer;
   const opponentID = playerID === PLAYER_1 ? PLAYER_2 : PLAYER_1;
 
@@ -61,6 +121,10 @@ function getPlayers(G, ctx, i) {
   };
 }
 
+/**
+ * @param {Tricks} tricks
+ * @returns {number}
+ */
 function calculateScore(tricks) {
   const tricksWon = tricks.length;
 
@@ -85,6 +149,11 @@ function calculateScore(tricks) {
   return roundScore + extraScore;
 }
 
+/**
+ * @param {G} G
+ * @param {Ctx} ctx
+ * @returns {{ winner: string }?}
+ */
 function checkGameOver(G, ctx) {
   const { playerID, opponentID } = getPlayers(G, ctx);
 
@@ -111,6 +180,11 @@ function checkGameOver(G, ctx) {
     : { winner: opponentID };
 }
 
+/**
+ * @param {G} G
+ * @param {Ctx} ctx
+ * @param {number} i
+ */
 function discardCard(G, ctx, i) {
   const { playerID, hand } = getPlayers(G, ctx);
 
@@ -121,6 +195,12 @@ function discardCard(G, ctx, i) {
   playCard(G, ctx);
 }
 
+/**
+ * @param {G} G
+ * @param {Ctx} ctx
+ * @param  {...number} cards
+ * @returns {string}
+ */
 export function isMoveInvalid(G, ctx, ...cards) {
   if (cards.length > 2) {
     return 'played_too_many_cards';
@@ -173,6 +253,12 @@ export function isMoveInvalid(G, ctx, ...cards) {
   }
 }
 
+/**
+ * @param {G} G
+ * @param {Ctx} ctx
+ * @param {number} i
+ * @returns {{ winner: string, next: string }}
+ */
 function determineTrickWinner(G, ctx, i) {
   const { playerID, opponentID, card } = getPlayers(G, ctx, i);
 
@@ -215,7 +301,14 @@ function determineTrickWinner(G, ctx, i) {
   return { winner, next };
 }
 
-function playCard(G, ctx, i, j) {
+/**
+ * @param {G} G
+ * @param {Ctx} ctx
+ * @param {number?} i
+ * @param {number?} j
+ * @returns {INVALID_MOVE?}
+ */
+function playCard(G, ctx, i=null, j=null) {
   if (isMoveInvalid(G, ctx, i, j)) {
     return INVALID_MOVE;
   }
@@ -291,6 +384,11 @@ export default {
     },
   },
 
+  /**
+   * @param {Ctx} ctx
+   * @param {SetupData?} setupData
+   * @returns {G}
+   */
   setup: (ctx, setupData) => ({
     ...dealCards(ctx),
     played: null,

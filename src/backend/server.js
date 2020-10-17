@@ -31,7 +31,7 @@ const transport = new SocketIO({
   https: config.HTTPS ? {
     cert: fs.readFileSync(config.SSL_CRT_FILE),
     key: fs.readFileSync(config.SSL_KEY_FILE),
-  } : null,
+  } : undefined,
   socketOpts: {
     perMessageDeflate: config.SOCKET_PER_MESSAGE_DEFLATE,
   },

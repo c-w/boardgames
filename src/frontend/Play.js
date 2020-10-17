@@ -5,6 +5,10 @@ import loadBoard from './boards';
 import config from './config';
 import { useGame } from './hooks';
 
+/**
+ * @param {Object} props
+ * @param {string} props.gameName
+ */
 export default function Play({ gameName, ...props }) {
   const game = useGame(gameName);
   const board = loadBoard(gameName);

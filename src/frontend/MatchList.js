@@ -6,7 +6,7 @@ import config from './config';
 import { useGame } from './hooks';
 
 export default function MatchList({ gameName }) {
-  const [matches, setMatches] = useState();
+  const [matches, setMatches] = useState(null);
   const game = useGame(gameName);
 
   useInterval(useCallback(async () => {
