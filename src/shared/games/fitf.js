@@ -436,4 +436,6 @@ export default {
     setPhase: false,
     setActivePlayers: false,
   },
+
+  disableUndo: true,
 };
