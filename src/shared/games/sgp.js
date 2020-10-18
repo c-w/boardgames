@@ -87,6 +87,7 @@ const SPECIALS = {
 
 const DESSERTS = {
   greenTeaIceCream: 'Green Tea Ice Cream',
+  pudding: 'Pudding',
 };
 
 /**
@@ -289,6 +290,28 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
     case DESSERTS.greenTeaIceCream:
       setSize = 4;
       setValue = 12;
+      break;
+
+    case DESSERTS.pudding:
+      {
+        const numPuddings = getSetInstances(hand).length;
+        const otherNumPuddings = otherHands.map(otherHand => getSetInstances(otherHand).length);
+        const allNumPuddings = distinct(numPuddings, ...otherNumPuddings).sort().reverse();
+        const mostPuddings = allNumPuddings[0];
+        const leastPuddings = last(allNumPuddings);
+
+        if (numPuddings === mostPuddings) {
+          score = 6;
+        }
+
+        if (numPlayers > 2) {
+          if (numPuddings === leastPuddings) {
+            score = -6;
+          }
+        }
+
+        scoreSet = true;
+      }
       break;
 
     default:
