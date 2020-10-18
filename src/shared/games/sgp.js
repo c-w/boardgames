@@ -119,10 +119,9 @@ const DESSERTS = {
  * @param {Card[]} hand
  * @param {Card[][]} otherHands
  * @param {number} numRound
- * @param {number} numPlayers
  * @returns {number}
  */
-function scoreCard(card, hand, otherHands, numRound, numPlayers) {
+function scoreCard(card, hand, otherHands, numRound) {
   if (card.scored) {
     return 0;
   }
@@ -148,6 +147,8 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
    * @returns {number}
    */
   const getNumCategories = cards => distinct(cards.map(({ category }) => category)).length;
+
+  const numPlayers = otherHands.length + 1;
 
   let setSize = undefined;
   let setValue = undefined;
@@ -341,7 +342,7 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
         if (nextNigiri == null) {
           score = 0;
         } else {
-          score = scoreCard(nextNigiri, hand, otherHands, numRound, numPlayers) * 3;
+          score = scoreCard(nextNigiri, hand, otherHands, numRound) * 3;
         }
       }
       break;
@@ -728,7 +729,7 @@ function onTurnEnd(G, ctx) {
     for (const [playerID, played] of Object.entries(G.played)) {
       const otherHands = Object.entries(G.played).filter(([id, _]) => id !== playerID).map(([_, hand]) => hand);
 
-      const score = sum(played.map(card => scoreCard(card, played, otherHands, numRound, ctx.numPlayers)));
+      const score = sum(played.map(card => scoreCard(card, played, otherHands, numRound)));
 
       G.scores[playerID].push(score);
     }
