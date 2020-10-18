@@ -104,6 +104,7 @@ const APPETIZERS = {
 const SPECIALS = {
   wasabi: 'Wasabi',
   tea: 'Tea',
+  soySauce: 'Soy Sauce',
 };
 
 const DESSERTS = {
@@ -140,6 +141,12 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
    * @returns {number}
    */
   const getNumRolls = cards => sum(getSetInstances(cards).map(({ count }) => count));
+
+  /**
+   * @param {Card[]} cards
+   * @returns {number}
+   */
+  const getNumCategories = cards => distinct(cards.map(({ category }) => category)).length;
 
   let setSize = undefined;
   let setValue = undefined;
@@ -339,6 +346,19 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
         }
 
         score = Math.max(...Object.values(counts));
+      }
+      break;
+
+    case SPECIALS.soySauce:
+      {
+        const numCategories = getNumCategories(hand);
+        const otherNumCategories = otherHands.map(otherHand => getNumCategories(otherHand));
+        const allNumCategories = distinct(numCategories, ...otherNumCategories).sort().reverse();
+        const mostCategories = allNumCategories[0];
+
+        if (numCategories === mostCategories) {
+          score = 4;
+        }
       }
       break;
 
