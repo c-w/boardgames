@@ -77,6 +77,7 @@ const APPETIZERS = {
   misoSoup: 'Miso Soup',
   tofu: 'Tofu',
   eel: 'Eel',
+  dumpling: 'Dumpling',
 };
 
 const SPECIALS = {
@@ -234,6 +235,26 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
           score = -3;
         } else if (numEels >= 2) {
           score = 7;
+        }
+
+        scoreSet = true;
+      }
+      break;
+
+    case APPETIZERS.dumpling:
+      {
+        const numDumplings = getSetInstances(hand).length;
+
+        if (numDumplings === 1) {
+          score = 1;
+        } else if (numDumplings === 2) {
+          score = 3;
+        } else if (numDumplings === 3) {
+          score = 6;
+        } else if (numDumplings === 4) {
+          score = 10;
+        } else if (numDumplings >= 5) {
+          score = 15;
         }
 
         scoreSet = true;
