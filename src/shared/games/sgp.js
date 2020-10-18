@@ -99,6 +99,7 @@ const APPETIZERS = {
   eel: 'Eel',
   dumpling: 'Dumpling',
   onigiri: 'Onigiri',
+  edamame: 'Edamame',
 };
 
 const SPECIALS = {
@@ -321,6 +322,14 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
         }
 
         scoreSet = true;
+      }
+      break;
+
+    case APPETIZERS.edamame:
+      {
+        const numOtherPlayersWithEdamame = otherHands.filter(otherHand => getSetInstances(otherHand).length > 0).length;
+
+        score = Math.min(4, numOtherPlayersWithEdamame);
       }
       break;
 
