@@ -1,5 +1,5 @@
 import { PlayerView, INVALID_MOVE, Stage } from 'boardgame.io/core';
-import { distinct, getEnd, getRandomInt, range, removeAt, sum } from '../utils.js';
+import { distinct, getRandomInt, last, range, removeAt, sum } from '../utils.js';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/packages/core').INVALID_MOVE} INVALID_MOVE **/
@@ -68,6 +68,7 @@ const NIGIRIS = {
 
 const ROLLS = {
   maki: 'Maki',
+  temaki: 'Temaki',
 };
 
 const APPETIZERS = {
@@ -108,6 +109,12 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
    */
   const getSetInstances = cards => cards.filter(({ name }) => name === card.name);
 
+  /**
+   * @param {Card[]} cards
+   * @returns {number}
+   */
+  const getNumRolls = cards => sum(getSetInstances(cards).map(({ count }) => count));
+
   let setSize = undefined;
   let setValue = undefined;
   let scoreSet = false;
@@ -129,17 +136,11 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
 
     case ROLLS.maki:
       {
-        /**
-         * @param {Card[]} cards
-         * @returns {number}
-         */
-        const getNumMakis = cards => sum(getSetInstances(cards).map(({ count }) => count));
-
-        const numMakis = getNumMakis(hand);
-        const otherNumMakis = otherHands.map(otherHand => getNumMakis(otherHand));
-        const allNumMakis = distinct(numMakis, ...otherNumMakis).sort();
-        const mostMakis = getEnd(allNumMakis, -1);
-        const secondMostMakis = getEnd(allNumMakis, -2);
+        const numMakis = getNumRolls(hand);
+        const otherNumMakis = otherHands.map(otherHand => getNumRolls(otherHand));
+        const allNumMakis = distinct(numMakis, ...otherNumMakis).sort().reverse();
+        const mostMakis = allNumMakis[0];
+        const secondMostMakis = allNumMakis[1];
 
         if (numPlayers <= 5) {
           if (numMakis === mostMakis) {
@@ -150,7 +151,7 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
             score = 0;
           }
         } else {
-          const thirdMostMakis = getEnd(allNumMakis, -3);
+          const thirdMostMakis = allNumMakis[2];
 
           if (numMakis === mostMakis) {
             score = 6;
@@ -160,6 +161,28 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
             score = 2;
           } else {
             score = 0;
+          }
+        }
+
+        scoreSet = true;
+      }
+      break;
+
+    case ROLLS.temaki:
+      {
+        const numTemakis = getNumRolls(hand);
+        const otherNumTemakis = otherHands.map(otherHand => getNumRolls(otherHand));
+        const allNumTemakis = distinct(numTemakis, ...otherNumTemakis).sort().reverse();
+        const mostTemakis = allNumTemakis[0];
+        const leastTemakis = last(allNumTemakis);
+
+        if (numTemakis === mostTemakis) {
+          score = 4;
+        }
+
+        if (numPlayers > 2) {
+          if (numTemakis === leastTemakis) {
+            score = -4;
           }
         }
 
@@ -329,7 +352,11 @@ function getDeck(numPlayers, numRound, setupData, deck) {
         ...range(3).map(_ => ({ category: CATEGORIES.roll, name: ROLLS.maki, count: 3 })),
       ];
       break;
-    
+
+    case ROLLS.temaki:
+      rolls = range(12).map(_ => ({ category: CATEGORIES.roll, name: ROLLS.temaki, count: 1 }));
+      break;
+
     default:
       throw new Error(`Unknown rolls: ${setupData.rolls}`);
   }

@@ -35,17 +35,6 @@ export function getRandomInt(max) {
 
 /**
  * @template T
- * @param {T[]} items
- * @param {number} i
- * @returns {T?}
- */
-export function getEnd(items, i) {
-  const index = items.length + i;
-  return index < 0 ? null : items[index];
-}
-
-/**
- * @template T
  * @param {...T} items
  * @returns {T[]}
  */
