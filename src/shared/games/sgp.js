@@ -10,6 +10,7 @@ import { distinct, getRandomInt, last, range, removeAt, sum } from '../utils.js'
  *   category: string,
  *   scored?: boolean,
  *   count?: number,
+ *   variant?: string,
  * }} Card
  *
  * @typedef {{
@@ -52,6 +53,13 @@ const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 8;
 const NUM_ROUNDS = 3;
 
+const ONIGIRI_VARIANTS = [
+  'square',
+  'circle',
+  'triangle',
+  'rectangle',
+];
+
 const CATEGORIES = {
   dessert: 'Dessert',
   appetizer: 'Appetizer',
@@ -78,6 +86,7 @@ const APPETIZERS = {
   tofu: 'Tofu',
   eel: 'Eel',
   dumpling: 'Dumpling',
+  onigiri: 'Onigiri',
 };
 
 const SPECIALS = {
@@ -256,6 +265,39 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
           score = 10;
         } else if (numDumplings >= 5) {
           score = 15;
+        }
+
+        scoreSet = true;
+      }
+      break;
+
+    case APPETIZERS.onigiri:
+      {
+        const counts = Object.fromEntries(ONIGIRI_VARIANTS.map(type => [type, 0]));
+
+        for (const card of getSetInstances(hand)) {
+          counts[card.variant]++;
+        }
+
+        while (true) {
+          const uniques = Object.entries(counts).filter(([_, count]) => count > 0).map(([shape, _]) => shape);
+          const numUniques = uniques.length;
+
+          if (numUniques === 0) {
+            break;
+          } else if (numUniques === 4) {
+            score += 16;
+          } else if (numUniques === 3) {
+            score += 9
+          } else if (numUniques === 2) {
+            score += 4;
+          } else if (numUniques === 1) {
+            score += 1;
+          }
+
+          for (const shape of uniques) {
+            counts[shape]--;
+          }
         }
 
         scoreSet = true;
@@ -454,7 +496,18 @@ function getDeck(numPlayers, numRound, setupData, deck) {
     ...range(5).map(_ => ({ category: CATEGORIES.nigiri, name: NIGIRIS.salmon })),
     ...range(3).map(_ => ({ category: CATEGORIES.nigiri, name: NIGIRIS.squid })),
     ...rolls,
-    ...appetizers.map(name => range(8).map(_ => ({ category: CATEGORIES.appetizer, name }))).flat(),
+    ...appetizers.map(name => range(8).map(i => {
+        const appetizer = {
+          category: CATEGORIES.appetizer,
+          name,
+        };
+
+        if (appetizer.name === APPETIZERS.onigiri) {
+          appetizer.variant = ONIGIRI_VARIANTS[i % ONIGIRI_VARIANTS.length];
+        }
+
+        return appetizer;
+      })).flat(),
     ...specials.map(name => range(3).map(_ => ({ category: CATEGORIES.special, name }))).flat(),
     ...desserts.map(name => range(numDesserts).map(_ => ({ category: CATEGORIES.dessert, name }))).flat()
   ]);
