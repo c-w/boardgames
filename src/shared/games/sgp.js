@@ -76,6 +76,7 @@ const APPETIZERS = {
   sashimi: 'Sashimi',
   misoSoup: 'Miso Soup',
   tofu: 'Tofu',
+  eel: 'Eel',
 };
 
 const SPECIALS = {
@@ -219,6 +220,20 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
           score = 6;
         } else if (numTofus >= 3) {
           score = 0;
+        }
+
+        scoreSet = true;
+      }
+      break;
+
+    case APPETIZERS.eel:
+      {
+        const numEels = getSetInstances(hand).length;
+
+        if (numEels === 1) {
+          score = -3;
+        } else if (numEels >= 2) {
+          score = 7;
         }
 
         scoreSet = true;
