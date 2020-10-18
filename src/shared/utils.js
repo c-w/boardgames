@@ -32,3 +32,49 @@ export function removeAt(items, i) {
 export function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
+/**
+ * @template T
+ * @param {T[]} items
+ * @param {number} i
+ * @returns {T?}
+ */
+export function getEnd(items, i) {
+  const index = items.length + i;
+  return index < 0 ? null : items[index];
+}
+
+/**
+ * @template T
+ * @param {...T} items
+ * @returns {T[]}
+ */
+export function distinct(...items) {
+  const set = new Set();
+
+  for (const item of items) {
+    set.add(item);
+  }
+
+  const distinct = [];
+
+  set.forEach(item => {
+    distinct.push(item);
+  });
+
+  return distinct;
+}
+
+/**
+ * @param {number} length
+ * @returns {number[]}
+ */
+export function range(length) {
+  const items = Array(length);
+
+  for (let i = 0; i < length; i++) {
+    items[i] = i;
+  }
+
+  return items;
+}

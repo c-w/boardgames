@@ -73,7 +73,8 @@ export default function Lobby({ gameName, matchID }) {
   const onSubmit = async ({ formData }, event) => {
     localStorage.setItem(formDataKey, JSON.stringify(formData));
 
-    const { playerName, unlisted, ...setupData } = formData;
+    let { playerName, unlisted, numPlayers, ...setupData } = formData;
+    numPlayers = numPlayers || game.maxPlayers;
 
     try {
       event.preventDefault();
@@ -82,13 +83,13 @@ export default function Lobby({ gameName, matchID }) {
 
       if (isNewMatch) {
         const data = await client.createMatch(game.name, {
-          numPlayers: game.maxPlayers,
+          numPlayers,
           setupData,
           unlisted,
         });
 
         matchID = data.matchID;
-        playerID = getRandomInt(game.maxPlayers);
+        playerID = getRandomInt(numPlayers);
       } else {
         const data = await client.getMatch(game.name, matchID);
 

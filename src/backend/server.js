@@ -8,6 +8,7 @@ import serve from 'koa-static';
 import path from 'path';
 import config from './config';
 import fitf from '../shared/games/fitf';
+import sgp from '../shared/games/sgp';
 
 let db;
 
@@ -40,6 +41,7 @@ const transport = new SocketIO({
 const server = Server({
   games: [
     fitf,
+    sgp,
   ],
 
   db,

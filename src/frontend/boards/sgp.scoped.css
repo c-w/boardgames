@@ -1,0 +1,31 @@
+.Nigiri {
+  background-color: #FBC73B;
+}
+
+.Rolls {
+  background-color: #A13177;
+}
+
+.Appetizer {
+  background-color: #13817B;
+}
+
+.Special {
+  background-color: #F68421;
+}
+
+.Dessert {
+  background-color: #D53093;
+}
+
+em {
+  background-color: yellow;
+}
+
+button {
+  padding: 0;
+  border-width: 0;
+  width: 100%;
+  background-color: white;
+  text-align: left;
+}
