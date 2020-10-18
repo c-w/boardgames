@@ -11,11 +11,11 @@ import './sgp.scoped.css';
 /**
  * @param {Card} props
  */
-function Card({ name, category, count, variant }) {
+function Card({ name, category, count, variants }) {
   return (
     <div className={category}>
       {name}
-      {variant && <span>({variant})</span>}
+      {variants && <span>({variants.join(' + ')})</span>}
       {count && <span>(x{count})</span>}
     </div>
   );

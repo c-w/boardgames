@@ -67,3 +67,20 @@ export function range(length) {
 
   return items;
 }
+
+/**
+ * @template T
+ * @param {T[]} items
+ * @returns {T[][]}
+ */
+export function pairs(items) {
+  const pairs = [];
+
+  for (let i = 0; i < items.length; i++) {
+    for (let j = i + 1; j < items.length; j++) {
+      pairs.push([items[i], items[j]]);
+    }
+  }
+
+  return pairs;
+}

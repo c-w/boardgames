@@ -1,5 +1,5 @@
 import { PlayerView, INVALID_MOVE, Stage } from 'boardgame.io/core';
-import { distinct, getRandomInt, last, range, removeAt, sum } from '../utils.js';
+import { distinct, getRandomInt, last, pairs, range, removeAt, sum } from '../utils.js';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/packages/core').INVALID_MOVE} INVALID_MOVE **/
@@ -10,12 +10,13 @@ import { distinct, getRandomInt, last, range, removeAt, sum } from '../utils.js'
  *   category: string,
  *   scored?: boolean,
  *   count?: number,
- *   variant?: string,
+ *   variants?: string[],
  * }} Card
  *
  * @typedef {{
  *   secret: {
  *     deck: Card[],
+ *     desserts: Card[],
  *   },
  *   players: {
  *     [player: string]: {
@@ -60,6 +61,17 @@ const ONIGIRI_VARIANTS = [
   'rectangle',
 ];
 
+const FRUITS = [
+  'watermelon',
+  'pineapple',
+  'peach',
+];
+
+const FRUIT_VARIANTS = [
+  ...range(2).map(_ => FRUITS.map(variant => ([variant, variant]))).flat(),
+  ...range(3).map(_ => pairs(FRUITS)).flat(),
+];
+
 const CATEGORIES = {
   dessert: 'Dessert',
   appetizer: 'Appetizer',
@@ -97,6 +109,7 @@ const SPECIALS = {
 const DESSERTS = {
   greenTeaIceCream: 'Green Tea Ice Cream',
   pudding: 'Pudding',
+  fruit: 'Fruit',
 };
 
 /**
@@ -276,7 +289,7 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
         const counts = Object.fromEntries(ONIGIRI_VARIANTS.map(type => [type, 0]));
 
         for (const card of getSetInstances(hand)) {
-          counts[card.variant]++;
+          counts[card.variants[0]]++;
         }
 
         while (true) {
@@ -349,6 +362,36 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
         if (numPlayers > 2) {
           if (numPuddings === leastPuddings) {
             score = -6;
+          }
+        }
+
+        scoreSet = true;
+      }
+      break;
+
+    case DESSERTS.fruit:
+      {
+        const counts = Object.fromEntries(FRUITS.map(variant => [variant, 0]));
+
+        for (const card of getSetInstances(hand)) {
+          for (const variant of card.variants) {
+            counts[variant]++;
+          }
+        }
+
+        for (const count of Object.values(counts)) {
+          if (count === 0) {
+            score -= 2;
+          } else if (count === 1) {
+            score += 0;
+          } else if (count === 2) {
+            score += 1;
+          } else if (count === 3) {
+            score += 3;
+          } else if (count === 4) {
+            score += 6;
+          } else if (count >= 5) {
+            score += 10;
           }
         }
 
@@ -453,13 +496,14 @@ function getNumDesserts(numPlayers, numRound) {
 }
 
 /**
- * @param {number} numPlayers
- * @param {number} numRound
+ * @param {G?} G
+ * @param {Ctx} ctx
  * @param {SetupData} setupData
- * @param {Card[]?} deck
- * @returns {Card[]}
+ * @returns {{ deck: Card[], desserts: Card[]}}
  */
-function getDeck(numPlayers, numRound, setupData, deck) {
+function getDeck(G, ctx, setupData) {
+  setupData = G?.setupData || setupData;
+
   let rolls = [];
 
   switch (setupData.rolls) {
@@ -481,15 +525,35 @@ function getDeck(numPlayers, numRound, setupData, deck) {
 
   const appetizers = [setupData.appetizer1, setupData.appetizer2, setupData.appetizer3];
   const specials = [setupData.special1, setupData.special2];
-  const desserts = [setupData.dessert];
 
-  if (deck) {
-    deck = deck.filter(card => card.category === CATEGORIES.dessert);
+  let deck;
+
+  if (G?.secret?.deck) {
+    deck = G.secret.deck.filter(card => card.category === CATEGORIES.dessert);
   } else {
     deck = [];
   }
 
-  const numDesserts = getNumDesserts(numPlayers, numRound);
+  let desserts;
+
+  if (G?.secret?.desserts) {
+    desserts = [...G.secret.desserts];
+  } else {
+    desserts = ctx.random.Shuffle(
+      range(15).map(i => {
+        const dessert = {
+          category: CATEGORIES.dessert,
+          name: setupData.dessert,
+        };
+
+        if (dessert.name === DESSERTS.fruit) {
+          dessert.variants = FRUIT_VARIANTS[i];
+        }
+
+        return dessert;
+      })
+    );
+  }
 
   deck = deck.concat([
     ...range(4).map(_ => ({ category: CATEGORIES.nigiri, name: NIGIRIS.egg })),
@@ -503,16 +567,24 @@ function getDeck(numPlayers, numRound, setupData, deck) {
         };
 
         if (appetizer.name === APPETIZERS.onigiri) {
-          appetizer.variant = ONIGIRI_VARIANTS[i % ONIGIRI_VARIANTS.length];
+          appetizer.variants = [ONIGIRI_VARIANTS[i % ONIGIRI_VARIANTS.length]];
         }
 
         return appetizer;
       })).flat(),
     ...specials.map(name => range(3).map(_ => ({ category: CATEGORIES.special, name }))).flat(),
-    ...desserts.map(name => range(numDesserts).map(_ => ({ category: CATEGORIES.dessert, name }))).flat()
   ]);
 
-  return deck;
+  const numDesserts = getNumDesserts(ctx.numPlayers, getNumRound(ctx));
+
+  for (let i = 0; i < numDesserts; i++) {
+    deck.push(desserts.pop());
+  }
+
+  return {
+    deck: ctx.random.Shuffle(deck),
+    desserts,
+  };
 }
 
 /**
@@ -532,15 +604,12 @@ export function getNumRound(ctx) {
  * @returns {GameState}
  */
 function dealCards(G, ctx, setupData=null) {
-  const handSize = getHandSize(ctx.numPlayers);
-  const numRound = getNumRound(ctx);
-
-  const deck = ctx.random.Shuffle(getDeck(ctx.numPlayers, numRound, setupData || G.setupData, G?.secret?.deck));
+  const { deck, desserts } = getDeck(G, ctx, setupData);
 
   const players = Object.fromEntries(range(ctx.numPlayers).map(i => ([
     i,
     {
-      hand: range(handSize).map(_ => {
+      hand: range(getHandSize(ctx.numPlayers)).map(_ => {
         const card = deck.pop();
 
         if (card == null) {
@@ -565,6 +634,7 @@ function dealCards(G, ctx, setupData=null) {
   return {
     secret: {
       deck,
+      desserts,
     },
     players,
     played,
