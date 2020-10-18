@@ -1,12 +1,11 @@
 import React from 'react';
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import Lobby from './Lobby';
 import Play from './Play';
+import GameList from './GameList';
 import MatchList from './MatchList';
 import Wait from './Wait';
 import './App.scoped.css';
-
-const gameName = 'fitf'; // TODO: make this dynamic
 
 export default function App() {
   return (
@@ -16,7 +15,7 @@ export default function App() {
           <Route
             exact
             path="/"
-            children={<Redirect to={`/${gameName}/join`} />}
+            component={GameList}
           />
           <Route
             exact
