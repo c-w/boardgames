@@ -75,6 +75,7 @@ const APPETIZERS = {
   tempura: 'Tempura',
   sashimi: 'Sashimi',
   misoSoup: 'Miso Soup',
+  tofu: 'Tofu',
 };
 
 const SPECIALS = {
@@ -205,6 +206,22 @@ function scoreCard(card, hand, otherHands, numRound, numPlayers) {
         const turnPlayed = hand.indexOf(card);
         const hasOtherMisoSoup = otherHands.some(otherHand => otherHand[turnPlayed].name === APPETIZERS.misoSoup);
         score = hasOtherMisoSoup ? 0 : 3;
+      }
+      break;
+
+    case APPETIZERS.tofu:
+      {
+        const numTofus = getSetInstances(hand).length;
+
+        if (numTofus === 1) {
+          score = 2;
+        } else if (numTofus === 2) {
+          score = 6;
+        } else if (numTofus >= 3) {
+          score = 0;
+        }
+
+        scoreSet = true;
       }
       break;
 
