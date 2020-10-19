@@ -862,3 +862,49 @@ describe('Score Pudding Dessert', () => {
     expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(0);
   });
 });
+
+describe('Score Fruit Dessert', () => {
+  test('1 orange, 4 pineapple, 0 watermelon', () => {
+    const hand = [
+      { name: 'Fruit', category: 'Dessert', variants: ['pineapple', 'pineapple'], round: 1 },
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'pineapple'] },
+      { name: 'Fruit', category: 'Dessert', variants: ['pineapple'] },
+    ];
+
+    const otherHands = [];
+
+    const round = 3;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(4);
+  });
+
+  test('5 orange, 3 pineapple, 2 watermelon', () => {
+    const hand = [
+      { name: 'Fruit', category: 'Dessert', variants: ['pineapple', 'pineapple'], round: 1 },
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'pineapple'] },
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'] },
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'] },
+      { name: 'Fruit', category: 'Dessert', variants: ['watermelon', 'watermelon'] },
+    ];
+
+    const otherHands = [];
+
+    const round = 3;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(14);
+  });
+
+  test('6 orange, 0 pineapple, 0 watermelon', () => {
+    const hand = [
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'], round: 1 },
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'] },
+      { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'] },
+    ];
+
+    const otherHands = [];
+
+    const round = 3;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(6);
+  });
+});

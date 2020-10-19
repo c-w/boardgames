@@ -65,7 +65,7 @@ const ONIGIRI_VARIANTS = [
 const FRUITS = [
   'watermelon',
   'pineapple',
-  'peach',
+  'orange',
 ];
 
 const FRUIT_VARIANTS = [
