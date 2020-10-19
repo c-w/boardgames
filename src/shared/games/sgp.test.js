@@ -325,3 +325,49 @@ describe('Score Sashimi Appetizer', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(20);
   });
 });
+
+describe('Score Miso Soup Appetzier', () => {
+  test('one played in round', () => {
+    const hand = [
+      { name: 'Miso Soup', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+    ];
+
+    const otherHands = [
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(3);
+  });
+
+  test('multiples played in round', () => {
+    const hand = [
+      { name: 'Miso Soup', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+    ];
+
+    const otherHands = [
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Miso Soup', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+});
