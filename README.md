@@ -46,7 +46,7 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 [ vm ] echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 [ vm ] sudo add-apt-repository -y ppa:certbot/certbot
 [ vm ] sudo apt-get update
-[ vm ] sudo apt-get install -y nodejs yarn libcap2-bin certbot
+[ vm ] sudo apt-get install -y nodejs yarn libcap2-bin certbot libsecret-1-dev
 [ vm ] sudo certbot certonly
 [ vm ] echo "0 0 1,15 * * certbot renew 2>&1 | /usr/bin/logger -t update_letsencrypt_renewal" | sudo crontab
 [ vm ] echo "30 0 1,15 * * pm2 restart 0 2>&1 | /usr/bin/logger -t update_letsencrypt_renewal" | crontab
