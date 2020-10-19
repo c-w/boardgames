@@ -548,3 +548,43 @@ describe('Score Wasabi Special', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
   });
 });
+
+describe('Score Tea Special', () => {
+  test('set of 4', () => {
+    const hand = [
+      { name: 'Tea', category: 'Special' },
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Soy Sauce', category: 'Special' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Salmon', category: 'Nigiri' },
+      { name: 'Squid', category: 'Nigiri' },
+      { name: 'Maki', category: 'Rolls', count: 3 },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(4)
+  });
+
+  test('set of 3, tied', () => {
+    const hand = [
+      { name: 'Tea', category: 'Special' },
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Soy Sauce', category: 'Special' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Salmon', category: 'Nigiri' },
+      { name: 'Maki', category: 'Rolls', count: 4 },
+      { name: 'Maki', category: 'Rolls', count: 3 },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(3)
+  });
+});
