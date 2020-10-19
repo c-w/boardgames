@@ -11,6 +11,7 @@ import { distinct, getRandomInt, last, pairs, range, removeAt, sum } from '../ut
  *   scored?: boolean,
  *   count?: number,
  *   variants?: string[],
+ *   round?: number,
  * }} Card
  *
  * @typedef {{
@@ -147,7 +148,7 @@ export function scoreCard(card, hand, otherHands, numRound) {
    * @param {Card[]} cards
    * @returns {number}
    */
-  const getNumCategories = cards => distinct(cards.map(({ category }) => category)).length;
+  const getNumCategories = cards => distinct(...cards.filter(card => card.round == null).map(({ category }) => category)).length;
 
   const numPlayers = otherHands.length + 1;
 
@@ -704,6 +705,8 @@ export function getNumRound(ctx) {
 function dealCards(G, ctx, setupData=null) {
   const { deck, desserts } = getDeck(G, ctx, setupData);
 
+  const numRound = getNumRound(ctx);
+
   const players = Object.fromEntries(range(ctx.numPlayers).map(i => ([
     i,
     {
@@ -722,7 +725,10 @@ function dealCards(G, ctx, setupData=null) {
   const played = G?.played
     ? Object.fromEntries(Object.entries(G.played).map(([playerID, played]) => [
         playerID,
-        played.filter(card => card.category === CATEGORIES.dessert),
+        played.filter(card => card.category === CATEGORIES.dessert).map(card => ({
+          ...card,
+          round: numRound - 1,
+        })),
       ]))
     : Object.fromEntries(range(ctx.numPlayers).map(playerID => ([
         playerID,

@@ -588,3 +588,93 @@ describe('Score Tea Special', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(3)
   });
 });
+
+describe('Score Soy Sauce Special', () => {
+  test('3 players', () => {
+    const hands = [
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Maki', category: 'Rolls' },
+        { name: 'Tempura', category: 'Appetizer' },
+      ],
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(4);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(0);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+  });
+
+  test('3 players, tied', () => {
+    const hands = [
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(4);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(4);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+  });
+
+  test('3 players, old cards', () => {
+    const hands = [
+      [
+        { name: 'Pudding', category: 'Dessert', round: 1 },
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Maki', category: 'Rolls' },
+        { name: 'Maki', category: 'Rolls' },
+        { name: 'Maki', category: 'Rolls' },
+      ],
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+      [
+        { name: 'Soy Sauce', category: 'Special' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 2;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(0);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(4);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+  });
+});
