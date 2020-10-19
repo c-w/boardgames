@@ -107,3 +107,89 @@ describe('Score Maki Rolls', () => {
     expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
   });
 });
+
+describe('Score Temaki Rolls', () => {
+  test('2 players', () => {
+    const hands = [
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(4);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(0);
+  });
+
+  test('4 players', () => {
+    const hands = [
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(4);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(-4);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
+  });
+
+  test('4 players, tied', () => {
+    const hands = [
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+        { name: 'Temaki', category: 'Rolls', count: 1 },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(4);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(-4);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(4);
+  });
+});
