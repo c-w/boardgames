@@ -223,3 +223,52 @@ describe('Score Uramaki Rolls', () => {
     expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
   });
 });
+
+describe('Score Tempura Appetizer', () => {
+  test('single set', () => {
+    const hand = [
+      { name: 'Tempura', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Tempura', category: 'Appetizer' },
+      { name: 'Tempura', category: 'Appetizer' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(5);
+  });
+
+  test('no sets', () => {
+    const hand = [
+      { name: 'Tempura', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+
+  test('multiple sets', () => {
+    const hand = [
+      { name: 'Tempura', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Tempura', category: 'Appetizer' },
+      { name: 'Tempura', category: 'Appetizer' },
+      { name: 'Tempura', category: 'Appetizer' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(10);
+  });
+});
