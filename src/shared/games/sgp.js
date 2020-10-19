@@ -122,7 +122,7 @@ const DESSERTS = {
  * @param {number} numRound
  * @returns {number}
  */
-function scoreCard(card, hand, otherHands, numRound) {
+export function scoreCard(card, hand, otherHands, numRound) {
   if (card.scored) {
     return 0;
   }

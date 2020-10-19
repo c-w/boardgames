@@ -19,6 +19,10 @@
     "@babel/preset-env": "^7.9.5",
     "@craco/craco": "^5.7.0",
     "@rjsf/core": "^2.0.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^26.0.14",
     "@types/koa": "^2.11.4",
     "@types/koa-router": "^7.4.1",
     "@types/koa-static": "^4.0.1",
@@ -50,6 +54,7 @@
     "lint-eslint": "eslint --max-warnings=0 src",
     "lint-tsc": "tsc",
     "lint": "run-p lint-eslint lint-tsc",
+    "test": "cross-env CI=true craco test --env=node",
     "build-client": "craco build",
     "build-server": "babel src --ignore src/frontend --ignore src/index.js --ignore src/setupProxy.js --out-dir dist",
     "prebuild": "yarn run ensure-env",
@@ -64,6 +69,9 @@
   "babel": {
     "presets": [
       "@babel/preset-env"
+    ],
+    "ignore": [
+      "**/*.test.js"
     ]
   },
   "nodemonConfig": {
