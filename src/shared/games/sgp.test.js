@@ -431,3 +431,89 @@ describe('Score Dumpling Appetizer', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(expected);
   });
 });
+
+describe('Score Edamame Appetizer', () => {
+  test('3 players with card', () => {
+    const hands = [
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Edamame', category: 'Appetizer' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(2);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(2);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(2);
+  });
+
+  test('6 players with card', () => {
+    const hands = [
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Edamame', category: 'Appetizer' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Edamame', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(4);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(4);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(4);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(4);
+    expect(scoreCard(hands[4][0], hands[4], removeAt(hands, 4), round)).toEqual(4);
+  });
+});
