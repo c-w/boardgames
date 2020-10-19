@@ -432,6 +432,54 @@ describe('Score Dumpling Appetizer', () => {
   });
 });
 
+describe('Score Onigiri Appetizer', () => {
+  test('set of 2', () => {
+    const hand = [
+      { name: 'Onigiri', category: 'Appetizer', variants: ['circle'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['triangle'] },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(4);
+  });
+
+  test('set of 1 and set of 3', () => {
+    const hand = [
+      { name: 'Onigiri', category: 'Appetizer', variants: ['circle'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['triangle'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['square'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['square'] },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(10);
+  });
+
+  test('set of 1, set of 2, and set of 4', () => {
+    const hand = [
+      { name: 'Onigiri', category: 'Appetizer', variants: ['circle'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['triangle'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['rectangle'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['square'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['square'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['square'] },
+      { name: 'Onigiri', category: 'Appetizer', variants: ['circle'] },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(21);
+  });
+});
+
 describe('Score Edamame Appetizer', () => {
   test('3 players with card', () => {
     const hands = [
