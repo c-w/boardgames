@@ -222,6 +222,132 @@ describe('Score Uramaki Rolls', () => {
     expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(2);
     expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
   });
+
+  test('at end of round, tied', () => {
+    const hands = [
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Uramaki', category: 'Rolls', count: 4 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 4 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(8);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(8);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(5);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
+    expect(scoreCard(hands[4][0], hands[4], removeAt(hands, 4), round)).toEqual(2);
+  });
+
+  test('during round', () => {
+    const hands = [
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(8);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(5);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(2);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
+  });
+
+  test('during round and at end of round', () => {
+    const hands = [
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 5 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 4 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Uramaki', category: 'Rolls', count: 3 },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 1;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(5);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(8);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(2);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
+  });
 });
 
 describe('Score Tempura Appetizer', () => {

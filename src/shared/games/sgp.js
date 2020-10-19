@@ -260,7 +260,7 @@ export function scoreCard(card, hand, otherHands, numRound) {
         const allDidReach10 = distinct(didReach10?.pos, ...otherDidReach10.map(item => item?.pos)).filter(pos => pos != null).sort();
 
         for (const pos of allDidReach10) {
-          const nextScore = scores.pop();
+          const nextScore = scores.pop() || 0;
 
           if (pos === didReach10?.pos) {
             score = nextScore;
