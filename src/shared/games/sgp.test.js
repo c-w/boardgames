@@ -517,3 +517,34 @@ describe('Score Edamame Appetizer', () => {
     expect(scoreCard(hands[4][0], hands[4], removeAt(hands, 4), round)).toEqual(4);
   });
 });
+
+describe('Score Wasabi Special', () => {
+  test('with nigiri', () => {
+    const hand = [
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Maki', category: 'Rolls' },
+      { name: 'Salmon', category: 'Nigiri' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(6);
+    expect(scoreCard(hand[2], hand, otherHands, round)).toEqual(0);
+  });
+
+  test('without nigiri', () => {
+    const hand = [
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Maki', category: 'Rolls' },
+      { name: 'Maki', category: 'Rolls' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+});
