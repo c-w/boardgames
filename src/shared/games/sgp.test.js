@@ -756,3 +756,109 @@ describe('Score Green Tea Ice Cream Dessert', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
   });
 });
+
+describe('Score Pudding Dessert', () => {
+  test('2 players', () => {
+    const hands = [
+      [
+        { name: 'Pudding', category: 'Dessert', round: 1 },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 3;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(6);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(0);
+  });
+
+  test('4 players', () => {
+    const hands = [
+      [
+        { name: 'Pudding', category: 'Dessert', round: 1 },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 3;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(6);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(-6);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(0);
+  });
+
+  test('4 players, tied', () => {
+    const hands = [
+      [
+        { name: 'Pudding', category: 'Dessert', round: 1 },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Pudding', category: 'Dessert' },
+      ],
+    ];
+
+    const round = 3;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(6);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(-6);
+    expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
+    expect(scoreCard(hands[3][0], hands[3], removeAt(hands, 3), round)).toEqual(6);
+  });
+
+  test('before last round', () => {
+    const hands = [
+      [
+        { name: 'Pudding', category: 'Dessert', round: 1 },
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Pudding', category: 'Dessert' },
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 2;
+
+    expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(0);
+    expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(0);
+  });
+});
