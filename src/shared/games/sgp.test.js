@@ -272,3 +272,56 @@ describe('Score Tempura Appetizer', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(10);
   });
 });
+
+describe('Score Sashimi Appetizer', () => {
+  test('single set', () => {
+    const hand = [
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(10);
+  });
+
+  test('no sets', () => {
+    const hand = [
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Sashimi', category: 'Appetizer' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+
+  test('multiple sets', () => {
+    const hand = [
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(20);
+  });
+});
