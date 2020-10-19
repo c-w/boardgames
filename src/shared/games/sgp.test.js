@@ -390,3 +390,22 @@ describe('Score Tofu Appetizer', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(expected);
   });
 });
+
+describe('Score Eel Appetizer', () => {
+  test.each([
+    [1, -3],
+    [2, 7],
+    [3, 7],
+  ])('%sx', (count, expected) => {
+    const hand = [
+      ...range(count).map(_ => ({ name: 'Eel', category: 'Appetizer' })),
+      ...range(5 - count).map(_ => ({ name: 'Egg', category: 'Nigiri' })),
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(expected);
+  });
+});
