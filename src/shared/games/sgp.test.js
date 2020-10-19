@@ -678,3 +678,81 @@ describe('Score Soy Sauce Special', () => {
     expect(scoreCard(hands[2][0], hands[2], removeAt(hands, 2), round)).toEqual(0);
   });
 });
+
+describe('Score Green Tea Ice Cream Dessert', () => {
+  test('single set', () => {
+    const hand = [
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 2 },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+    ];
+
+    const otherHands = [];
+
+    const round = 3;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(12);
+  });
+
+  test('no sets', () => {
+    const hand = [
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 2 },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+    ];
+
+    const otherHands = [];
+
+    const round = 3;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+
+  test('multiple sets', () => {
+    const hand = [
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 2 },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+    ];
+
+    const otherHands = [];
+
+    const round = 3;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(24);
+  });
+
+  test('before last round', () => {
+    const hand = [
+      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Egg', category: 'Nigiri' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+    ];
+
+    const otherHands = [];
+
+    const round = 2;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+});
