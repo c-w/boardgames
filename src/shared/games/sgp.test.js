@@ -409,3 +409,25 @@ describe('Score Eel Appetizer', () => {
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(expected);
   });
 });
+
+describe('Score Dumpling Appetizer', () => {
+  test.each([
+    [1, 1],
+    [2, 3],
+    [3, 6],
+    [4, 10],
+    [5, 15],
+    [6, 15],
+  ])('%sx', (count, expected) => {
+    const hand = [
+      ...range(count).map(_ => ({ name: 'Dumpling', category: 'Appetizer' })),
+      ...range(10 - count).map(_ => ({ name: 'Egg', category: 'Nigiri' })),
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(expected);
+  });
+});
