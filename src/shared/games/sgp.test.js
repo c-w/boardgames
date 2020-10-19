@@ -1,5 +1,5 @@
 import { scoreCard } from './sgp';
-import { removeAt } from '../utils';
+import { range, removeAt } from '../utils';
 
 describe('Score Nigiri', () => {
   test.each([
@@ -369,5 +369,24 @@ describe('Score Miso Soup Appetzier', () => {
     const round = 1;
 
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
+  });
+});
+
+describe('Score Tofu Appetizer', () => {
+  test.each([
+    [1, 2],
+    [2, 6],
+    [3, 0],
+  ])('%sx', (count, expected) => {
+    const hand = [
+      ...range(count).map(_ => ({ name: 'Tofu', category: 'Appetizer' })),
+      ...range(5 - count).map(_ => ({ name: 'Egg', category: 'Nigiri' })),
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(expected);
   });
 });
