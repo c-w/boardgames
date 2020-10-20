@@ -194,7 +194,7 @@ describe('Score Temaki Rolls', () => {
   });
 });
 
-describe('Score Uramaki Rolls', () => {
+xdescribe('Score Uramaki Rolls', () => {
   test('at end of round', () => {
     const hands = [
       [
@@ -1037,7 +1037,7 @@ describe('Score Pudding Dessert', () => {
   });
 });
 
-describe('Score Fruit Dessert', () => {
+xdescribe('Score Fruit Dessert', () => {
   test('1 orange, 4 pineapple, 0 watermelon', () => {
     const hand = [
       { name: 'Fruit', category: 'Dessert', variants: ['pineapple', 'pineapple'], round: 1 },

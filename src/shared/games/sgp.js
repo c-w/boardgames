@@ -90,7 +90,11 @@ const NIGIRIS = {
 const ROLLS = {
   maki: 'Maki',
   temaki: 'Temaki',
+  /*
+  // FIXME https://github.com/c-w/boardgames/issues/2
+  // FIXME https://github.com/c-w/boardgames/issues/3
   uramaki: 'Uramaki',
+  */
 };
 
 const APPETIZERS = {
@@ -113,7 +117,10 @@ const SPECIALS = {
 const DESSERTS = {
   greenTeaIceCream: 'Green Tea Ice Cream',
   pudding: 'Pudding',
+  /*
+  // FIXME https://github.com/c-w/boardgames/issues/1
   fruit: 'Fruit',
+  */
 };
 
 /**
