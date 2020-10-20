@@ -23,29 +23,41 @@ const GAME_DATA_SCHEMA = {
   },
 };
 
+function schemaFor(game) {
+  return {
+    type: 'object',
+    required: [
+      ...GAME_DATA_SCHEMA.required,
+      ...game.setupDataSchema.required,
+    ],
+    properties: {
+      ...GAME_DATA_SCHEMA.properties,
+      ...game.setupDataSchema.properties,
+    },
+  };
+}
+
+/**
+ * @param {string} gameName
+ * @returns {string}
+ */
+function formDataKeyFor(gameName) {
+  return `${gameName}-formData`;
+}
+
 /**
  * @param {Object} props
  * @param {string} props.gameName
- * @param {string} props.matchID
  */
-export default function Lobby({ gameName, matchID }) {
+function CreateGame({ gameName }) {
   const [error, setError] = useState(null);
-  const [match, setMatch] = useState(null);
   const history = useHistory();
   const game = useGame(gameName);
 
-  const isNewMatch = matchID == null;
-  const formDataKey = `${gameName}-formData`;
-
-  useEffect(() => {
-    if (matchID != null) {
-      const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
-
-      client.getMatch(gameName, matchID).then(data => setMatch(data));
-    }
-  }, [gameName, matchID, setMatch]);
+  const formDataKey = formDataKeyFor(gameName);
 
   const onSubmit = async ({ formData }, event) => {
+    event.preventDefault();
     localStorage.setItem(formDataKey, JSON.stringify(formData));
 
     let { playerName, unlisted, numPlayers, ...setupData } = formData;
@@ -54,34 +66,87 @@ export default function Lobby({ gameName, matchID }) {
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
     try {
-      event.preventDefault();
+      const match = await client.createMatch(game.name, {
+        numPlayers,
+        setupData,
+        unlisted,
+      });
 
-      let playerID;
+      const matchID = match.matchID;
+      const playerID = getRandomInt(numPlayers);
 
-      if (isNewMatch) {
-        const data = await client.createMatch(game.name, {
-          numPlayers,
-          setupData,
-          unlisted,
-        });
-
-        matchID = data.matchID;
-        playerID = getRandomInt(numPlayers);
-      } else {
-        playerID = match.players.find(p => p.name == null)?.id;
-
-        if (playerID == null) {
-          setError('The game is already full');
-          return;
-        }
-      }
-
-      const data = await client.joinMatch(game.name, matchID, {
+      const join = await client.joinMatch(game.name, matchID, {
         playerID: `${playerID}`,
         playerName,
       });
 
-      history.push(`/${game.name}/${isNewMatch ? 'wait' : 'play'}/${matchID}/${playerID}/${data.playerCredentials}`);
+      history.push(`/${game.name}/wait/${matchID}/${playerID}/${join.playerCredentials}`);
+    } catch (ex) {
+      setError('Unexpected error');
+      console.error(error);
+    }
+  };
+
+  if (game == null) {
+    return null;
+  }
+
+  const schema = schemaFor(game);
+
+  const formData = JSON.parse(localStorage.getItem(formDataKey));
+
+  return (
+    // @ts-ignore
+    <Form schema={schema} onSubmit={onSubmit} formData={formData}>
+      <input
+        type="submit"
+        value={error || 'Create game'}
+        disabled={error != null}
+      />
+    </Form>
+  );
+
+}
+
+/**
+ * @param {Object} props
+ * @param {string} props.gameName
+ * @param {string} props.matchID
+ */
+function JoinGame({ gameName, matchID }) {
+  const [error, setError] = useState(null);
+  const [match, setMatch] = useState(null);
+  const history = useHistory();
+  const game = useGame(gameName);
+
+  const formDataKey = formDataKeyFor(gameName);
+
+  useEffect(() => {
+    const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
+
+    client.getMatch(gameName, matchID).then(match => setMatch(match));
+  }, [gameName, matchID]);
+
+  const onSubmit = async ({ formData }, event) => {
+    event.preventDefault();
+    localStorage.setItem(formDataKey, JSON.stringify(formData));
+
+    const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
+
+    const playerID = match.players.find(p => p.name == null)?.id;
+
+    if (playerID == null) {
+      setError('The game is already full');
+      return;
+    }
+
+    try {
+      const join = await client.joinMatch(gameName, matchID, {
+        playerID: `${playerID}`,
+        playerName: formData.playerName,
+      });
+
+      history.push(`/${game.name}/play/${matchID}/${playerID}/${join.playerCredentials}`);
     } catch (ex) {
       if (ex.message === 'HTTP status 409') {
         setError('The game is already full');
@@ -94,43 +159,42 @@ export default function Lobby({ gameName, matchID }) {
     }
   };
 
-  if (game == null || (!isNewMatch && match == null)) {
+  if (game == null || match == null) {
     return null;
   }
 
-  const schema = {
-    type: 'object',
-    required: [
-      ...GAME_DATA_SCHEMA.required,
-      ...game.setupDataSchema.required,
-    ],
-    properties: {
-      ...GAME_DATA_SCHEMA.properties,
-      ...game.setupDataSchema.properties,
-    },
+  const schema = schemaFor(game);
+
+  const uiSchema = Object.fromEntries(Object.keys(schema.properties).filter(key => key !== 'playerName').map(key => ([
+    key,
+    { 'ui:disabled': true },
+  ])));
+
+  const formData = {
+    ...JSON.parse(localStorage.getItem(formDataKey)),
+    ...match.setupData,
+    unlisted: match.unlisted,
   };
-
-  let uiSchema = undefined;
-
-  let formData = JSON.parse(localStorage.getItem(formDataKey));
-
-  if (!isNewMatch) {
-    formData = { ...formData, ...match.setupData, unlisted: match.unlisted };
-
-    uiSchema = Object.fromEntries(Object.keys(schema.properties).filter(key => key !== 'playerName').map(key => ([
-      key,
-      { 'ui:disabled': true },
-    ])));
-  }
 
   return (
     // @ts-ignore
     <Form schema={schema} onSubmit={onSubmit} formData={formData} uiSchema={uiSchema}>
       <input
         type="submit"
-        value={error || (isNewMatch ? 'Create game' : 'Join game')}
+        value={error || 'Join game'}
         disabled={error != null}
       />
     </Form>
   );
+}
+
+/**
+ * @param {Object} props
+ * @param {string} props.gameName
+ * @param {string} props.matchID
+ */
+export default function Lobby(props) {
+  return props.matchID == null
+    ? <CreateGame {...props} />
+    : <JoinGame {...props} />;
 }
