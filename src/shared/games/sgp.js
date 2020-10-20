@@ -117,11 +117,27 @@ const SPECIALS = {
 const DESSERTS = {
   greenTeaIceCream: 'Green Tea Ice Cream',
   pudding: 'Pudding',
-  /*
-  // FIXME https://github.com/c-w/boardgames/issues/1
   fruit: 'Fruit',
-  */
 };
+
+/**
+ * @param {Card[]} hand
+ * @param {Card[][]} otherHands
+ * @param {number} numRound
+ * @returns {number}
+ */
+export function scoreHand(hand, otherHands, numRound) {
+  let score = sum(hand.map(card => scoreCard(card, hand, otherHands, numRound)));
+
+  const isFruitPlayed = otherHands.some(otherHand => otherHand.some(card => card.name === DESSERTS.fruit));
+  const hasAnyFruit = hand.some(card => card.name === DESSERTS.fruit);
+
+  if (isFruitPlayed && !hasAnyFruit) {
+    score -= 6;
+  }
+
+  return score;
+}
 
 /**
  * @param {Card} card
@@ -814,7 +830,7 @@ function onTurnEnd(G, ctx) {
     for (const [playerID, played] of Object.entries(G.played)) {
       const otherHands = Object.entries(G.played).filter(([id, _]) => id !== playerID).map(([_, hand]) => hand);
 
-      const score = sum(played.map(card => scoreCard(card, played, otherHands, numRound)));
+      const score = scoreHand(played, otherHands, numRound);
 
       G.scores[playerID].push(score);
     }

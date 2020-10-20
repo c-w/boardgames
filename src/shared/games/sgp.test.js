@@ -1,4 +1,4 @@
-import { scoreCard } from './sgp';
+import { scoreCard, scoreHand } from './sgp';
 import { range, removeAt } from '../utils';
 
 describe('Score Nigiri', () => {
@@ -1060,7 +1060,7 @@ describe('Score Pudding Dessert', () => {
   });
 });
 
-xdescribe('Score Fruit Dessert', () => {
+describe('Score Fruit Dessert', () => {
   test('1 orange, 4 pineapple, 0 watermelon', () => {
     const hand = [
       { name: 'Fruit', category: 'Dessert', variants: ['pineapple', 'pineapple'], round: 1 },
@@ -1103,5 +1103,23 @@ xdescribe('Score Fruit Dessert', () => {
     const round = 3;
 
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(6);
+  });
+
+  test('0 orange, 0 pineapple, 0 watermelon', () => {
+    const hand = [
+      { name: 'Eel', category: 'Appetizer' },
+      { name: 'Squid', category: 'Nigiri' },
+    ];
+
+    const otherHands = [
+      [
+        { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'], round: 1 },
+        { name: 'Fruit', category: 'Dessert', variants: ['orange', 'orange'] },
+      ],
+    ];
+
+    const round = 3;
+
+    expect(scoreHand(hand, otherHands, round)).toEqual(-6);
   });
 });
