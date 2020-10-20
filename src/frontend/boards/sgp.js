@@ -32,13 +32,11 @@ function Card({ name, category, count, variants }) {
 export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
   const score = sum(G.scores[playerID]);
-  const played = G.played[playerID];
   const numRound = getNumRound(ctx);
   const { gameover } = ctx;
+  const otherPlayerIDs = Object.keys(G.played).filter(id => id !== playerID);
 
   const playerNameFor = id => matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`;
-
-  const withoutSelf = map => Object.entries(map).filter(([id, _]) => id !== playerID);
 
   const pickCard = (i) => (event) => {
     event.preventDefault();
@@ -74,7 +72,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           </thead>
           <tbody>
             <ScoreRow playerID={playerID} name="You" />
-            {withoutSelf(G.scores).map(([id, _]) =>
+            {otherPlayerIDs.map(id =>
               <ScoreRow key={id} playerID={id} />
             )}
           </tbody>
@@ -82,6 +80,24 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       </div>
     );
   }
+
+  const PlayedCards = ({ playerID, picked=undefined, name=undefined }) => (
+    <figure>
+      <figcaption>{name || playerNameFor(playerID)}</figcaption>
+      <ol>
+        {G.played[playerID].map((card, i) => (
+          <li key={i}>
+            <Card {...card} />
+          </li>
+        ))}
+        {picked && (
+          <li>
+            <Card {...picked} />
+          </li>
+        )}
+      </ol>
+    </figure>
+  );
 
   return (
     <div>
@@ -108,32 +124,9 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           ))}
         </ul>
       </figure>
-      <figure>
-        <figcaption>You</figcaption>
-        <ol>
-          {played.map((card, i) => (
-            <li key={i}>
-              <Card {...card} />
-            </li>
-          ))}
-          {picked && (
-            <li>
-              <Card {...picked} />
-            </li>
-          )}
-        </ol>
-      </figure>
-      {withoutSelf(G.played).map(([id, cards]) =>
-        <figure key={id}>
-          <figcaption>{playerNameFor(id)}</figcaption>
-          <ol>
-            {cards.map((card, i) => (
-              <li key={i}>
-                <Card {...card} />
-              </li>
-            ))}
-          </ol>
-        </figure>
+      <PlayedCards playerID={playerID} picked={picked} name="You" />
+      {otherPlayerIDs.map(id =>
+        <PlayedCards key={id} playerID={id} />
       )}
     </div>
   );
