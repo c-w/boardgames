@@ -305,8 +305,8 @@ export function scoreCard(card, hand, otherHands, numRound) {
 
     case APPETIZERS.misoSoup:
       {
-        const turnPlayed = hand.indexOf(card);
-        const hasOtherMisoSoup = otherHands.some(otherHand => otherHand[turnPlayed].name === APPETIZERS.misoSoup);
+        const turnPlayed = hand.filter(card => card.round == null).indexOf(card);
+        const hasOtherMisoSoup = otherHands.some(otherHand => otherHand.filter(card => card.round == null)[turnPlayed].name === APPETIZERS.misoSoup);
         score = hasOtherMisoSoup ? 0 : 3;
       }
       break;

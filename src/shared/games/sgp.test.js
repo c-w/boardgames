@@ -496,6 +496,29 @@ describe('Score Miso Soup Appetzier', () => {
 
     expect(scoreCard(hand[0], hand, otherHands, round)).toEqual(0);
   });
+
+  test('multiples played in round with desserts', () => {
+    const hand = [
+      { name: 'Pudding', category: 'Dessert', round: 1 },
+      { name: 'Miso Soup', category: 'Appetizer' },
+      { name: 'Egg', category: 'Nigiri' },
+    ];
+
+    const otherHands = [
+      [
+        { name: 'Egg', category: 'Nigiri' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+      [
+        { name: 'Miso Soup', category: 'Appetizer' },
+        { name: 'Egg', category: 'Nigiri' },
+      ],
+    ];
+
+    const round = 2;
+
+    expect(scoreCard(hand[1], hand, otherHands, round)).toEqual(0);
+  });
 });
 
 describe('Score Tofu Appetizer', () => {
