@@ -27,8 +27,9 @@ function Card({ name, category, count, variants }) {
  * @param {Ctx} props.ctx
  * @param {string} props.playerID
  * @param {any} props.moves
+ * @param {Match['players']} props.matchData
  */
-export default function Board({ G, ctx, playerID, moves }) {
+export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
   const { scores } = G;
   const played = G.played[playerID];
@@ -70,7 +71,7 @@ export default function Board({ G, ctx, playerID, moves }) {
         </ul>
       </figure>
       <figure>
-        <figcaption>Played</figcaption>
+        <figcaption>You</figcaption>
         <ol>
           {played.map((card, i) => (
             <li key={i}>
@@ -86,7 +87,7 @@ export default function Board({ G, ctx, playerID, moves }) {
       </figure>
       {Object.entries(G.played).filter(([id, _]) => id !== playerID).map(([id, cards]) =>
         <figure key={id}>
-          <figcaption>Player {id}</figcaption>
+          <figcaption>{matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`}</figcaption>
           <ol>
             {cards.map((card, i) => (
               <li key={i}>
