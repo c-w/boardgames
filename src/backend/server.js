@@ -49,7 +49,16 @@ const server = Server({
   transport,
 });
 
-server.app.use(serve(path.join(__dirname, '..', '..', 'build')));
+const filesRoot = path.join(__dirname, '..', '..', 'build');
+const staticRoot = path.join(filesRoot, 'static');
+
+server.app.use(serve(filesRoot, {
+  setHeaders: (res, path) => {
+    if (path.startsWith(staticRoot)) {
+      res.setHeader('cache-control', 'public, max-age=31536000, immutable');
+    }
+  },
+}));
 
 if (config.HTTPS && config.SECONDARY_PORT) {
   const httpServer = new Koa();
