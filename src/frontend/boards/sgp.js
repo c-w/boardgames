@@ -85,7 +85,7 @@ export default function Board({ G, ctx, playerID, moves }) {
         </ol>
       </figure>
       {Object.entries(G.played).filter(([id, _]) => id !== playerID).map(([id, cards]) =>
-        <figure>
+        <figure key={id}>
           <figcaption>Player {id}</figcaption>
           <ol>
             {cards.map((card, i) => (
