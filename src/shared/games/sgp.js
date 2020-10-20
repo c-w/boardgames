@@ -698,6 +698,10 @@ function getDeck(G, ctx, setupData) {
  * @returns {number}
  */
 export function getNumRound(ctx) {
+  if (ctx.gameover) {
+    return NUM_ROUNDS;
+  }
+
   const handSize = getHandSize(ctx.numPlayers);
   const turn = ctx.turn === 0 ? ctx.turn : ctx.turn - 1;
   return Math.floor(turn / handSize) + 1;

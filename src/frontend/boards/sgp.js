@@ -1,6 +1,6 @@
 import React from 'react';
 import { getNumRound } from '../../shared/games/sgp';
-import { sum } from '../../shared/utils';
+import { range, sum } from '../../shared/utils';
 import './sgp.scoped.css';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
@@ -31,9 +31,14 @@ function Card({ name, category, count, variants }) {
  */
 export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
-  const { scores } = G;
+  const score = sum(G.scores[playerID]);
   const played = G.played[playerID];
+  const numRound = getNumRound(ctx);
   const { gameover } = ctx;
+
+  const playerNameFor = id => matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`;
+
+  const withoutSelf = map => Object.entries(map).filter(([id, _]) => id !== playerID);
 
   const pickCard = (i) => (event) => {
     event.preventDefault();
@@ -44,10 +49,36 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   };
 
   if (gameover) {
+    const ScoreRow = ({ playerID, name=undefined }) => (
+      <tr>
+        <th scope="row">{name || playerNameFor(playerID)}</th>
+        {range(numRound).map(i =>
+          <td key={i}>{G.scores[playerID][i]}</td>
+        )}
+        <td>{sum(G.scores[playerID])}</td>
+      </tr>
+    );
+
     return (
       <div>
-        <div>{gameover.winner === playerID ? 'You won' : 'You lost'}</div>
-        <div>Score: {sum(scores[playerID])}</div>
+        <em>{gameover.winner === playerID ? 'You won' : 'You lost'}</em>
+        <table>
+          <thead>
+            <tr>
+              <th>Player</th>
+              {range(numRound).map(i =>
+                <th key={i}>Round {i + 1}</th>
+              )}
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ScoreRow playerID={playerID} name="You" />
+            {withoutSelf(G.scores).map(([id, _]) =>
+              <ScoreRow key={id} playerID={id} />
+            )}
+          </tbody>
+        </table>
       </div>
     );
   }
@@ -55,8 +86,15 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   return (
     <div>
       <div>
-        Round: {getNumRound(ctx)}
-        {picked && (<em>Waiting for other players&hellip;</em>)}
+        <div>
+          Round: {numRound}
+        </div>
+        {score > 0 && <div>
+          Score: {score}
+        </div>}
+        {picked && <div>
+          <em>Waiting for other players&hellip;</em>
+        </div>}
       </div>
       <figure>
         <figcaption>Hand</figcaption>
@@ -85,9 +123,9 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           )}
         </ol>
       </figure>
-      {Object.entries(G.played).filter(([id, _]) => id !== playerID).map(([id, cards]) =>
+      {withoutSelf(G.played).map(([id, cards]) =>
         <figure key={id}>
-          <figcaption>{matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`}</figcaption>
+          <figcaption>{playerNameFor(id)}</figcaption>
           <ol>
             {cards.map((card, i) => (
               <li key={i}>
