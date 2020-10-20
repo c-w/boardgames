@@ -29,52 +29,29 @@ const GAME_DATA_SCHEMA = {
  * @param {string} props.matchID
  */
 export default function Lobby({ gameName, matchID }) {
-  const [schema, setSchema] = useState(null);
   const [error, setError] = useState(null);
+  const [match, setMatch] = useState(null);
   const history = useHistory();
   const game = useGame(gameName);
 
-  const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
   const isNewMatch = matchID == null;
   const formDataKey = `${gameName}-formData`;
-  const formData = JSON.parse(localStorage.getItem(formDataKey));
 
   useEffect(() => {
-    if (game == null) {
-      return;
-    }
+    if (matchID != null) {
+      const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
-    if (!isNewMatch) {
-      setSchema({
-        type: 'object',
-        required: [
-          'playerName',
-        ],
-        properties: {
-          playerName: GAME_DATA_SCHEMA.properties.playerName,
-        },
-      });
-      return;
+      client.getMatch(gameName, matchID).then(data => setMatch(data));
     }
-
-    setSchema({
-      type: 'object',
-      required: [
-        ...GAME_DATA_SCHEMA.required,
-        ...game.setupDataSchema.required,
-      ],
-      properties: {
-        ...GAME_DATA_SCHEMA.properties,
-        ...game.setupDataSchema.properties,
-      },
-    });
-  }, [game, isNewMatch]);
+  }, [gameName, matchID, setMatch]);
 
   const onSubmit = async ({ formData }, event) => {
     localStorage.setItem(formDataKey, JSON.stringify(formData));
 
     let { playerName, unlisted, numPlayers, ...setupData } = formData;
     numPlayers = numPlayers || game.maxPlayers;
+
+    const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
     try {
       event.preventDefault();
@@ -91,9 +68,7 @@ export default function Lobby({ gameName, matchID }) {
         matchID = data.matchID;
         playerID = getRandomInt(numPlayers);
       } else {
-        const data = await client.getMatch(game.name, matchID);
-
-        playerID = data.players.find(p => p.name == null)?.id;
+        playerID = match.players.find(p => p.name == null)?.id;
 
         if (playerID == null) {
           setError('The game is already full');
@@ -119,13 +94,38 @@ export default function Lobby({ gameName, matchID }) {
     }
   };
 
-  if (game == null || schema == null) {
+  if (game == null || (!isNewMatch && match == null)) {
     return null;
+  }
+
+  const schema = {
+    type: 'object',
+    required: [
+      ...GAME_DATA_SCHEMA.required,
+      ...game.setupDataSchema.required,
+    ],
+    properties: {
+      ...GAME_DATA_SCHEMA.properties,
+      ...game.setupDataSchema.properties,
+    },
+  };
+
+  let uiSchema = undefined;
+
+  let formData = JSON.parse(localStorage.getItem(formDataKey));
+
+  if (!isNewMatch) {
+    formData = { ...formData, ...match.setupData, unlisted: match.unlisted };
+
+    uiSchema = Object.fromEntries(Object.keys(schema.properties).filter(key => key !== 'playerName').map(key => ([
+      key,
+      { 'ui:disabled': true },
+    ])));
   }
 
   return (
     // @ts-ignore
-    <Form schema={schema} onSubmit={onSubmit} formData={formData}>
+    <Form schema={schema} onSubmit={onSubmit} formData={formData} uiSchema={uiSchema}>
       <input
         type="submit"
         value={error || (isNewMatch ? 'Create game' : 'Join game')}
