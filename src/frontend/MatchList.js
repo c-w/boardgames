@@ -19,7 +19,7 @@ export default function MatchList({ gameName }) {
     return null;
   }
 
-  const openMatches = matches.filter(room => room.players.filter(player => player.name).length < game.maxPlayers);
+  const openMatches = matches.filter(match => match.players.some(player => player.name == null));
 
   if (openMatches.length === 0) {
     return (
