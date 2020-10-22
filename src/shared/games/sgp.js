@@ -90,10 +90,7 @@ const NIGIRIS = {
 const ROLLS = {
   maki: 'Maki',
   temaki: 'Temaki',
-  /*
-  // FIXME https://github.com/c-w/boardgames/issues/3
   uramaki: 'Uramaki',
-  */
 };
 
 const APPETIZERS = {
@@ -266,15 +263,37 @@ export function scoreCard(card, hand, otherHands, numRound) {
             }
           }
 
-          for (let numPlayer = 0; numPlayer < allHands.length; numPlayer++)  {
-            if (sum(uaramakis[numPlayer]) >= 10) {
-              const nextScore = scores.pop() || 0;
+          const shouldScore = [];
 
-              if (numPlayer === 0) {
+          for (let numPlayer = 0; numPlayer < numPlayers; numPlayer++) {
+            const numUramakis = sum(uaramakis[numPlayer]);
+
+            if (numUramakis >= 10) {
+              const scored = shouldScore.find(item => item.numUramakis === numUramakis);
+
+              if (scored == null) {
+                shouldScore.push({ numUramakis, players: [numPlayer] });
+              } else {
+                scored.players.push(numPlayer);
+              }
+            }
+          }
+
+          shouldScore.sort((item1, item2) => item2.numUramakis - item1.numUramakis);
+
+          for (const { players } of shouldScore) {
+            const nextScore = scores.pop() || 0;
+
+            for (const player of players) {
+              if (player === 0) {
                 score += nextScore;
               }
 
-              uaramakis[numPlayer] = [];
+              uaramakis[player] = [];
+            }
+
+            if (players.length > 1) {
+              scores.pop();
             }
           }
         }
