@@ -39,19 +39,7 @@ export function getRandomInt(max) {
  * @returns {T[]}
  */
 export function distinct(...items) {
-  const set = new Set();
-
-  for (const item of items) {
-    set.add(item);
-  }
-
-  const distinct = [];
-
-  set.forEach(item => {
-    distinct.push(item);
-  });
-
-  return distinct;
+  return [...new Set(items)];
 }
 
 /**
