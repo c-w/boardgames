@@ -91,7 +91,6 @@ const ROLLS = {
   maki: 'Maki',
   temaki: 'Temaki',
   /*
-  // FIXME https://github.com/c-w/boardgames/issues/2
   // FIXME https://github.com/c-w/boardgames/issues/3
   uramaki: 'Uramaki',
   */
@@ -252,55 +251,44 @@ export function scoreCard(card, hand, otherHands, numRound) {
 
     case ROLLS.uramaki:
       {
-        /**
-         * @param {Card[]} cards
-         * @returns {{ pos: number, count: number }[]?}
-         */
-        const getCumSum = cards => {
-          const uramakis = cards.map(({ name, count }, pos) => ({ name, count, pos })).filter(({ name }) => name === card.name);
-
-          if (uramakis.length === 0) {
-            return null;
-          }
-
-          const cumSum = Array(uramakis.length);
-          cumSum[0] = uramakis[0];
-
-          for (let i = 1; i < uramakis.length; i++) {
-            cumSum[i] = uramakis[i];
-            cumSum[i].count += cumSum[i - 1].count;
-          }
-
-          return cumSum;
-        }
-
         const scores = [2, 5, 8];
 
-        const cumSum = getCumSum(hand);
-        const otherCumSum = otherHands.map(otherHand => getCumSum(otherHand)).filter(cumSum => cumSum != null);
-        const didReach10 = cumSum.find(({ count }) => count >= 10);
-        const otherDidReach10 = otherCumSum.map(cumSum => cumSum.find(({ count }) => count >= 10)).filter(cumSum => cumSum != null);
-        const allDidReach10 = distinct(didReach10?.pos, ...otherDidReach10.map(item => item?.pos)).filter(pos => pos != null).sort();
+        const numCards = hand.length;
+        const allHands = [hand, ...otherHands];
+        const uaramakis = range(numPlayers).map(_ => ([]));
 
-        for (const pos of allDidReach10) {
-          const nextScore = scores.pop() || 0;
+        for (let numCard = 0; numCard < numCards; numCard++) {
+          for (let numPlayer = 0; numPlayer < numPlayers; numPlayer++) {
+            const card = allHands[numPlayer][numCard];
 
-          if (pos === didReach10?.pos) {
-            score = nextScore;
+            if (card.name === ROLLS.uramaki) {
+              uaramakis[numPlayer].push(card.count);
+            }
+          }
+
+          for (let numPlayer = 0; numPlayer < allHands.length; numPlayer++)  {
+            if (sum(uaramakis[numPlayer]) >= 10) {
+              const nextScore = scores.pop() || 0;
+
+              if (numPlayer === 0) {
+                score += nextScore;
+              }
+
+              uaramakis[numPlayer] = [];
+            }
           }
         }
 
-        if (score === 0 && scores.length > 0) {
-          const bestCount = last(cumSum).count;
-          const otherBestCounts = otherCumSum.map(cumSum => last(cumSum).count);
-          const allBestCounts = distinct(bestCount, ...otherBestCounts).sort().reverse();
+        const leftovers = uaramakis.map((cards, i) => ({ player: i, count: sum(cards) }));
+        const bestCounts = distinct(...leftovers.map(({ count }) => count)).sort();
 
-          for (let i = 0; i < allBestCounts.length && scores.length > 0; i++) {
-            const count = allBestCounts[i];
-            const nextScore = scores.pop();
+        while (scores.length > 0 && bestCounts.length > 0) {
+          const nextScore = scores.pop();
+          const bestCount = bestCounts.pop();
 
-            if (count === bestCount) {
-              score = nextScore;
+          for (const { player, count } of leftovers) {
+            if (count === bestCount && player === 0) {
+              score += nextScore;
             }
           }
         }
