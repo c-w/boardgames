@@ -1,6 +1,6 @@
 import React from 'react';
 import { getNumRound } from '../../shared/games/sgp';
-import { range, sum } from '../../shared/utils';
+import { partition, range, sum } from '../../shared/utils';
 import './sgp.scoped.css';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
@@ -81,23 +81,34 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     );
   }
 
-  const PlayedCards = ({ playerID, picked=undefined, name=undefined }) => (
-    <figure>
-      <figcaption>{name || playerNameFor(playerID)}</figcaption>
-      <ol>
-        {G.played[playerID].map((card, i) => (
-          <li key={i}>
-            <Card {...card} />
-          </li>
-        ))}
-        {picked && (
-          <li>
-            <Card {...picked} />
-          </li>
-        )}
-      </ol>
-    </figure>
-  );
+  const PlayedCards = ({ playerID, picked=undefined, name=undefined }) => {
+    const cards = partition(G.played[playerID], card => card.round != null);
+
+    return (
+      <figure>
+        <figcaption>{name || playerNameFor(playerID)}</figcaption>
+        <ul>
+          {cards.true.map((card, i) => (
+            <li key={i}>
+              <Card {...card} />
+            </li>
+          ))}
+        </ul>
+        <ol>
+          {cards.false.map((card, i) => (
+            <li key={i}>
+              <Card {...card} />
+            </li>
+          ))}
+          {picked && (
+            <li>
+              <Card {...picked} />
+            </li>
+          )}
+        </ol>
+      </figure>
+    );
+  };
 
   return (
     <div>

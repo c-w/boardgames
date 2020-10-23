@@ -29,3 +29,14 @@ button {
   background-color: white;
   text-align: left;
 }
+
+figure > ul {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  list-style-type: none;
+}
+
+figure > ol {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}

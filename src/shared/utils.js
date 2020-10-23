@@ -8,6 +8,29 @@ export function last(items) {
 }
 
 /**
+ * @template T
+ * @callback Predicate
+ * @param {T} item
+ * @returns {boolean}
+ */
+
+/**
+ * @template T
+ * @param {T[]} items
+ * @param {Predicate<T>} predicate
+ * @returns {{ true: T[], false: T[] }}
+ */
+export function partition(items, predicate) {
+  const result = { true: [], false: [] };
+
+  for (const item of items) {
+    result[predicate(item)].push(item);
+  }
+
+  return result;
+}
+
+/**
  * @param {number[]} numbers
  * @returns {number}
  */
