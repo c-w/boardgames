@@ -18,8 +18,19 @@ $text: #FFFFFF;
   @include card-font;
   border-radius: 16px;
   border: 2px solid $text;
-  line-height: 16px;
   padding: 16px 8px;
+  width: 150px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 1032px) {
+  .card {
+    width: 96px;
+    height: 128px;
+  }
 }
 
 button:disabled .card {
@@ -68,7 +79,11 @@ figure > ul,
 figure > ol {
   margin-block-start: 0;
   margin-block-end: 0;
+  padding-inline-start: 0;
   list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .gameover {
