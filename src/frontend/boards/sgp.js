@@ -13,10 +13,10 @@ import './sgp.scoped.css';
  */
 function Card({ name, category, count, variants }) {
   return (
-    <div className={category}>
+    <div className={`${category} card`}>
       {name}
-      {variants && <span>({variants.join(' + ')})</span>}
-      {count && <span>(x{count})</span>}
+      {variants && <span>&nbsp;({variants.join(' + ')})</span>}
+      {count && <span>&nbsp;(x{count})</span>}
     </div>
   );
 }
