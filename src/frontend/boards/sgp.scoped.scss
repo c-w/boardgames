@@ -6,6 +6,8 @@ $dessert: #D53093;
 $default: #9E988E;
 $text: #FFFFFF;
 $background: #E5D1E4;
+$heading: #7D4C83;
+$heading-text: #B1DBD0;
 
 .sgp {
   background-color: $background;
@@ -20,6 +22,14 @@ $background: #E5D1E4;
   font-weight: 600;
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+figcaption {
+  @include card-font;
+  background-color: $heading;
+  color: $heading-text;
+  padding: 8px 0;
+  margin: 8px 0;
 }
 
 .card {

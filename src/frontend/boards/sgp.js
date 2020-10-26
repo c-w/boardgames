@@ -142,9 +142,8 @@ function Card({ ctx, card }) {
  */
 export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
-  const score = sum(G.scores[playerID]);
   const numRound = getNumRound(ctx);
-  const { gameover } = ctx;
+  const { gameover, turn } = ctx;
   const otherPlayerIDs = Object.keys(G.played).filter(id => id !== playerID);
 
   const playerNameFor = id => matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`;
@@ -194,10 +193,14 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   const PlayedCards = ({ playerID, picked=undefined, name=undefined }) => {
     const cards = partition(G.played[playerID], card => card.round != null);
+    const score = sum(G.scores[playerID]);
 
     return (
       <figure>
-        <figcaption>{name || playerNameFor(playerID)}</figcaption>
+        <figcaption>
+          {name || playerNameFor(playerID)}
+          {score > 0 && <span>, score {score}</span>}
+        </figcaption>
         <div className="playedCards">
           <ul>
             {cards.true.map((card, i) => (
@@ -226,18 +229,12 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   return (
     <div className="sgp">
       <div>
-        <div>
-          Round: {numRound}
-        </div>
-        {score > 0 && <div>
-          Score: {score}
-        </div>}
         {picked && <div>
           <em>Waiting for other players&hellip;</em>
         </div>}
       </div>
       <figure>
-        <figcaption>Hand</figcaption>
+        <figcaption>Round {numRound}, Hand {turn}</figcaption>
         <ul>
           {hand.map((card, i) => (
             <li key={i}>
