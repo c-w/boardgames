@@ -124,7 +124,7 @@ function Card({ ctx, card }) {
     <div className={`${category} card`}>
       <div>
         {name}
-        {count && <span>&nbsp;(x{count})</span>}
+        {count && <span>&nbsp;×{count}</span>}
         {variants && <span>:<br />{variants.map((variant, i) => <span key={i}>{variant}<br /></span>)}</span>}
       </div>
       <HelpText ctx={ctx} card={card} />
