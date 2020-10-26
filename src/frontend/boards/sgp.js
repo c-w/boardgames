@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getNumRound } from '../../shared/games/sgp';
+import { NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
 import { partition, range, sum } from '../../shared/utils';
 import './sgp.scoped.scss';
 
@@ -10,14 +10,124 @@ import './sgp.scoped.scss';
 /** @typedef {import('../../shared/games/sgp').Card} Card */
 
 /**
- * @param {Card} props
+ * @param {Object} props
+ * @param {Ctx} props.ctx
+ * @param {Card} props.card
  */
-function Card({ name, category, count, variants }) {
+function HelpText({ ctx, card }) {
+  let content;
+
+  switch (card.name) {
+    case NIGIRIS.egg:
+      content = <span>1 point</span>;
+      break;
+
+    case NIGIRIS.salmon:
+      content = <span>2 points</span>;
+      break;
+
+    case NIGIRIS.squid:
+      content = <span>3 points</span>;
+      break;
+
+    case ROLLS.maki:
+      content = ctx.numPlayers <= 5
+        ? <span>Most: 6/3</span>
+        : <span>Most: 6/4/2</span>;
+      break;
+
+    case ROLLS.temaki:
+      content = ctx.numPlayers <= 2
+        ? <span>Most: 4</span>
+        : <span>Most: 4<br />Least: -4</span>;
+      break;
+
+    case ROLLS.uramaki:
+      content = <span>First to 10: 8/5/2</span>;
+      break;
+
+    case APPETIZERS.dumpling:
+      content = <span>1 3 6 10 15</span>;
+      break;
+
+    case APPETIZERS.edamame:
+      content = <span>1 per opponents with edamame</span>;
+      break;
+
+    case APPETIZERS.eel:
+      content = <span>×1 = -3<br />×2 = +7</span>;
+      break;
+
+    case APPETIZERS.onigiri:
+      content = <span>Unique: 1 4 9 16</span>;
+      break;
+
+    case APPETIZERS.misoSoup:
+      content = <span>3 points<br />Discard if any others played this turn</span>;
+      break;
+
+    case APPETIZERS.sashimi:
+      content = <span>×3 = 10</span>;
+      break;
+
+    case APPETIZERS.tempura:
+      content = <span>×2 = 5</span>;
+      break;
+
+    case APPETIZERS.tofu:
+      content = <span>×1 = 2<br />×2 = 6<br />×3+ = 0</span>;
+      break;
+
+    case SPECIALS.soySauce:
+      content = <span>Most colors: 4</span>;
+      break;
+
+    case SPECIALS.tea:
+      content = <span>1 per card in your biggest set</span>;
+      break;
+
+    case SPECIALS.wasabi:
+      content = <span>Next nigiri ×3</span>;
+      break;
+
+    case DESSERTS.greenTeaIceCream:
+      content = <span>×4 = 12</span>;
+      break;
+
+    case DESSERTS.pudding:
+      content = ctx.numPlayers <= 2
+        ? <span>Most: 6</span>
+        : <span>Most: 6<br />Least: -6</span>;
+      break;
+
+    case DESSERTS.fruit:
+      content = <span>Per type:<br />(-2) 0 1 3 6 10</span>;
+      break;
+
+    default:
+      console.error(`Unknown card: ${card.name}`);
+      return null;
+  }
+
+  return <aside>{content}</aside>;
+}
+
+/**
+ * @param {Object} props
+ * @param {Ctx} props.ctx
+ * @param {Card} props.card
+ */
+function Card({ ctx, card }) {
+  const { name, category, count, variants } = card;
+
   return (
     <div className={`${category} card`}>
-      {name}
-      {variants && <span>&nbsp;({variants.join(' + ')})</span>}
-      {count && <span>&nbsp;(x{count})</span>}
+      <div>
+        {name}
+        {variants && <span>&nbsp;({variants.join(' + ')})</span>}
+        {count && <span>&nbsp;(x{count})</span>}
+      </div>
+      <HelpText ctx={ctx} card={card} />
     </div>
   );
 }
@@ -92,19 +202,19 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           <ul>
             {cards.true.map((card, i) => (
               <li key={i}>
-                <Card {...card} />
+                <Card card={card} ctx={ctx} />
               </li>
             ))}
           </ul>
           <ol>
             {cards.false.map((card, i) => (
               <li key={i}>
-                <Card {...card} />
+                <Card card={card} ctx={ctx} />
               </li>
             ))}
             {picked && (
               <li>
-                <Card {...picked} />
+                <Card card={picked} ctx={ctx} />
               </li>
             )}
           </ol>
@@ -132,7 +242,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           {hand.map((card, i) => (
             <li key={i}>
               <button onClick={pickCard(i)} disabled={picked != null}>
-                <Card {...card} />
+                <Card card={card} ctx={ctx} />
               </button>
             </li>
           ))}

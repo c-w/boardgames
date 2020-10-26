@@ -81,19 +81,19 @@ const CATEGORIES = {
   special: 'Special',
 };
 
-const NIGIRIS = {
+export const NIGIRIS = {
   egg: 'Egg',
   salmon: 'Salmon',
   squid: 'Squid',
 };
 
-const ROLLS = {
+export const ROLLS = {
   maki: 'Maki',
   temaki: 'Temaki',
   uramaki: 'Uramaki',
 };
 
-const APPETIZERS = {
+export const APPETIZERS = {
   tempura: 'Tempura',
   sashimi: 'Sashimi',
   misoSoup: 'Miso Soup',
@@ -104,13 +104,13 @@ const APPETIZERS = {
   edamame: 'Edamame',
 };
 
-const SPECIALS = {
+export const SPECIALS = {
   wasabi: 'Wasabi',
   tea: 'Tea',
   soySauce: 'Soy Sauce',
 };
 
-const DESSERTS = {
+export const DESSERTS = {
   greenTeaIceCream: 'Green Tea Ice Cream',
   pudding: 'Pudding',
   fruit: 'Fruit',
