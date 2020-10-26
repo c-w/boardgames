@@ -7,6 +7,14 @@ import MatchList from './MatchList';
 import Wait from './Wait';
 import './App.scoped.css';
 
+function DefaultLayout({ children }) {
+  return (
+    <div className="narrow">
+      {children}
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <HashRouter>
@@ -15,27 +23,27 @@ export default function App() {
           <Route
             exact
             path="/"
-            component={GameList}
+            children={() => <DefaultLayout><GameList /></DefaultLayout>}
           />
           <Route
             exact
             path="/:gameName/new"
-            children={({ match }) => <Lobby {...match.params} />}
+            children={({ match }) => <DefaultLayout><Lobby {...match.params} /></DefaultLayout>}
           />
           <Route
             exact
             path="/:gameName/join"
-            children={({ match }) => <MatchList {...match.params} />}
+            children={({ match }) => <DefaultLayout><MatchList {...match.params} /></DefaultLayout>}
           />
           <Route
             exact
             path="/:gameName/join/:matchID"
-            children={({ match }) => <Lobby {...match.params} />}
+            children={({ match }) => <DefaultLayout><Lobby {...match.params} /></DefaultLayout>}
           />
           <Route
             exact
             path="/:gameName/wait/:matchID/:playerID/:credentials"
-            children={({ match }) => <Wait {...match.params} />}
+            children={({ match }) => <DefaultLayout><Wait {...match.params} /></DefaultLayout>}
           />
           <Route
             exact
