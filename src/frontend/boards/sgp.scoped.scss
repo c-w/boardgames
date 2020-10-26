@@ -1,0 +1,113 @@
+$nigiri: #F9B700;
+$rolls: #A13177;
+$appetizer: #13817B;
+$special: #F68421;
+$dessert: #D53093;
+$default: #9E988E;
+$text: #FFFFFF;
+
+@mixin card-font {
+  color: $text;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.card {
+  @include card-font;
+  border-radius: 16px;
+  border: 2px solid $text;
+  line-height: 16px;
+  padding: 16px 8px;
+}
+
+button:disabled .card {
+  pointer-events: none;
+  background-color: $default;
+  opacity: 0.5;
+}
+
+button .card:hover  {
+  border-color: $default;
+  font-weight: 900;
+}
+
+.Nigiri {
+  background-color: $nigiri;
+}
+
+.Rolls {
+  background-color: $rolls;
+}
+
+.Appetizer {
+  background-color: $appetizer;
+}
+
+.Special {
+  background-color: $special;
+}
+
+.Dessert {
+  background-color: $dessert;
+}
+
+em {
+  background-color: yellow;
+}
+
+button {
+  padding: 0;
+  border-width: 0;
+  width: 100%;
+  background-color: $text;
+}
+
+figure > ul,
+figure > ol {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  list-style-type: none;
+}
+
+.gameover {
+  table {
+    @include card-font;
+    border-spacing: 0;
+    width: 100%;
+  }
+
+  thead {
+    background-color: $nigiri;
+  }
+
+  tbody {
+    background-color: $rolls;
+  }
+
+  tbody td,
+  tbody th {
+    padding: 16px;
+  }
+
+  thead th {
+    padding: 16px 8px;
+  }
+
+  thead > tr > th:first-of-type {
+    border-top-left-radius: 16px;
+  }
+
+  thead > tr > th:last-of-type {
+    border-top-right-radius: 16px;
+  }
+
+  tbody > tr:last-of-type > th:first-of-type {
+    border-bottom-left-radius: 16px;
+  }
+
+  tbody > tr:last-of-type > td:last-of-type {
+    border-bottom-right-radius: 16px;
+  }
+}

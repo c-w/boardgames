@@ -1,7 +1,7 @@
 import React from 'react';
 import { getNumRound } from '../../shared/games/sgp';
 import { partition, range, sum } from '../../shared/utils';
-import './sgp.scoped.css';
+import './sgp.scoped.scss';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/src/types').LobbyAPI.Match} Match **/
@@ -58,8 +58,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     );
 
     return (
-      <div>
-        <em>{gameover.winner === playerID ? 'You won' : 'You lost'}</em>
+      <div className="gameover">
         <table>
           <thead>
             <tr>
@@ -77,6 +76,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
             )}
           </tbody>
         </table>
+        <em>{gameover.winner === playerID ? 'You won' : 'You lost'}</em>
       </div>
     );
   }
