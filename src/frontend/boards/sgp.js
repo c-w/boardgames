@@ -224,11 +224,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   return (
     <div className="sgp">
-      <div>
-        {picked && <div>
-          <em>Waiting for other players&hellip;</em>
-        </div>}
-      </div>
+      {picked && <em className="status">Waiting for other players&hellip;</em>}
       <figure>
         <figcaption>Round {numRound}, Hand {turn}</figcaption>
         <ul>

@@ -8,12 +8,14 @@ $text: #FFFFFF;
 $background: #E5D1E4;
 $heading: #7D4C83;
 $heading-text: #B1DBD0;
+$alert: #C9DA2B;
 
 .sgp {
   background-color: $background;
   display: table-cell;
   height: 100vh;
   width: 100vw;
+  position: relative;
 }
 
 @mixin card-font {
@@ -106,10 +108,6 @@ button {
   background-color: $dessert;
 }
 
-em {
-  background-color: yellow;
-}
-
 figure {
   margin-block-start: 16px;
   margin-block-end: 16px;
@@ -126,6 +124,18 @@ figure {
     flex-wrap: wrap;
     flex-direction: row;
   }
+}
+
+.status {
+  @include card-font;
+  color: #000000;
+  position: fixed;
+  z-index: 1;
+  right: 8px;
+  top: 8px;
+  padding: 8px 16px;
+  border-radius: 16px;
+  background-color: $alert;
 }
 
 .gameover {
