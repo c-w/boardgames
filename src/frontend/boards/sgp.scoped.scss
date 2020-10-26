@@ -72,6 +72,11 @@ figure > ol {
 }
 
 .gameover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
   table {
     @include card-font;
     border-spacing: 0;
@@ -109,5 +114,20 @@ figure > ol {
 
   tbody > tr:last-of-type > td:last-of-type {
     border-bottom-right-radius: 16px;
+  }
+
+  a {
+    @include card-font;
+    margin-top: 16px;
+    background-color: $appetizer;
+    text-decoration: none;
+    border-radius: 16px;
+    padding: 16px;
+    width: fit-content;
+    border: 2px solid $text;
+  }
+
+  a:hover {
+    border: 2px solid $default;
   }
 }

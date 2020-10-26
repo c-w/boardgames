@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getNumRound } from '../../shared/games/sgp';
 import { partition, range, sum } from '../../shared/utils';
 import './sgp.scoped.scss';
@@ -76,7 +77,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
             )}
           </tbody>
         </table>
-        <em>{gameover.winner === playerID ? 'You won' : 'You lost'}</em>
+        <Link to="/sgp/new">Click to play another game</Link>
       </div>
     );
   }
