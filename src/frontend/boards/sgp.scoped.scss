@@ -19,14 +19,14 @@ $text: #FFFFFF;
   border-radius: 16px;
   border: 2px solid $text;
   padding: 16px 8px;
-  width: 150px;
+  width: 128px;
   height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@media (min-width: 1032px) {
+@media (min-width: 1194px) {
   .card {
     width: 96px;
     height: 128px;
@@ -76,6 +76,11 @@ button {
 }
 
 figure {
+  margin-block-start: 16px;
+  margin-block-end: 16px;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+
   ul,
   ol {
     margin-block-start: 0;
