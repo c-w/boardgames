@@ -59,7 +59,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     );
 
     return (
-      <div className="gameover">
+      <div className="sgp gameover">
         <table>
           <thead>
             <tr>
@@ -114,7 +114,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   };
 
   return (
-    <div>
+    <div className="sgp">
       <div>
         <div>
           Round: {numRound}
