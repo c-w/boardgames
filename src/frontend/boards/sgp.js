@@ -124,8 +124,8 @@ function Card({ ctx, card }) {
     <div className={`${category} card`}>
       <div>
         {name}
-        {variants && <span>&nbsp;({variants.join(' + ')})</span>}
         {count && <span>&nbsp;(x{count})</span>}
+        {variants && <span>:<br />{variants.map((variant, i) => <span key={i}>{variant}<br /></span>)}</span>}
       </div>
       <HelpText ctx={ctx} card={card} />
     </div>
