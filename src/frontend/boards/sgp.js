@@ -88,25 +88,27 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     return (
       <figure>
         <figcaption>{name || playerNameFor(playerID)}</figcaption>
-        <ul>
-          {cards.true.map((card, i) => (
-            <li key={i}>
-              <Card {...card} />
-            </li>
-          ))}
-        </ul>
-        <ol>
-          {cards.false.map((card, i) => (
-            <li key={i}>
-              <Card {...card} />
-            </li>
-          ))}
-          {picked && (
-            <li>
-              <Card {...picked} />
-            </li>
-          )}
-        </ol>
+        <div className="playedCards">
+          <ul>
+            {cards.true.map((card, i) => (
+              <li key={i}>
+                <Card {...card} />
+              </li>
+            ))}
+          </ul>
+          <ol>
+            {cards.false.map((card, i) => (
+              <li key={i}>
+                <Card {...card} />
+              </li>
+            ))}
+            {picked && (
+              <li>
+                <Card {...picked} />
+              </li>
+            )}
+          </ol>
+        </div>
       </figure>
     );
   };
