@@ -428,7 +428,7 @@ export function scoreCard(card, hand, otherHands, numRound) {
     case SPECIALS.wasabi:
       {
         const turnPlayed = hand.indexOf(card);
-        const nextNigiri = hand.slice(turnPlayed).filter(otherCard => otherCard.category === CATEGORIES.nigiri)[0];
+        const nextNigiri = hand.slice(turnPlayed).filter(otherCard => !otherCard.scored && otherCard.category === CATEGORIES.nigiri)[0];
 
         if (nextNigiri == null) {
           score = 0;

@@ -874,6 +874,38 @@ describe('Score Wasabi Special', () => {
     expect(scoreCard(hand[2], hand, otherHands, round)).toEqual(0);
   });
 
+  test('multiple, without matches', () => {
+    const hand = [
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Salmon', category: 'Nigiri' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreHand(hand, otherHands, round)).toEqual(6);
+  });
+
+  test('multiple, with matches', () => {
+    const hand = [
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Wasabi', category: 'Special' },
+      { name: 'Sashimi', category: 'Appetizer' },
+      { name: 'Salmon', category: 'Nigiri' },
+      { name: 'Squid', category: 'Nigiri' },
+    ];
+
+    const otherHands = [];
+
+    const round = 1;
+
+    expect(scoreHand(hand, otherHands, round)).toEqual(15);
+  });
+
   test('without nigiri', () => {
     const hand = [
       { name: 'Wasabi', category: 'Special' },
