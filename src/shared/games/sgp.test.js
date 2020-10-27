@@ -687,6 +687,7 @@ describe('Score Eel Appetizer', () => {
     [1, -3],
     [2, 7],
     [3, 7],
+    [4, 7],
   ])('%sx', (count, expected) => {
     const hand = [
       ...range(count).map(_ => ({ name: 'Eel', category: 'Appetizer' })),

@@ -55,7 +55,7 @@ function HelpText({ ctx, card }) {
       break;
 
     case APPETIZERS.eel:
-      content = <span>×1 = -3<br />×2 = +7</span>;
+      content = <span>×1 = -3<br />×2+ = +7</span>;
       break;
 
     case APPETIZERS.onigiri:
