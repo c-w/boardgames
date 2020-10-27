@@ -148,6 +148,7 @@ figure {
     @include card-font;
     border-spacing: 0;
     width: 100%;
+    max-width: 600px;
 
     thead {
       background-color: $nigiri;
@@ -191,7 +192,7 @@ figure {
     border-radius: 16px;
     padding: 16px;
     width: fit-content;
-    border: 2px solid $text;
+    border: 2px solid $appetizer;
 
     &:hover {
       border: 2px solid $default;
