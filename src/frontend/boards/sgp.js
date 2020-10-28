@@ -134,6 +134,19 @@ function Card({ ctx, card, className }) {
   );
 }
 
+function Rules() {
+  return (
+    <a
+      className="help"
+      href="https://gamewright.com/pdfs/Rules/SushiGoPartyTM-RULES.pdf"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span role="img" aria-label="View rules">❓</span>
+    </a>
+  )
+}
+
 /**
  * @param {Object} props
  * @param {G} props.G
@@ -261,6 +274,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       {otherPlayerIDs.map(id =>
         <PlayedCards key={id} playerID={id} />
       )}
+      <Rules />
     </div>
   );
 }
