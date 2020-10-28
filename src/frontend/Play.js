@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
-import loadBoard from './boards';
 import config from './config';
 import { useGame } from './hooks';
 
@@ -10,10 +9,9 @@ import { useGame } from './hooks';
  * @param {string} props.gameName
  */
 export default function Play({ gameName, ...props }) {
-  const game = useGame(gameName);
-  const board = loadBoard(gameName);
+  const { game, board } = useGame(gameName);
 
-  if (game == null) {
+  if (game == null || board == null) {
     return null;
   }
 

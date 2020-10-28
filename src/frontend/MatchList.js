@@ -7,7 +7,7 @@ import { useGame } from './hooks';
 
 export default function MatchList({ gameName }) {
   const [matches, setMatches] = useState(null);
-  const game = useGame(gameName);
+  const { game } = useGame(gameName);
 
   useInterval(useCallback(async () => {
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });

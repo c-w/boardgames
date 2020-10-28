@@ -15,7 +15,7 @@ import './Wait.scoped.css';
  * @param {string} props.credentials
  */
 export default function Wait({ gameName, matchID, playerID, credentials }) {
-  const game = useGame(gameName);
+  const { game } = useGame(gameName);
 
   const [status, setStatus] = useState({ isReady: false, isLoading: true });
   const [copied, setCopied] = useState(false);

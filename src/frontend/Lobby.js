@@ -52,7 +52,7 @@ function formDataKeyFor(gameName) {
 function CreateGame({ gameName }) {
   const [error, setError] = useState(null);
   const history = useHistory();
-  const game = useGame(gameName);
+  const { game } = useGame(gameName);
 
   const formDataKey = formDataKeyFor(gameName);
 
@@ -117,7 +117,7 @@ function JoinGame({ gameName, matchID }) {
   const [error, setError] = useState(null);
   const [match, setMatch] = useState(null);
   const history = useHistory();
-  const game = useGame(gameName);
+  const { game } = useGame(gameName);
 
   const formDataKey = formDataKeyFor(gameName);
 
