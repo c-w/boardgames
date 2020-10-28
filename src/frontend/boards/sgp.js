@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
+import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
 import { partition, range, sum } from '../../shared/utils';
 import './sgp.scoped.scss';
 
@@ -189,7 +189,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
             )}
           </tbody>
         </table>
-        <Link to="/sgp/new">Click to play another game</Link>
+        <Link to={`/${game.name}/new`}>Click to play another game</Link>
       </div>
     );
   }

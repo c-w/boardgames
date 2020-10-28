@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
  */
 function importGame(gameName) {
   switch (gameName) {
-    case 'fitf':
+    case 'the-fox-in-the-forest':
       return import('../shared/games/fitf');
 
-    case 'sgp':
+    case 'sushi-go-party':
       return import('../shared/games/sgp');
 
     default:

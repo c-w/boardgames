@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { isMoveInvalid } from '../../shared/games/fitf';
+import { default as game, isMoveInvalid } from '../../shared/games/fitf';
 import { last, sum } from '../../shared/utils';
 import './fitf.scoped.css';
 
@@ -89,7 +89,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   const goToNewGame = (event) => {
     event.preventDefault();
-    history.push('/fitf/new');
+    history.push(`/${game.name}/new`);
   };
 
   const isOver = ctx.gameover != null;

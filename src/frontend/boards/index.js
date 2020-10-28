@@ -6,10 +6,10 @@ import { lazy } from 'react';
  */
 function importBoard(gameName) {
   switch (gameName) {
-    case 'fitf':
+    case 'the-fox-in-the-forest':
       return import('./fitf');
 
-    case 'sgp':
+    case 'sushi-go-party':
       return import('./sgp');
 
     default:

@@ -903,7 +903,7 @@ function pickCard(G, ctx, i) {
 }
 
 export default {
-  name: 'sgp',
+  name: 'sushi-go-party',
 
   minPlayers: MIN_PLAYERS,
   maxPlayers: MAX_PLAYERS,
