@@ -462,6 +462,7 @@ describe('Score Uramaki Rolls', () => {
         { name: 'Uramaki', category: 'Rolls', count: 4 },
         { name: 'Uramaki', category: 'Rolls', count: 5 },
         { name: 'Egg', category: 'Nigiri' },
+        { name: 'Pudding', category: 'Dessert', round: 1 },
       ],
       [
         { name: 'Uramaki', category: 'Rolls', count: 5 },
@@ -483,7 +484,7 @@ describe('Score Uramaki Rolls', () => {
       ],
     ];
 
-    const round = 1;
+    const round = 2;
 
     expect(scoreCard(hands[0][0], hands[0], removeAt(hands, 0), round)).toEqual(8);
     expect(scoreCard(hands[1][0], hands[1], removeAt(hands, 1), round)).toEqual(8);

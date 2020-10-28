@@ -250,8 +250,8 @@ export function scoreCard(card, hand, otherHands, numRound) {
       {
         const scores = [2, 5, 8];
 
-        const numCards = hand.length;
-        const allHands = [hand, ...otherHands];
+        const allHands = [hand, ...otherHands].map(cards => cards.filter(card => card.round == null));
+        const numCards = allHands[0].length;
         const uaramakis = range(numPlayers).map(_ => ([]));
 
         for (let numCard = 0; numCard < numCards; numCard++) {
