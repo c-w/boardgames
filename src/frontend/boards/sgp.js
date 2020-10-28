@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
 import { partition, range, sum } from '../../shared/utils';
 import './sgp.scoped.scss';
@@ -116,13 +117,14 @@ function HelpText({ ctx, card }) {
  * @param {Object} props
  * @param {Ctx} props.ctx
  * @param {Card} props.card
+ * @param {string=} props.className
  */
-function Card({ ctx, card }) {
+function Card({ ctx, card, className }) {
   const { name, category, count, variants } = card;
 
   return (
-    <div className={`${category} card`}>
-      <div>
+    <div className={classNames('card', category, className)}>
+      <div className="name">
         {name}
         {count && <span>&nbsp;×{count}</span>}
         {variants && <span>:<br />{variants.map((variant, i) => <span key={i}>{variant}<br /></span>)}</span>}
@@ -144,6 +146,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
   const numRound = getNumRound(ctx);
   const { gameover, turn } = ctx;
+  const [helpTextShown, setHelpTextShown] = useState([]);
   const otherPlayerIDs = Object.keys(G.played).filter(id => id !== playerID);
 
   const playerNameFor = id => matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`;
@@ -153,6 +156,20 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
     if (!picked) {
       moves.pickCard(i);
+    }
+  };
+
+  useEffect(() => {
+    setHelpTextShown([]);
+  }, [turn, picked]);
+
+  const toggleShowHelpText = (i) => (event) => {
+    event.preventDefault();
+
+    if (helpTextShown.includes(i)) {
+      setHelpTextShown(helpTextShown.filter(item => item !== i));
+    } else {
+      setHelpTextShown([...helpTextShown, i]);
     }
   };
 
@@ -233,8 +250,8 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         <ul>
           {hand.map((card, i) => (
             <li key={i}>
-              <button onClick={pickCard(i)} disabled={picked != null}>
-                <Card card={card} ctx={ctx} />
+              <button onClick={pickCard(i)} disabled={picked != null} onContextMenu={toggleShowHelpText(i)}>
+                <Card card={card} ctx={ctx} className={helpTextShown.includes(i) ? 'showHelpText' : null} />
               </button>
             </li>
           ))}

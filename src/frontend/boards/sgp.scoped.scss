@@ -44,10 +44,23 @@ figcaption {
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 
   aside {
     display: none;
     font-size: 12px;
+  }
+
+  @media (max-width: 1193px) {
+    &.showHelpText {
+      .name {
+        display: none;
+      }
+
+      aside {
+        display: block;
+      }
+    }
   }
 
   @media (min-width: 1194px) {
