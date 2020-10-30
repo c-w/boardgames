@@ -63,7 +63,7 @@
     "lint": "run-p lint-eslint lint-style lint-tsc",
     "test": "cross-env CI=true craco test --env=node",
     "build-client": "craco build",
-    "build-server": "babel src --ignore src/frontend --ignore src/index.js --ignore src/setupProxy.js --out-dir dist",
+    "build-server": "babel src --out-dir dist",
     "prebuild": "yarn run ensure-env",
     "build": "run-p build-client build-server"
   },
@@ -99,6 +99,9 @@
       "@babel/preset-env"
     ],
     "ignore": [
+      "src/frontend",
+      "src/index.js",
+      "src/setupProxy.js",
       "**/*.test.js"
     ]
   },
