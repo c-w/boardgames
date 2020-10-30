@@ -47,6 +47,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "shx": "^0.3.2",
+    "stylelint": "^13.7.2",
+    "stylelint-config-recommended": "^3.0.0",
     "typescript": "^4.0.3"
   },
   "scripts": {
@@ -56,8 +58,9 @@
     "start-server": "cross-env PORT=8000 nodemon --exec babel-node src/backend/server.js",
     "ensure-env": "shx cp -n .env.example .env",
     "lint-eslint": "eslint --max-warnings=0 src",
+    "lint-style": "stylelint \"src/**/*.css\"",
     "lint-tsc": "tsc",
-    "lint": "run-p lint-eslint lint-tsc",
+    "lint": "run-p lint-eslint lint-style lint-tsc",
     "test": "cross-env CI=true craco test --env=node",
     "build-client": "craco build",
     "build-server": "babel src --ignore src/frontend --ignore src/index.js --ignore src/setupProxy.js --out-dir dist",
@@ -74,6 +77,11 @@
         }
       ]
     }
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-recommended"
+    ]
   },
   "babel": {
     "presets": [
