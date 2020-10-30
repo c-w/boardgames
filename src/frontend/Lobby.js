@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { LobbyClient } from 'boardgame.io/client';
 import Form from '@rjsf/core';
+import Loading from './Loading';
 import config from './config';
 import { useGame } from './hooks';
 import { getRandomInt } from '../shared/utils';
@@ -88,7 +89,7 @@ function CreateGame({ gameName }) {
   };
 
   if (game == null) {
-    return null;
+    return <Loading />;
   }
 
   const schema = schemaFor(game);
@@ -160,7 +161,7 @@ function JoinGame({ gameName, matchID }) {
   };
 
   if (game == null || match == null) {
-    return null;
+    return <Loading />;
   }
 
   const schema = schemaFor(game);

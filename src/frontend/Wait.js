@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
+import Loading from './Loading';
 import config from './config';
 import { useGame } from './hooks';
 import './Wait.scoped.css';
@@ -39,7 +40,7 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
   };
 
   if (status.isLoading) {
-    return null;
+    return <Loading />;
   }
 
   if (status.isReady) {

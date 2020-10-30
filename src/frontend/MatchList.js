@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
+import Loading from './Loading';
 import config from './config';
 import { useGame } from './hooks';
 
@@ -16,7 +17,7 @@ export default function MatchList({ gameName }) {
   }, [gameName, setMatches]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
   if (matches == null || game == null) {
-    return null;
+    return <Loading />;
   }
 
   const openMatches = matches.filter(match => match.players.some(player => player.name == null));

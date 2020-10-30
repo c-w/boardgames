@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { LobbyClient } from 'boardgame.io/client';
+import Loading from './Loading';
 import config from './config';
 import './GameList.scoped.css';
 
@@ -13,7 +14,7 @@ export default function GameList() {
   }, [setGames]);
 
   if (games == null) {
-    return null;
+    return <Loading />;
   }
 
   if (games.length === 1) {
