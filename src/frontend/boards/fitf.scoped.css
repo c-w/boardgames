@@ -49,38 +49,38 @@ ol {
   list-style: none;
 }
 
-.bgio-client form li > label {
+form li > label {
   display: inline-block;
   margin-bottom: 0.5em;
 }
 
 @media screen and (min-width: 400px) {
-  .bgio-client form > div > input {
+  form > div > input {
     width: 100%;
     height: 2em;
   }
 }
 
 @media screen and (max-width: 400px) {
-  .bgio-client form {
+  form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     font-size: 2.8vh;
     min-height: 95vh;
   }
 
-  .bgio-client form > div {
+  form > div {
     position: relative;
     padding: 1em;
   }
 
-  .bgio-client form > div > aside {
+  form > div > aside {
     position: absolute;
     bottom: 1em;
     text-align: justify;
   }
 
-  .bgio-client form > div > input {
+  form > div > input {
     position: absolute;
     top: 25%;
     left: 50%;
