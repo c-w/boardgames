@@ -102,7 +102,7 @@
       "src/frontend",
       "src/index.js",
       "src/setupProxy.js",
-      "**/*.test.js"
+      "src/**/*.test.js"
     ]
   },
   "nodemonConfig": {
