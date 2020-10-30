@@ -5,11 +5,11 @@ import Play from './Play';
 import GameList from './GameList';
 import MatchList from './MatchList';
 import Wait from './Wait';
-import './App.scoped.css';
+import styles from './App.module.css';
 
 function DefaultLayout({ children }) {
   return (
-    <div className="narrow">
+    <div className={styles.narrow}>
       {children}
     </div>
   );
