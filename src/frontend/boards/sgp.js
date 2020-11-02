@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
@@ -117,20 +117,35 @@ function HelpText({ ctx, card }) {
  * @param {Object} props
  * @param {Ctx} props.ctx
  * @param {Card} props.card
- * @param {string=} props.className
+ * @param {any=} props.onClick
+ * @param {boolean=} props.disabled
  */
-function Card({ ctx, card, className }) {
+function Card({ ctx, card, onClick, disabled }) {
   const { name, category, count, variants } = card;
 
+  const [isHelpTextShown, setIsHelpTextShown] = useState(false);
+
+  const toggleShowHelpText = useCallback((event) => {
+    event.preventDefault();
+    setIsHelpTextShown(value => !value);
+  }, [setIsHelpTextShown]);
+
   return (
-    <div className={classNames('card', category, className)}>
-      <div className="name">
-        {name}
-        {count && <span>&nbsp;×{count}</span>}
-        {variants && <span>:<br />{variants.map((variant, i) => <span key={i}>{variant}<br /></span>)}</span>}
+    <button
+      className={classNames({ clickable: onClick != null && !disabled })}
+      onContextMenu={toggleShowHelpText}
+      onClick={disabled ? null : onClick}
+      disabled={disabled}
+    >
+      <div className={classNames('card', category, { showHelpText: isHelpTextShown })}>
+        <div className="name">
+          {name}
+          {count && <span>&nbsp;×{count}</span>}
+          {variants && <span>:<br />{variants.map((variant, i) => <span key={i}>{variant}<br /></span>)}</span>}
+        </div>
+        <HelpText ctx={ctx} card={card} />
       </div>
-      <HelpText ctx={ctx} card={card} />
-    </div>
+    </button>
   );
 }
 
@@ -159,7 +174,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
   const numRound = getNumRound(ctx);
   const { gameover, turn } = ctx;
-  const [helpTextShown, setHelpTextShown] = useState([]);
   const otherPlayerIDs = Object.keys(G.played).filter(id => id !== playerID);
 
   const playerNameFor = id => matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`;
@@ -169,20 +183,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
     if (!picked) {
       moves.pickCard(i);
-    }
-  };
-
-  useEffect(() => {
-    setHelpTextShown([]);
-  }, [turn, picked]);
-
-  const toggleShowHelpText = (i) => (event) => {
-    event.preventDefault();
-
-    if (helpTextShown.includes(i)) {
-      setHelpTextShown(helpTextShown.filter(item => item !== i));
-    } else {
-      setHelpTextShown([...helpTextShown, i]);
     }
   };
 
@@ -262,10 +262,13 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         <figcaption>Round {numRound}, Hand {turn}</figcaption>
         <ul>
           {hand.map((card, i) => (
-            <li key={i}>
-              <button onClick={pickCard(i)} disabled={picked != null} onContextMenu={toggleShowHelpText(i)}>
-                <Card card={card} ctx={ctx} className={helpTextShown.includes(i) ? 'showHelpText' : null} />
-              </button>
+            <li key={`${i}-${card.name}-${card.category}-${turn}`}>
+              <Card
+                card={card}
+                ctx={ctx}
+                onClick={pickCard(i)}
+                disabled={picked != null}
+              />
             </li>
           ))}
         </ul>

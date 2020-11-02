@@ -81,22 +81,23 @@ button {
   width: 100%;
   background-color: $background;
 
-  .card {
-    &:hover {
-      border-color: $default;
-      font-weight: 900;
-
-      aside {
-        font-weight: 600;
-      }
+  &:disabled {
+    .card {
+      background-color: $default;
+      opacity: 0.5;
     }
   }
 
-  &:disabled {
+  &.clickable {
     .card {
-      pointer-events: none;
-      background-color: $default;
-      opacity: 0.5;
+      &:hover {
+        border-color: $default;
+        font-weight: 900;
+
+        aside {
+          font-weight: 600;
+        }
+      }
     }
   }
 }
