@@ -151,14 +151,13 @@ function Card({ ctx, card, onClick, disabled }) {
 
 function Rules() {
   return (
-    <a
+    <Link
       className="help"
-      href="https://gamewright.com/pdfs/Rules/SushiGoPartyTM-RULES.pdf"
+      to={`/${game.name}/rules`}
       target="_blank"
-      rel="noopener noreferrer"
     >
       <span role="img" aria-label="View rules">❓</span>
-    </a>
+    </Link>
   )
 }
 

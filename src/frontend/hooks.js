@@ -15,12 +15,14 @@ function importGame(gameName) {
     case 'the-fox-in-the-forest':
       return [
         () => import('../shared/games/fitf'),
+        () => import('../shared/games/fitf.md'),
         () => import('./boards/fitf'),
       ];
 
     case 'sushi-go-party':
       return [
         () => import('../shared/games/sgp'),
+        () => import('../shared/games/sgp.md'),
         () => import('./boards/sgp'),
       ];
 
@@ -31,20 +33,29 @@ function importGame(gameName) {
 
 /**
  * @param {string} gameName
- * @returns {{ game?: Game, board?: BoardComponent }}
+ * @returns {{ game?: Game, board?: BoardComponent, rules?: string }}
  */
 export function useGame(gameName) {
-  const [imported, setImported] = useState({ game: null, board: null });
+  const [imported, setImported] = useState({ game: null, board: null, rules: null });
 
   useEffect(() => {
-    const [ gameImporter, boardImporter ] = importGame(gameName);
+    const [ gameImporter, rulesImporter, boardImporter ] = importGame(gameName);
 
     const boardComponent = lazy(boardImporter);
 
-    gameImporter().then((gameModule) => setImported({
-      game: gameModule.default,
-      board: boardComponent,
-    }));
+    Promise.all([
+      gameImporter(),
+      rulesImporter(),
+    ]).then(([
+      gameModule,
+      rulesModule,
+    ]) => {
+      setImported({
+        game: gameModule.default,
+        board: boardComponent,
+        rules: rulesModule.default,
+      });
+    });
   }, [gameName]);
 
   return imported;

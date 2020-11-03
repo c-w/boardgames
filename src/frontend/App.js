@@ -4,6 +4,7 @@ import Lobby from './Lobby';
 import Play from './Play';
 import GameList from './GameList';
 import MatchList from './MatchList';
+import Rules from './Rules';
 import Wait from './Wait';
 import styles from './App.module.css';
 
@@ -29,6 +30,11 @@ export default function App() {
             exact
             path="/:gameName/new"
             children={({ match }) => <DefaultLayout><Lobby {...match.params} /></DefaultLayout>}
+          />
+          <Route
+            exact
+            path="/:gameName/rules"
+            children={({ match }) => <DefaultLayout><Rules {...match.params} /></DefaultLayout>}
           />
           <Route
             exact
