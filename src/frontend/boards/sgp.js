@@ -188,10 +188,10 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   if (gameover) {
     const ScoreRow = ({ playerID, name=undefined }) => (
       <tr>
-        <th scope="row">
+        <td>
           {name || playerNameFor(playerID)}
           {gameover.winner === playerID && <span role="img" aria-label="Winner">🏆</span>}
-        </th>
+        </td>
         {range(numRound).map(i =>
           <td key={i}>{G.scores[playerID][i]}</td>
         )}

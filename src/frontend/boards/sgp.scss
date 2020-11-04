@@ -5,6 +5,7 @@ $special: #F68421;
 $dessert: #D53093;
 $default: #9E988E;
 $text: #FFFFFF;
+$black: #000000;
 $background: #E5D1E4;
 $heading: #7D4C83;
 $heading-text: #B1DBD0;
@@ -24,6 +25,110 @@ $alert: #C9DA2B;
   height: 100vh;
   width: 100vw;
   position: relative;
+
+  table {
+    border-spacing: 0;
+
+    thead {
+      th {
+        padding: 16px 8px;
+      }
+    }
+
+    tbody {
+      td,
+      th {
+        padding: 16px;
+      }
+    }
+
+    thead > tr > th:first-of-type {
+      border-top-left-radius: 16px;
+    }
+
+    thead > tr > th:last-of-type {
+      border-top-right-radius: 16px;
+    }
+
+    tbody > tr:last-of-type > td:first-of-type {
+      border-bottom-left-radius: 16px;
+    }
+
+    tbody > tr:last-of-type > td:last-of-type {
+      border-bottom-right-radius: 16px;
+    }
+  }
+
+  .rules {
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 16px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    @mixin category-header {
+      color: $text;
+      padding: 8px 0;
+      text-align: center;
+      border-radius: 16px;
+    }
+
+    blockquote {
+      text-align: center;
+      font-style: italic;
+    }
+
+    table {
+      margin: 0 auto;
+
+      thead {
+        background-color: $heading;
+        color: $heading-text;
+      }
+
+      tbody {
+        background-color: $heading-text;
+        color: $black;
+      }
+    }
+
+    h1 {
+      @include category-header;
+      background-color: $alert;
+      color: $black;
+    }
+
+    h2 {
+      @include category-header;
+      background-color: $heading;
+      color: $heading-text;
+    }
+
+    #nigiri {
+      @include category-header;
+      background-color: $nigiri;
+    }
+
+    #rolls {
+      @include category-header;
+      background-color: $rolls;
+    }
+
+    #appetizers {
+      @include category-header;
+      background-color: $appetizer;
+    }
+
+    #specials {
+      @include category-header;
+      background-color: $special;
+    }
+
+    #desserts {
+      @include category-header;
+      background-color: $dessert;
+    }
+  }
 
   .bgio-client {
     figcaption {
@@ -142,7 +247,7 @@ $alert: #C9DA2B;
 
     .status {
       @include card-font;
-      color: #000000;
+      color: $black;
       position: fixed;
       z-index: 1;
       right: 8px;
@@ -153,7 +258,7 @@ $alert: #C9DA2B;
     }
 
     .help {
-      color: #000000;
+      color: $black;
       position: fixed;
       z-index: 1;
       bottom: 8px;
@@ -182,41 +287,15 @@ $alert: #C9DA2B;
 
       table {
         @include card-font;
-        border-spacing: 0;
         width: 100%;
         max-width: 600px;
 
         thead {
           background-color: $nigiri;
-
-          th {
-            padding: 16px 8px;
-          }
         }
 
         tbody {
           background-color: $rolls;
-
-          td,
-          th {
-            padding: 16px;
-          }
-        }
-
-        thead > tr > th:first-of-type {
-          border-top-left-radius: 16px;
-        }
-
-        thead > tr > th:last-of-type {
-          border-top-right-radius: 16px;
-        }
-
-        tbody > tr:last-of-type > th:first-of-type {
-          border-bottom-left-radius: 16px;
-        }
-
-        tbody > tr:last-of-type > td:last-of-type {
-          border-bottom-right-radius: 16px;
         }
       }
 
