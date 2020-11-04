@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
 import { partition, range, sum } from '../../shared/utils';
-import './sgp.scoped.scss';
+import './sgp.scss';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/src/types').LobbyAPI.Match} Match **/
@@ -200,7 +200,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     );
 
     return (
-      <div className="sgp gameover">
+      <div className="gameover">
         <table>
           <thead>
             <tr>
@@ -255,7 +255,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   };
 
   return (
-    <div className="sgp">
+    <Fragment>
       {picked && <em className="status">Waiting for other players&hellip;</em>}
       <figure>
         <figcaption>Round {numRound}, Hand {turn}</figcaption>
@@ -277,6 +277,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         <PlayedCards key={id} playerID={id} />
       )}
       <Rules />
-    </div>
+    </Fragment>
   );
 }

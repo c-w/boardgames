@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { default as game, isMoveInvalid } from '../../shared/games/fitf';
 import { last, sum } from '../../shared/utils';
-import './fitf.scoped.css';
+import './fitf.scss';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/src/types').LobbyAPI.Match} Match **/
