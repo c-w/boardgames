@@ -175,6 +175,7 @@ function JoinGame({ gameName, matchID }) {
     ...JSON.parse(localStorage.getItem(formDataKey)),
     ...match.setupData,
     unlisted: match.unlisted,
+    numPlayers: match.players.length,
   };
 
   return (
