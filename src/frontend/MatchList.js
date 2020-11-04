@@ -6,6 +6,10 @@ import Loading from './Loading';
 import config from './config';
 import { useGame } from './hooks';
 
+/**
+ * @param {object} props
+ * @param {string} props.gameName
+ */
 export default function MatchList({ gameName }) {
   const [matches, setMatches] = useState(null);
   const { game } = useGame(gameName);
