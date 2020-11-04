@@ -147,7 +147,7 @@ function JoinGame({ gameName, matchID }) {
         playerName: formData.playerName,
       });
 
-      history.push(`/${game.name}/play/${matchID}/${playerID}/${join.playerCredentials}`);
+      history.push(`/${game.name}/wait/${matchID}/${playerID}/${join.playerCredentials}`);
     } catch (ex) {
       if (ex.message === 'HTTP status 409') {
         setError('The game is already full');

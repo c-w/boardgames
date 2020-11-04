@@ -30,7 +30,7 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
 
     const data = await client.getMatch(game.name, matchID);
 
-    const isReady = data.players.filter(p => p.name != null).length === game.minPlayers;
+    const isReady = data.players.every(p => p.name != null);
 
     setStatus({ isLoading: false, isReady });
   }, [game, matchID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
