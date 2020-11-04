@@ -903,7 +903,7 @@ function pickCard(G, ctx, i) {
 }
 
 export default {
-  name: 'sushi-go-party',
+  name: 'sashimi-express',
 
   minPlayers: MIN_PLAYERS,
   maxPlayers: MAX_PLAYERS,

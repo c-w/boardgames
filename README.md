@@ -5,7 +5,7 @@
 This repository hosts a collection of multiplayer boardgames:
 
 - [The Fox in the Forest](./src/shared/games/fitf.md)
-- [Sushi Go Party!](./src/shared/games/sgp.md)
+- [Sashimi Express](./src/shared/games/sgp.md)
 
 ## Development setup
 

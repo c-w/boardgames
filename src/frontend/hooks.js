@@ -19,7 +19,7 @@ function importGame(gameName) {
         () => import('./boards/fitf'),
       ];
 
-    case 'sushi-go-party':
+    case 'sashimi-express':
       return [
         () => import('../shared/games/sgp'),
         () => import('../shared/games/sgp.md'),
