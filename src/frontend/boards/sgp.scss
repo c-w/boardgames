@@ -15,8 +15,6 @@ $alert: #C9DA2B;
   color: $text;
   text-align: center;
   font-weight: 600;
-  font-size: 16px;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @mixin narrow {
@@ -30,6 +28,8 @@ $alert: #C9DA2B;
   height: 100vh;
   width: 100vw;
   position: relative;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
 
   table {
     border-spacing: 0;
@@ -73,8 +73,6 @@ $alert: #C9DA2B;
   .rules {
     @include narrow;
     padding-bottom: 16px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
 
     @mixin category-header {
       color: $text;
