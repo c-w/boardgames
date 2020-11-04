@@ -13,5 +13,5 @@ export default function Rules({ gameName }) {
     return <Loading />;
   }
 
-  return <div dangerouslySetInnerHTML={{ __html: rules }} />;
+  return <div className="rules" dangerouslySetInnerHTML={{ __html: rules }} />;
 }

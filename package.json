@@ -43,6 +43,7 @@
     "marked": "^1.2.2",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.3",
+    "normalize-scss": "^7.0.1",
     "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
     "react-copy-to-clipboard": "^5.0.2",

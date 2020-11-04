@@ -49,7 +49,7 @@ export default function App() {
           exact
           path="/:gameName/rules"
           children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName} narrow>
+            <DefaultLayout gameName={match.params.gameName}>
               <Rules {...match.params} />
             </DefaultLayout>
           )}

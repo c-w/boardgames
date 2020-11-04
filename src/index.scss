@@ -1,0 +1,22 @@
+@import './node_modules/normalize-scss/sass/normalize';
+@import './frontend/boards/fitf.scss';
+@import './frontend/boards/sgp.scss';
+
+@include normalize();
+
+html {
+  width: 100%;
+  height: 100%;
+  display: table;
+}
+
+body {
+  width: 100%;
+  display: table-cell;
+}
+
+html,
+body {
+  margin: 0px;
+  padding: 0px;
+}

@@ -25,36 +25,49 @@ $alert: #C9DA2B;
   width: 100vw;
   position: relative;
 
-  figcaption {
-    @include card-font;
-    background-color: $heading;
-    color: $heading-text;
-    padding: 8px 0;
-    margin: 8px 0;
-  }
-
-  .card {
-    @include card-font;
-    border-radius: 16px;
-    border: 2px solid $background;
-    padding: 16px 8px;
-    width: 128px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-
-    aside {
-      display: none;
-      font-size: 12px;
+  .bgio-client {
+    figcaption {
+      @include card-font;
+      background-color: $heading;
+      color: $heading-text;
+      padding: 8px 0;
+      margin: 8px 0;
     }
 
-    @media (max-width: 1193px) {
-      &.showHelpText {
-        .name {
-          display: none;
+    .card {
+      @include card-font;
+      border-radius: 16px;
+      border: 2px solid $background;
+      padding: 16px 8px;
+      width: 128px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+
+      aside {
+        display: none;
+        font-size: 12px;
+      }
+
+      @media (max-width: 1193px) {
+        &.showHelpText {
+          .name {
+            display: none;
+          }
+
+          aside {
+            display: block;
+          }
         }
+      }
+
+      @media (min-width: 1194px) {
+        width: 96px;
+        height: 128px;
+        justify-content: space-between;
+        flex-direction: column;
 
         aside {
           display: block;
@@ -62,175 +75,164 @@ $alert: #C9DA2B;
       }
     }
 
-    @media (min-width: 1194px) {
-      width: 96px;
-      height: 128px;
-      justify-content: space-between;
-      flex-direction: column;
+    button {
+      padding: 0;
+      border-width: 0;
+      width: 100%;
+      background-color: $background;
 
-      aside {
-        display: block;
+      &:disabled {
+        .card {
+          background-color: $default;
+          opacity: 0.5;
+        }
       }
-    }
-  }
 
-  button {
-    padding: 0;
-    border-width: 0;
-    width: 100%;
-    background-color: $background;
+      &.clickable {
+        .card {
+          &:hover {
+            border-color: $default;
+            font-weight: 900;
 
-    &:disabled {
-      .card {
-        background-color: $default;
-        opacity: 0.5;
-      }
-    }
-
-    &.clickable {
-      .card {
-        &:hover {
-          border-color: $default;
-          font-weight: 900;
-
-          aside {
-            font-weight: 600;
+            aside {
+              font-weight: 600;
+            }
           }
         }
       }
     }
-  }
 
-  .Nigiri {
-    background-color: $nigiri;
-  }
-
-  .Rolls {
-    background-color: $rolls;
-  }
-
-  .Appetizer {
-    background-color: $appetizer;
-  }
-
-  .Special {
-    background-color: $special;
-  }
-
-  .Dessert {
-    background-color: $dessert;
-  }
-
-  figure {
-    margin-block-start: 16px;
-    margin-block-end: 16px;
-    margin-inline-start: 0;
-    margin-inline-end: 0;
-
-    ul,
-    ol {
-      margin-block-start: 0;
-      margin-block-end: 0;
-      padding-inline-start: 0;
-      list-style-type: none;
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: row;
-    }
-  }
-
-  .status {
-    @include card-font;
-    color: #000000;
-    position: fixed;
-    z-index: 1;
-    right: 8px;
-    top: 8px;
-    padding: 8px 16px;
-    border-radius: 16px;
-    background-color: $alert;
-  }
-
-  .help {
-    color: #000000;
-    position: fixed;
-    z-index: 1;
-    bottom: 8px;
-    right: 8px;
-    background-color: $alert;
-    border: 2px solid $alert;
-    text-decoration: none;
-    border-radius: 26px;
-    height: 48px;
-    width: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-
-    &:hover {
-      border-color: $default;
-    }
-  }
-
-  .gameover {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-
-    table {
-      @include card-font;
-      border-spacing: 0;
-      width: 100%;
-      max-width: 600px;
-
-      thead {
-        background-color: $nigiri;
-
-        th {
-          padding: 16px 8px;
-        }
-      }
-
-      tbody {
-        background-color: $rolls;
-
-        td,
-        th {
-          padding: 16px;
-        }
-      }
-
-      thead > tr > th:first-of-type {
-        border-top-left-radius: 16px;
-      }
-
-      thead > tr > th:last-of-type {
-        border-top-right-radius: 16px;
-      }
-
-      tbody > tr:last-of-type > th:first-of-type {
-        border-bottom-left-radius: 16px;
-      }
-
-      tbody > tr:last-of-type > td:last-of-type {
-        border-bottom-right-radius: 16px;
-      }
+    .Nigiri {
+      background-color: $nigiri;
     }
 
-    a {
-      @include card-font;
-      margin-top: 16px;
+    .Rolls {
+      background-color: $rolls;
+    }
+
+    .Appetizer {
       background-color: $appetizer;
-      text-decoration: none;
+    }
+
+    .Special {
+      background-color: $special;
+    }
+
+    .Dessert {
+      background-color: $dessert;
+    }
+
+    figure {
+      margin-block-start: 16px;
+      margin-block-end: 16px;
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+
+      ul,
+      ol {
+        margin-block-start: 0;
+        margin-block-end: 0;
+        padding-inline-start: 0;
+        list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+      }
+    }
+
+    .status {
+      @include card-font;
+      color: #000000;
+      position: fixed;
+      z-index: 1;
+      right: 8px;
+      top: 8px;
+      padding: 8px 16px;
       border-radius: 16px;
-      padding: 16px;
-      width: fit-content;
-      border: 2px solid $appetizer;
+      background-color: $alert;
+    }
+
+    .help {
+      color: #000000;
+      position: fixed;
+      z-index: 1;
+      bottom: 8px;
+      right: 8px;
+      background-color: $alert;
+      border: 2px solid $alert;
+      text-decoration: none;
+      border-radius: 26px;
+      height: 48px;
+      width: 48px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
 
       &:hover {
-        border: 2px solid $default;
+        border-color: $default;
+      }
+    }
+
+    .gameover {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      table {
+        @include card-font;
+        border-spacing: 0;
+        width: 100%;
+        max-width: 600px;
+
+        thead {
+          background-color: $nigiri;
+
+          th {
+            padding: 16px 8px;
+          }
+        }
+
+        tbody {
+          background-color: $rolls;
+
+          td,
+          th {
+            padding: 16px;
+          }
+        }
+
+        thead > tr > th:first-of-type {
+          border-top-left-radius: 16px;
+        }
+
+        thead > tr > th:last-of-type {
+          border-top-right-radius: 16px;
+        }
+
+        tbody > tr:last-of-type > th:first-of-type {
+          border-bottom-left-radius: 16px;
+        }
+
+        tbody > tr:last-of-type > td:last-of-type {
+          border-bottom-right-radius: 16px;
+        }
+      }
+
+      a {
+        @include card-font;
+        margin-top: 16px;
+        background-color: $appetizer;
+        text-decoration: none;
+        border-radius: 16px;
+        padding: 16px;
+        width: fit-content;
+        border: 2px solid $appetizer;
+
+        &:hover {
+          border: 2px solid $default;
+        }
       }
     }
   }
