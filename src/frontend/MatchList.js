@@ -24,14 +24,14 @@ export default function MatchList({ gameName }) {
 
   if (openMatches.length === 0) {
     return (
-      <span>
+      <div className="matches">
         There are currently no games waiting for players. <Link to={`/${game.name}/new`}>Start your own game.</Link>
-      </span>
+      </div>
     );
   }
 
   return (
-    <React.Fragment>
+    <div className="matches">
       <Link to={`/${game.name}/new`}>Start your own game</Link> or join one of the games below.
       <ul>
         {openMatches.map(match => (
@@ -42,6 +42,6 @@ export default function MatchList({ gameName }) {
           </li>
         ))}
       </ul>
-    </React.Fragment>
+    </div>
   );
 }

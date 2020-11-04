@@ -52,24 +52,26 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
   const joinURL = `${window.location.href.split('#')[0]}#/${gameName}/join/${matchID}`;
 
   return (
-    <label>
-      Invite someone to join the game by sharing this URL:
+    <div className="wait">
+      <label>
+        Invite someone to join the game by sharing this URL:
 
-      <CopyToClipboard
-        text={joinURL}
-        onCopy={onCopy}
-      >
-        <input
-          readOnly
-          value={joinURL}
-          style={{ width: `${joinURL.length}ch` }}
-        />
-      </CopyToClipboard>
-      {copied && (
-        <div>
-          <em>Copied to clipboard</em>
-        </div>
-      )}
-    </label>
+        <CopyToClipboard
+          text={joinURL}
+          onCopy={onCopy}
+        >
+          <input
+            readOnly
+            value={joinURL}
+            style={{ width: `${joinURL.length}ch` }}
+          />
+        </CopyToClipboard>
+        {copied && (
+          <div>
+            <em>Copied to clipboard</em>
+          </div>
+        )}
+      </label>
+    </div>
   );
 }
