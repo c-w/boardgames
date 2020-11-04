@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { LobbyClient } from 'boardgame.io/client';
 import Loading from './Loading';
 import config from './config';
-import './GameList.scoped.css';
+import { renderGameName } from '../shared/utils';
 
 export default function GameList() {
   const [games, setGames] = useState(null);
@@ -28,7 +28,7 @@ export default function GameList() {
       {games.map(game => (
         <li key={game}>
           <Link to={`/${game}/join`}>
-            {game.replace(/-/g, ' ')}
+            {renderGameName(game)}
           </Link>
         </li>
       ))}

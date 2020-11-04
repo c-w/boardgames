@@ -1,11 +1,13 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import Lobby from './Lobby';
 import Play from './Play';
 import GameList from './GameList';
 import MatchList from './MatchList';
 import Rules from './Rules';
 import Wait from './Wait';
+import { renderGameName } from '../shared/utils';
 
 /**
  * @param {Object} props
@@ -14,9 +16,15 @@ import Wait from './Wait';
  */
 function DefaultLayout({ gameName, children }) {
   return (
-    <main className={gameName}>
-      {children}
-    </main>
+    <>
+      <Helmet>
+        {gameName && <title>{renderGameName(gameName)}</title>}
+      </Helmet>
+
+      <main className={gameName}>
+        {children}
+      </main>
+    </>
   );
 }
 
