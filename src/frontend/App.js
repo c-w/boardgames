@@ -10,7 +10,7 @@ import Wait from './Wait';
 import { renderGameName } from '../shared/utils';
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {string=} props.gameName
  * @param {any} props.children
  */

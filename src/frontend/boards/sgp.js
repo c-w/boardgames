@@ -11,7 +11,7 @@ import './sgp.scss';
 /** @typedef {import('../../shared/games/sgp').Card} Card */
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {Ctx} props.ctx
  * @param {Card} props.card
  */
@@ -114,7 +114,7 @@ function HelpText({ ctx, card }) {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {Ctx} props.ctx
  * @param {Card} props.card
  * @param {any=} props.onClick
@@ -162,7 +162,7 @@ function Rules() {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {G} props.G
  * @param {Ctx} props.ctx
  * @param {string} props.playerID

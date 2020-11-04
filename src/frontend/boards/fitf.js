@@ -30,7 +30,7 @@ function Card({ rank, suit }) {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {G} props.G
  * @param {Ctx} props.ctx
  * @param {string} props.playerID

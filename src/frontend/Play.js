@@ -6,7 +6,7 @@ import config from './config';
 import { useGame } from './hooks';
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {string} props.gameName
  */
 export default function Play({ gameName, ...props }) {

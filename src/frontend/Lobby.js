@@ -47,7 +47,7 @@ function formDataKeyFor(gameName) {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {string} props.gameName
  */
 function CreateGame({ gameName }) {
@@ -110,7 +110,7 @@ function CreateGame({ gameName }) {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {string} props.gameName
  * @param {string} props.matchID
  */
@@ -191,7 +191,7 @@ function JoinGame({ gameName, matchID }) {
 }
 
 /**
- * @param {Object} props
+ * @param {object} props
  * @param {string} props.gameName
  * @param {string} props.matchID
  */
