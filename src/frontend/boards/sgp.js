@@ -137,7 +137,7 @@ function Card({ ctx, card, onClick, disabled }) {
       onClick={disabled ? null : onClick}
       disabled={disabled}
     >
-      <div className={classNames('card', category, { showHelpText: isHelpTextShown })}>
+      <div className={classNames('card', category.toLowerCase(), { showHelpText: isHelpTextShown })}>
         <div className="name">
           {name}
           {count && <span>&nbsp;×{count}</span>}
