@@ -71,7 +71,7 @@ $alert: #C9DA2B;
 
   .rules {
     @include narrow;
-    padding-bottom: 16px;
+    padding: 16px;
 
     @mixin category-header {
       color: $text;
