@@ -1,25 +1,49 @@
-.the-fox-in-the-forest {
+$tower: #fb6a00;
+$key: #c1bfca;
+$moon: #2b046f;
+$background: #f1efe7;
+$alert: #812E18;
+$black: #000;
+
+@mixin narrow {
   max-width: 400px;
   margin: 0 auto;
+}
+
+.the-fox-in-the-forest {
+  background-color: $background;
+  display: table-cell;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+
+  .rjsf,
+  .wait,
+  .matches {
+    @include narrow;
+  }
 
   .bgio-client {
+    @include narrow;
+
     em {
-      background-color: yellow;
+      background-color: $alert;
+      color: $background;
     }
 
     .tower {
-      background-color: #fb6a00;
-      color: #000;
+      background-color: $tower;
+      color: $black;
     }
 
     .key {
-      background-color: #c1bfca;
-      color: #000;
+      background-color: $key;
+      color: $black;
     }
 
     .moon {
-      background-color: #2b046f;
-      color: #fefefe;
+      background-color: $moon;
+      color: $background;
     }
 
     fieldset,
@@ -41,7 +65,7 @@
     fieldset[disabled] .moon,
     fieldset[disabled] em {
       background-color: transparent;
-      color: #000;
+      color: $black;
     }
 
     ol {
