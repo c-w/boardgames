@@ -173,7 +173,9 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   const { hand, picked } = G.players[playerID];
   const numRound = getNumRound(ctx);
   const { gameover, turn } = ctx;
-  const otherPlayerIDs = Object.keys(G.played).filter(id => id !== playerID);
+  const allPlayerIDs = Object.keys(G.played);
+  const currentPlayerIndex = allPlayerIDs.indexOf(playerID);
+  const otherPlayerIDs = allPlayerIDs.slice(currentPlayerIndex + 1).concat(allPlayerIDs.slice(0, currentPlayerIndex));
 
   const playerNameFor = id => matchData.find(player => `${player.id}` === id)?.name || `Player ${id}`;
 
