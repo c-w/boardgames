@@ -9,6 +9,10 @@ import { useGame } from './hooks';
 import './Wait.scoped.css';
 
 /**
+ * @typedef {import('react').FocusEvent<HTMLInputElement>} InputFocusEvent
+ */
+
+/**
  * @param {object} props
  * @param {string} props.gameName
  * @param {string} props.matchID
@@ -34,6 +38,10 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
 
     setStatus({ isLoading: false, isReady });
   }, [game, matchID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
+
+  const selectContent = (/** @type {InputFocusEvent} */ event) => {
+    event.target.select();
+  };
 
   const onCopy = () => {
     setCopied(true);
@@ -63,6 +71,7 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
           <input
             readOnly
             value={joinURL}
+            onFocus={selectContent}
           />
         </CopyToClipboard>
         {copied && (
