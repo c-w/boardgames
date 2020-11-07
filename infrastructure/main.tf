@@ -12,6 +12,40 @@ resource "azurerm_storage_account" "storage" {
   account_replication_type = var.storage_account_replication
 }
 
+resource "azurerm_resource_group_template_deployment" "enable_blob_versioning" {
+  resource_group_name = azurerm_resource_group.resource_group.name
+  name                = "enable_blob_versioning"
+  deployment_mode     = "Incremental"
+  depends_on          = [azurerm_storage_account.storage]
+
+  parameters_content = jsonencode({
+    storageAccount = { value = azurerm_storage_account.storage.name }
+  })
+
+  template_content = <<DEPLOY
+    {
+      "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "storageAccount": {
+          "type": "string"
+        }
+      },
+      "variables": {},
+      "resources": [
+        {
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "apiVersion": "2019-06-01",
+          "name": "[concat(parameters('storageAccount'), '/default')]",
+          "properties": {
+            "isVersioningEnabled": true
+          }
+        }
+      ]
+    }
+  DEPLOY
+}
+
 resource "azurerm_storage_container" "state" {
   storage_account_name = azurerm_storage_account.storage.name
   name                 = "state"
