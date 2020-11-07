@@ -1,7 +1,7 @@
 import { DefaultAzureCredential } from '@azure/identity';
 import { BlobServiceClient } from '@azure/storage-blob';
 import { FlatFile, Server, SocketIO } from 'boardgame.io/server';
-import { AzureStorage } from 'bgio-azure-storage';
+import { AzureStorage, Compression } from 'bgio-azure-storage';
 import fs from 'fs';
 import Koa from 'koa';
 import serve from 'koa-static';
@@ -19,6 +19,7 @@ if (config.AZURE_STORAGE_ACCOUNT) {
       new DefaultAzureCredential(),
     ),
     container: config.AZURE_STORAGE_CONTAINER,
+    compression: Compression.gzip,
   });
 } else {
   db = new FlatFile({

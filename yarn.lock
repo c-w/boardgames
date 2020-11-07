@@ -3108,10 +3108,10 @@ better-assert@~1.0.0:
   dependencies:
     callsite "1.0.0"
 
-bgio-azure-storage@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/bgio-azure-storage/-/bgio-azure-storage-0.1.0.tgz#89d83de7341924bc50f6e25b2dac9a1af10be4e4"
-  integrity sha512-k9+89zY0JC/UvYdQvAYiJTfQtdxWiMhQpbCcB2xetPdJcME5UJ4sME06XqHMPjjnOPZ8SzuLw3BedOBXyktynQ==
+bgio-azure-storage@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/bgio-azure-storage/-/bgio-azure-storage-0.2.0.tgz#a36ef7d2dc413fc1d22bf9991bf52b06006ea9a6"
+  integrity sha512-EhwHWS6PWIxUjiphUyDIehZrYlzIbuqXtKAVQQ5wVEA8Bkdf6XBcHLAxXPSQDt+yjQSgESxgC2LTDV7HCl2koQ==
   dependencies:
     "@azure/storage-blob" "^12.1.1"
 
