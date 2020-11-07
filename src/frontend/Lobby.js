@@ -32,8 +32,9 @@ function schemaFor(game) {
       ...game.setupDataSchema.required,
     ],
     properties: {
-      ...GAME_DATA_SCHEMA.properties,
+      playerName: GAME_DATA_SCHEMA.properties.playerName,
       ...game.setupDataSchema.properties,
+      unlisted: GAME_DATA_SCHEMA.properties.unlisted,
     },
   };
 }
