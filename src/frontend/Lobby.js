@@ -181,7 +181,7 @@ function JoinGame({ gameName, matchID }) {
 
   return (
     // @ts-ignore
-    <Form schema={schema} onSubmit={onSubmit} formData={formData} uiSchema={uiSchema}>
+    <Form schema={schema} onSubmit={onSubmit} formData={formData} uiSchema={uiSchema} className="rjsf disabled">
       <input
         type="submit"
         value={error || 'Join game'}

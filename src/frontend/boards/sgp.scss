@@ -22,6 +22,13 @@ $alert: #C9DA2B;
   margin: 0 auto;
 }
 
+@mixin category-header {
+  color: $text;
+  padding: 8px 0;
+  text-align: center;
+  border-radius: 16px;
+}
+
 .sashimi-express {
   background-color: $background;
   display: table-cell;
@@ -63,9 +70,108 @@ $alert: #C9DA2B;
     }
   }
 
-  .rjsf,
   .matches {
     @include narrow;
+  }
+
+  .rjsf {
+    @include narrow;
+
+    input[type=submit] {
+      border-radius: 16px;
+      background-color: $alert;
+      color: $black;
+      border: 2px solid $alert;
+      padding: 8px 16px;
+      display: block;
+      margin: 8px auto;
+      font-weight: 600;
+      width: 100%;
+
+      &:hover {
+        border-color: $default;
+      }
+    }
+
+    .required {
+      display: none;
+    }
+
+    fieldset {
+      border: 0;
+      width: 100%;
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+      padding-inline-start: 0;
+      padding-inline-end: 0;
+    }
+
+    .form-group {
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      column-gap: 8px;
+
+      input,
+      select {
+        text-align: center;
+        text-align-last: center;
+        border-radius: 16px;
+        border: 2px solid $background;
+        flex-grow: 1;
+        min-width: 0;
+
+        &:disabled {
+          opacity: 0.5;
+          background-color: $text;
+        }
+      }
+
+      .checkbox {
+        width: 100%;
+
+        label {
+          display: flex;
+          flex-direction: row-reverse;
+          align-items: center;
+
+          span {
+            @include category-header;
+            background-color: $heading;
+            width: 50%;
+          }
+        }
+      }
+
+      label[for] {
+        @include category-header;
+        background-color: $heading;
+        min-width: 50%;
+
+        &[for="root_nigiri"] {
+          background-color: $nigiri;
+        }
+
+        &[for="root_rolls"] {
+          background-color: $rolls;
+        }
+
+        &[for="root_appetizer1"],
+        &[for="root_appetizer2"],
+        &[for="root_appetizer3"] {
+          background-color: $appetizer;
+        }
+
+        &[for="root_special1"],
+        &[for="root_special2"] {
+          background-color: $special;
+        }
+
+        &[for="root_dessert"] {
+          background-color: $dessert;
+        }
+      }
+    }
   }
 
   .wait {
@@ -107,13 +213,6 @@ $alert: #C9DA2B;
   .rules {
     @include narrow;
     padding: 16px;
-
-    @mixin category-header {
-      color: $text;
-      padding: 8px 0;
-      text-align: center;
-      border-radius: 16px;
-    }
 
     blockquote {
       text-align: center;
