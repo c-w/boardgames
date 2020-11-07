@@ -70,3 +70,10 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 [ vm ] pm2 start dist/backend/server.js
 [ vm ] pm2 monit
 ```
+
+5. Redeploy code with snippet below
+
+```txt
+[host] git push -f vm master
+[host] ssh clewolff@boardgames.justamouse.com 'cd boardgames/code && git fetch origin && git reset --hard origin/master && yarn && yarn run build && pm2 restart 0'
+```
