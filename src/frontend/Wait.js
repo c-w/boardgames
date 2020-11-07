@@ -63,7 +63,6 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
           <input
             readOnly
             value={joinURL}
-            style={{ width: `${joinURL.length}ch` }}
           />
         </CopyToClipboard>
         {copied && (
