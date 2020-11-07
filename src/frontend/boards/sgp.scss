@@ -72,6 +72,63 @@ $alert: #C9DA2B;
 
   .matches {
     @include narrow;
+    text-align: center;
+
+    a {
+      color: $rolls;
+      text-decoration: none;
+
+      &.create-game {
+        background-color: $alert;
+        color: $black;
+        width: 50%;
+        height: 32px;
+        border-radius: 16px;
+        line-height: 32px;
+        display: block;
+        margin: 8px auto;
+        border: 2px solid $alert;
+        font-weight: 600;
+
+        &:hover {
+          border-color: $default;
+        }
+      }
+    }
+
+    ul {
+      list-style: none;
+      text-align: left;
+
+      li {
+        margin-bottom: 8px;
+
+        &:before {
+          margin-left: -16px;
+          margin-right: 8px;
+        } 
+
+        &:nth-child(5n+1):before {
+          content: '🍣';
+        }
+
+        &:nth-child(5n+2):before {
+          content: '🍱';
+        }
+
+        &:nth-child(5n+3):before {
+          content: '🥢';
+        }
+
+        &:nth-child(5n+4):before {
+          content: '🍙';
+        }
+
+        &:nth-child(5n+5):before {
+          content: '🍶';
+        }
+      }
+    }
   }
 
   .rjsf {

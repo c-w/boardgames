@@ -10,6 +10,16 @@ import { useGame } from './hooks';
  * @param {object} props
  * @param {string} props.gameName
  */
+function CreateGame({ gameName }) {
+  return (
+    <Link to={`/${gameName}/new`} className="create-game">Create a new game</Link>
+  );
+}
+
+/**
+ * @param {object} props
+ * @param {string} props.gameName
+ */
 export default function MatchList({ gameName }) {
   const [matches, setMatches] = useState(null);
   const { game } = useGame(gameName);
@@ -29,14 +39,14 @@ export default function MatchList({ gameName }) {
   if (openMatches.length === 0) {
     return (
       <div className="matches">
-        There are currently no games waiting for players. <Link to={`/${game.name}/new`}>Start your own game.</Link>
+        There are currently no games waiting for players. <CreateGame gameName={game.name} />
       </div>
     );
   }
 
   return (
     <div className="matches">
-      <Link to={`/${game.name}/new`}>Start your own game</Link> or join one of the games below.
+      <CreateGame gameName={game.name} /> or join one of the games below:
       <ul>
         {openMatches.map(match => (
           <li key={match.matchID}>
