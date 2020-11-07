@@ -1052,17 +1052,17 @@ describe('Score Soy Sauce Special', () => {
   });
 });
 
-describe('Score Green Tea Ice Cream Dessert', () => {
+describe('Score Matcha Ice Cream Dessert', () => {
   test('single set', () => {
     const hand = [
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 2 },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 2 },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
     ];
 
     const otherHands = [];
@@ -1074,14 +1074,14 @@ describe('Score Green Tea Ice Cream Dessert', () => {
 
   test('no sets', () => {
     const hand = [
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 2 },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 2 },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
     ];
 
     const otherHands = [];
@@ -1093,14 +1093,14 @@ describe('Score Green Tea Ice Cream Dessert', () => {
 
   test('multiple sets', () => {
     const hand = [
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 2 },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 2 },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
     ];
 
     const otherHands = [];
@@ -1112,14 +1112,14 @@ describe('Score Green Tea Ice Cream Dessert', () => {
 
   test('before last round', () => {
     const hand = [
-      { name: 'Green Tea Ice Cream', category: 'Dessert', round: 1 },
+      { name: 'Matcha Ice Cream', category: 'Dessert', round: 1 },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
       { name: 'Egg', category: 'Nigiri' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
-      { name: 'Green Tea Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
+      { name: 'Matcha Ice Cream', category: 'Dessert' },
     ];
 
     const otherHands = [];

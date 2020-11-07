@@ -91,7 +91,7 @@ function HelpText({ ctx, card }) {
       content = <span>Next nigiri ×3</span>;
       break;
 
-    case DESSERTS.greenTeaIceCream:
+    case DESSERTS.matchaIceCream:
       content = <span>×4 = 12</span>;
       break;
 

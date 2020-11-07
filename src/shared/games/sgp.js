@@ -111,7 +111,7 @@ export const SPECIALS = {
 };
 
 export const DESSERTS = {
-  greenTeaIceCream: 'Green Tea Ice Cream',
+  matchaIceCream: 'Matcha Ice Cream',
   pudding: 'Pudding',
   fruit: 'Fruit',
 };
@@ -463,7 +463,7 @@ export function scoreCard(card, hand, otherHands, numRound) {
       }
       break;
 
-    case DESSERTS.greenTeaIceCream:
+    case DESSERTS.matchaIceCream:
       setSize = 4;
       setValue = 12;
       break;

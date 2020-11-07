@@ -124,7 +124,7 @@ The addition of this spice makes nigiri taste even better! The next nigiri you p
 
 A tasty treat for the end of the meal: you can collect desserts during all rounds but they will only score in the final one. Unlike all other cards, desserts aren't cleared from your plate at the end of a round.
 
-#### Green Tea Ice Cream
+#### Matcha Ice Cream
 
 Score 12 points for every set of 4.
 
