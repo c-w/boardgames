@@ -1,0 +1,11 @@
+textarea[readonly] {
+  resize: none;
+  display: block;
+  width: 85%;
+  text-align: center;
+  border: 0;
+
+  &:focus {
+    outline: 0;
+  }
+}

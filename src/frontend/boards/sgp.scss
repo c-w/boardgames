@@ -64,9 +64,44 @@ $alert: #C9DA2B;
   }
 
   .rjsf,
-  .wait,
   .matches {
     @include narrow;
+  }
+
+  .wait {
+    @include narrow;
+
+    .url {
+      padding-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      textarea {
+        border-radius: 16px;
+
+        @media (min-width: 400px) {
+          height: 32px;
+          line-height: 32px;
+          width: 100%;
+        }
+      }
+    }
+
+    .callout {
+      padding-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      em {
+        background-color: $alert;
+        color: $black;
+        display: inline-block;
+        padding: 8px 16px;
+        border-radius: 16px;
+      }
+    }
   }
 
   .rules {

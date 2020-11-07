@@ -18,9 +18,17 @@ $black: #000;
   position: relative;
 
   .rjsf,
-  .wait,
   .matches {
     @include narrow;
+  }
+
+  .wait {
+    @include narrow;
+
+    em {
+      background-color: $alert;
+      color: $background;
+    }
   }
 
   .bgio-client {

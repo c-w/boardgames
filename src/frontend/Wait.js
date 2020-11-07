@@ -6,10 +6,10 @@ import useInterval from '@use-hooks/interval';
 import Loading from './Loading';
 import config from './config';
 import { useGame } from './hooks';
-import './Wait.scoped.css';
+import './Wait.scoped.scss';
 
 /**
- * @typedef {import('react').FocusEvent<HTMLInputElement>} InputFocusEvent
+ * @typedef {import('react').FocusEvent<HTMLTextAreaElement>} TextAreaFocusEvent
  */
 
 /**
@@ -39,7 +39,7 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
     setStatus({ isLoading: false, isReady });
   }, [game, matchID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
-  const selectContent = (/** @type {InputFocusEvent} */ event) => {
+  const selectContent = (/** @type {TextAreaFocusEvent} */ event) => {
     event.target.select();
   };
 
@@ -68,14 +68,16 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
           text={joinURL}
           onCopy={onCopy}
         >
-          <input
-            readOnly
-            value={joinURL}
-            onFocus={selectContent}
-          />
+          <div className="url">
+            <textarea
+              readOnly
+              value={joinURL}
+              onFocus={selectContent}
+            />
+          </div>
         </CopyToClipboard>
         {copied && (
-          <div>
+          <div className="callout">
             <em>Copied to clipboard</em>
           </div>
         )}
