@@ -27,6 +27,50 @@ $black: #000;
 
   .matches {
     @include narrow;
+    text-align: center;
+
+    a {
+      color: $alert;
+      text-decoration: none;
+
+      &.create-game {
+        background-color: $alert;
+        color: $white;
+        border-radius: 8px;
+        border: 4px solid $alert;
+        padding: 4px 8px;
+        margin: 8px auto;
+        display: block;
+        width: 50%;
+        line-height: 24px;
+      }
+    }
+
+    ul {
+      list-style: none;
+      text-align: left;
+
+      li {
+        margin-bottom: 8px;
+
+        &:before {
+          margin-left: -16px;
+          margin-right: 8px;
+        } 
+
+        &:nth-child(3n+1):before {
+          content: '🏰';
+        }
+
+        &:nth-child(3n+2):before {
+          content: '🌙';
+        }
+
+        &:nth-child(3n+3):before {
+          content: '🗝️';
+        }
+      }
+    }
   }
 
   .rules {
