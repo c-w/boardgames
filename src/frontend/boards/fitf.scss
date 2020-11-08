@@ -12,16 +12,19 @@ $black: #000;
   margin: 0 auto;
 }
 
+@mixin font {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+}
+
 .the-vole-in-the-valley {
+  @include font;
   background-color: $background;
   display: table-cell;
   height: 100vh;
   width: 100vw;
   position: relative;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 16px;
 
-  .rjsf,
   .matches {
     @include narrow;
   }
@@ -136,6 +139,87 @@ $black: #000;
     }
   }
 
+  .rjsf {
+    @include narrow;
+
+    .required {
+      display: none;
+    }
+
+    input[type="submit"] {
+      @include font;
+      width: 50%;
+      line-height: 24px;
+      background-color: $alert;
+      color: $white;
+      border-radius: 8px;
+      border: 4px solid $alert;
+      padding: 4px 8px;
+      margin: 8px auto;
+      display: block;
+
+      &:disabled {
+        background-color: $background;
+        color: $alert;
+      }
+    }
+
+    fieldset {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 8px;
+      background-color: $white;
+      border: 4px solid $border;
+      border-radius: 8px;
+
+        label[for] {
+          &:after {
+            @include font;
+            content: ':';
+            margin-right: 4px;
+          }
+        }
+
+        input[type="text"] {
+          @include font;
+          min-width: 0;
+          flex-grow: 1;
+          padding: 0;
+          border: 0;
+          background-color: $white;
+          border-bottom: 1px solid $border;
+        }
+
+        .checkbox {
+          label {
+            display: flex;
+            flex-direction: row-reverse;
+
+            span:after {
+              @include font;
+              content: ':';
+              margin-right: 4px;
+            }
+
+            input[type="checkbox"] {
+              appearance: none;
+
+              &:before {
+                @include font;
+                content: 'no';
+                border-bottom: 1px solid $border;
+              }
+
+              &:checked:before {
+                @include font;
+                content: 'yes';
+              }
+            }
+          }
+      }
+    }
+  }
+
   .wait {
     @include narrow;
 
@@ -198,6 +282,7 @@ $black: #000;
       list-style: none;
     }
 
+    /* stylelint-disable-next-line no-descending-specificity */
     form li > label {
       display: inline-block;
       margin-bottom: 0.5em;
