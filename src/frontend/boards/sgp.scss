@@ -148,6 +148,11 @@ $alert: #C9DA2B;
       &:hover {
         border-color: $default;
       }
+
+      &:disabled {
+        background-color: $default;
+        border-color: $default;
+      }
     }
 
     .required {

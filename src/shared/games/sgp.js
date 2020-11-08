@@ -970,6 +970,28 @@ export default {
   },
 
   /**
+   * @param {SetupData} setupData
+   * @param {number} numPlayers
+   * @returns {string?}
+   */
+  validateSetupData: (setupData, numPlayers) => {
+    const appetizers = [setupData.appetizer1, setupData.appetizer2, setupData.appetizer3];
+    const specials = [setupData.special1, setupData.special2];
+
+    if (distinct(...appetizers).length !== appetizers.length) {
+      return 'All appetizers must be different';
+    }
+
+    if (distinct(...specials).length !== specials.length) {
+      return 'All specials must be different';
+    }
+
+    if (numPlayers === 2 && appetizers.includes(APPETIZERS.edamame)) {
+      return `${APPETIZERS.edamame} can't be used in a two player game`;
+    }
+  },
+
+  /**
    * @param {Ctx} ctx
    * @param {SetupData} setupData
    * @returns {G}

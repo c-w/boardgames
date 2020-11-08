@@ -58,6 +58,10 @@ function CreateGame({ gameName }) {
 
   const formDataKey = formDataKeyFor(gameName);
 
+  const onChange = () => {
+    setError(null);
+  };
+
   const onSubmit = async ({ formData }, event) => {
     event.preventDefault();
     localStorage.setItem(formDataKey, JSON.stringify(formData));
@@ -84,8 +88,12 @@ function CreateGame({ gameName }) {
 
       history.push(`/${game.name}/wait/${matchID}/${playerID}/${join.playerCredentials}`);
     } catch (ex) {
-      setError('Unexpected error');
-      console.error(error);
+      if (ex.message === 'HTTP status 400') {
+        setError('Invalid game configuration');
+      } else {
+        setError('Unexpected error');
+        console.error(ex);
+      }
     }
   };
 
@@ -99,7 +107,7 @@ function CreateGame({ gameName }) {
 
   return (
     // @ts-ignore
-    <Form schema={schema} onSubmit={onSubmit} formData={formData}>
+    <Form schema={schema} onSubmit={onSubmit} onChange={onChange} formData={formData}>
       <input
         type="submit"
         value={error || 'Create game'}
