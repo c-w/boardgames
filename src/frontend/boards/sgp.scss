@@ -197,6 +197,21 @@ $alert: #C9DA2B;
             background-color: $heading;
             width: 50%;
           }
+
+          input {
+            appearance: none;
+            background-color: $text;
+            margin-left: 8px;
+            line-height: 32px;
+
+            &:before {
+              content: 'No 🍥';
+            }
+
+            &:checked:before {
+              content: 'Yes 🍘️️';
+            }
+          }
         }
       }
 
