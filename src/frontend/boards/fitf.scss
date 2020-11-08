@@ -2,6 +2,7 @@ $tower: #fb6a00;
 $key: #c1bfca;
 $moon: #2b046f;
 $background: #f1efe7;
+$white: #ffffff;
 $border: #8f7e70;
 $alert: #812E18;
 $black: #000;
@@ -17,10 +18,122 @@ $black: #000;
   height: 100vh;
   width: 100vw;
   position: relative;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
 
   .rjsf,
   .matches {
     @include narrow;
+  }
+
+  .rules {
+    @include narrow;
+    font-size: 18px;
+    text-decoration-skip-ink: auto;
+
+    @media screen and (max-width: 400px) {
+      padding: 8px;
+    }
+
+    blockquote {
+      border: 4px solid $border;
+      border-radius: 8px;
+      padding: 8px;
+      background-color: $white;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    .tower {
+      text-decoration: $tower solid underline;
+    }
+
+    .key {
+      text-decoration: $key solid underline;
+    }
+
+    .moon {
+      text-decoration: $moon solid underline;
+    }
+
+    h1,
+    h2,
+    h3 {
+      text-align: center;
+    }
+
+    h2 {
+      text-decoration: $alert solid underline;
+    }
+
+    h3 {
+      font-weight: 400;
+      margin: 0;
+      line-height: 0.5;
+      text-align: center;
+
+      span {
+        display: inline-block;
+        position: relative;
+
+        &:before,
+        &:after {
+          content: "";
+          position: absolute;
+          height: 5px;
+          border-bottom: 4px solid $border;
+          top: 0;
+          width: 160px;
+
+          @media screen and (max-width: 400px) {
+            width: 80px;
+          }
+        }
+
+        &:before {
+          right: 100%;
+          margin-right: 16px;
+        }
+
+        &:after {
+          left: 100%;
+          margin-left: 16px;
+        }
+      }
+
+      + p {
+        margin-block-start: 16px;
+        margin-block-end: 24px;
+      }
+    }
+
+    table {
+      background-color: $white;
+      margin: 0 auto;
+      border: 4px solid $border;
+      border-radius: 8px;
+      padding: 4px 16px;
+      text-align: center;
+
+      thead > tr:first-of-type > th:first-of-type {
+        border-top-left-radius: 8px;
+      }
+
+      thead > tr:first-of-type > th:last-of-type {
+        border-top-right-radius: 8px;
+      }
+
+      tbody > tr:last-of-type > td:first-of-type {
+        border-bottom-left-radius: 8px;
+      }
+
+      tbody > tr:last-of-type > td:last-of-type {
+        border-bottom-right-radius: 8px;
+      }
+    }
   }
 
   .wait {
