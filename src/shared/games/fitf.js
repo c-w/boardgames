@@ -369,7 +369,7 @@ function playCard(G, ctx, i=null, j=null) {
 }
 
 export default {
-  name: 'the-fox-in-the-forest',
+  name: 'the-vole-in-the-valley',
 
   minPlayers: 2,
   maxPlayers: 2,

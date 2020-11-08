@@ -4,7 +4,7 @@
 
 This repository hosts a collection of multiplayer boardgames:
 
-- [The Fox in the Forest](./src/shared/games/fitf.md)
+- [The Vole in the Valley](./src/shared/games/fitf.md)
 - [Sashimi Express](./src/shared/games/sgp.md)
 
 ## Development setup

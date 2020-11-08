@@ -12,7 +12,7 @@ import { lazy, useEffect, useState } from 'react';
  */
 function importGame(gameName) {
   switch (gameName) {
-    case 'the-fox-in-the-forest':
+    case 'the-vole-in-the-valley':
       return [
         () => import('../shared/games/fitf'),
         () => import('../shared/games/fitf.md'),
