@@ -32,10 +32,10 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 
 ### Azure VM
 
-1. Create VM with Managed Identity
-2. Create Storage Account
-3. Assign Storage Blob Data Contributor permissions to VM
-4. Set up VM with script below
+- Create VM with Managed Identity
+- Create Storage Account
+- Assign Storage Blob Data Contributor permissions to VM
+- Set up VM with script below
 
 ```txt
 [host] ssh clewolff@boardgames.justamouse.com
@@ -71,7 +71,7 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 [ vm ] pm2 monit
 ```
 
-5. Redeploy code with snippet below
+- Redeploy code with snippet below
 
 ```txt
 [host] git push -f vm master
