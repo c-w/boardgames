@@ -30,6 +30,7 @@ export default function GameList() {
           <Link to={`/${game}/join`}>
             {renderGameName(game)}
           </Link>
+          &nbsp;(<Link to={`/${game}/rules`}>Rules</Link>)
         </li>
       ))}
     </ul>
