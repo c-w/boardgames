@@ -2,6 +2,7 @@ $tower: #fb6a00;
 $key: #c1bfca;
 $moon: #2b046f;
 $background: #f1efe7;
+$border: #8f7e70;
 $alert: #812E18;
 $black: #000;
 
@@ -54,9 +55,12 @@ $black: #000;
       color: $background;
     }
 
-    fieldset,
-    fieldset > div {
-      display: block;
+    fieldset {
+      border-color: $border;
+
+      > div {
+        display: block;
+      }
     }
 
     fieldset:not(:last-child),
