@@ -12,6 +12,24 @@ resource "azurerm_storage_account" "storage" {
   account_replication_type = var.storage_account_replication
 }
 
+resource "azurerm_storage_management_policy" "state_daily_cleanup" {
+  storage_account_id = azurerm_storage_account.storage.id
+
+  rule {
+    name    = "state-daily-cleanup"
+    enabled = true
+    filters {
+      prefix_match = ["${azurerm_storage_container.state.name}/"]
+      blob_types   = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        delete_after_days_since_modification_greater_than = 1
+      }
+    }
+  }
+}
+
 resource "azurerm_resource_group_template_deployment" "enable_blob_versioning" {
   resource_group_name = azurerm_resource_group.resource_group.name
   name                = "enable_blob_versioning"
