@@ -192,6 +192,7 @@ $black: #000;
 
     input[type="submit"] {
       @include font;
+      cursor: pointer;
       width: 50%;
       line-height: 24px;
       background-color: $alert;

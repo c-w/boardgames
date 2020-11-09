@@ -135,6 +135,7 @@ $alert: #C9DA2B;
     @include narrow;
 
     input[type=submit] {
+      cursor: pointer;
       border-radius: 16px;
       background-color: $alert;
       color: $black;
