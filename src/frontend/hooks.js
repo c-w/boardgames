@@ -15,7 +15,7 @@ function importGame(gameName) {
     case 'the-vole-in-the-valley':
       return [
         () => import('../shared/games/fitf'),
-        () => import('../shared/games/fitf.md'),
+        () => import('./boards/fitf/rules.md'),
         () => import('./boards/fitf'),
         () => import('./boards/fitf/icon.png'),
       ];
@@ -23,7 +23,7 @@ function importGame(gameName) {
     case 'sashimi-express':
       return [
         () => import('../shared/games/sgp'),
-        () => import('../shared/games/sgp.md'),
+        () => import('./boards/sgp/rules.md'),
         () => import('./boards/sgp'),
         () => import('./boards/sgp/icon.png'),
       ];

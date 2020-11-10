@@ -4,8 +4,8 @@
 
 This repository hosts a collection of multiplayer boardgames:
 
-- [The Vole in the Valley](./src/shared/games/fitf.md)
-- [Sashimi Express](./src/shared/games/sgp.md)
+- [The Vole in the Valley](./src/frontend/boards/fitf/rules.md)
+- [Sashimi Express](./src/frontend/boards/sgp/rules.md)
 
 ## Development setup
 
