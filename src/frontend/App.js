@@ -1,24 +1,37 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import Loading from './Loading';
 import Lobby from './Lobby';
 import Play from './Play';
 import GameList from './GameList';
 import MatchList from './MatchList';
 import Rules from './Rules';
 import Wait from './Wait';
+import { useGame } from './hooks';
 import { renderGameName } from '../shared/utils';
 
 /**
  * @param {object} props
- * @param {string=} props.gameName
+ * @param {string} props.gameName
  * @param {any} props.children
  */
 function DefaultLayout({ gameName, children }) {
+  const { game, icon } = useGame(gameName);
+
+  if (game == null) {
+    return (
+      <main className={gameName}>
+        <Loading />
+      </main>
+    );
+  }
+
   return (
     <>
       <Helmet>
-        {gameName && <title>{renderGameName(gameName)}</title>}
+        <title>{renderGameName(gameName)}</title>
+        {icon && <link rel="icon" href={icon} />}
       </Helmet>
 
       <main className={gameName}>
@@ -36,9 +49,9 @@ export default function App() {
           exact
           path="/"
           children={() => (
-            <DefaultLayout>
+            <main>
               <GameList />
-            </DefaultLayout>
+            </main>
           )}
         />
         <Route
