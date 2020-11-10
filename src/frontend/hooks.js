@@ -17,7 +17,7 @@ function importGame(gameName) {
         () => import('../shared/games/fitf'),
         () => import('../shared/games/fitf.md'),
         () => import('./boards/fitf'),
-        () => null,
+        () => import('./boards/fitf/icon.png'),
       ];
 
     case 'sashimi-express':
