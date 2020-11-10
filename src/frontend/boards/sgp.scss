@@ -187,6 +187,7 @@ $alert: #C9DA2B;
       select {
         text-align: center;
         text-align-last: center;
+        background-color: $text;
         border-radius: 16px;
         border: 2px solid $background;
         flex-grow: 1;
