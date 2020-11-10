@@ -18,6 +18,7 @@ function importGame(gameName) {
         () => import('./boards/fitf/rules.md'),
         () => import('./boards/fitf'),
         () => import('./boards/fitf/icon.png'),
+        () => import('./boards/fitf/facebook.png'),
       ];
 
     case 'sashimi-express':
@@ -26,6 +27,7 @@ function importGame(gameName) {
         () => import('./boards/sgp/rules.md'),
         () => import('./boards/sgp'),
         () => import('./boards/sgp/icon.png'),
+        () => import('./boards/sgp/facebook.png'),
       ];
 
     default:
@@ -40,6 +42,7 @@ function importGame(gameName) {
  *   board?: BoardComponent,
  *   rules?: string,
  *   icon?: string,
+ *   facebook?: string,
  * }}
  */
 export function useGame(gameName) {
@@ -48,6 +51,7 @@ export function useGame(gameName) {
     board: null,
     rules: null,
     icon: null,
+    facebook: null,
   });
 
   useEffect(() => {
@@ -56,6 +60,7 @@ export function useGame(gameName) {
       rulesImporter,
       boardImporter,
       iconImporter,
+      facebookImporter,
     ] = importGame(gameName);
 
     const boardComponent = lazy(boardImporter);
@@ -64,16 +69,19 @@ export function useGame(gameName) {
       gameImporter(),
       rulesImporter(),
       iconImporter(),
+      facebookImporter(),
     ]).then(([
       gameModule,
       rulesModule,
       iconModule,
+      facebookModule,
     ]) => {
       setImported({
         game: gameModule.default,
         board: boardComponent,
         rules: rulesModule.default,
         icon: iconModule?.default,
+        facebook: facebookModule?.default,
       });
     });
   }, [gameName]);

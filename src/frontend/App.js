@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import Loading from './Loading';
 import Lobby from './Lobby';
@@ -17,7 +17,7 @@ import { renderGameName } from '../shared/utils';
  * @param {any} props.children
  */
 function DefaultLayout({ gameName, children }) {
-  const { game, icon } = useGame(gameName);
+  const { game, icon, facebook } = useGame(gameName);
 
   if (game == null) {
     return (
@@ -27,10 +27,17 @@ function DefaultLayout({ gameName, children }) {
     );
   }
 
+  const friendlyGameName = renderGameName(gameName);
+  const rootUrl = window.location.href.split('#')[0];
+
   return (
     <>
       <Helmet>
-        <title>{renderGameName(gameName)}</title>
+        <title>{friendlyGameName}</title>
+        <meta property="og:title" content={friendlyGameName} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${rootUrl}#/${gameName}`} />
+        {facebook && <meta property="og:image" content={`${rootUrl}${facebook}`} />}
         {icon && <link rel="icon" href={icon} />}
       </Helmet>
 
@@ -52,6 +59,13 @@ export default function App() {
             <main>
               <GameList />
             </main>
+          )}
+        />
+        <Route
+          exact
+          path="/:gameName"
+          children={({ match }) => (
+            <Redirect to={`/${match.params.gameName}/new`} />
           )}
         />
         <Route
