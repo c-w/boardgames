@@ -25,7 +25,7 @@ function importGame(gameName) {
         () => import('../shared/games/sgp'),
         () => import('../shared/games/sgp.md'),
         () => import('./boards/sgp'),
-        () => import('./boards/sgp.png'),
+        () => import('./boards/sgp/icon.png'),
       ];
 
     default:

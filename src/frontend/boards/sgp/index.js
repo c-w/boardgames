@@ -1,14 +1,14 @@
 import React, { Fragment, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../shared/games/sgp';
-import { partition, range, sum } from '../../shared/utils';
-import './sgp.scss';
+import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../../shared/games/sgp';
+import { partition, range, sum } from '../../../shared/utils';
+import './index.scss';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/src/types').LobbyAPI.Match} Match **/
-/** @typedef {import('../../shared/games/sgp').G} G */
-/** @typedef {import('../../shared/games/sgp').Card} Card */
+/** @typedef {import('../../../shared/games/sgp').G} G */
+/** @typedef {import('../../../shared/games/sgp').Card} Card */
 
 /**
  * @param {object} props

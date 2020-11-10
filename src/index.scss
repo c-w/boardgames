@@ -1,6 +1,6 @@
 @import './node_modules/normalize-scss/sass/normalize';
-@import './frontend/boards/fitf.scss';
-@import './frontend/boards/sgp.scss';
+@import './frontend/boards/fitf/index.scss';
+@import './frontend/boards/sgp/index.scss';
 
 @include normalize();
 

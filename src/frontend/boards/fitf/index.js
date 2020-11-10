@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { default as game, isMoveInvalid } from '../../shared/games/fitf';
-import { last, sum } from '../../shared/utils';
-import './fitf.scss';
+import { default as game, isMoveInvalid } from '../../../shared/games/fitf';
+import { last, sum } from '../../../shared/utils';
+import './index.scss';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 /** @typedef {import('boardgame.io/dist/types/src/types').LobbyAPI.Match} Match **/
-/** @typedef {import('../../shared/games/fitf').Card} Card */
-/** @typedef {import('../../shared/games/fitf').G} G */
+/** @typedef {import('../../../shared/games/fitf').Card} Card */
+/** @typedef {import('../../../shared/games/fitf').G} G */
 
 const CARD_TEXTS = {
   1: 'If you play this and lose the trick, you lead the next trick.',
