@@ -57,7 +57,7 @@
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
+    "react-scripts": "3.4.4",
     "shelljs": "^0.8.4",
     "shx": "^0.3.2",
     "stylelint": "^13.7.2",
