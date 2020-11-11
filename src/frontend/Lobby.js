@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { LobbyClient } from 'boardgame.io/client';
 import Form from '@rjsf/core';
@@ -58,15 +58,13 @@ function CreateGame({ game }) {
   const [error, setError] = useState(null);
   const history = useHistory();
 
-  const formDataKey = formDataKeyFor(game.name);
-
-  const onChange = () => {
+  const onChange = useCallback(() => {
     setError(null);
-  };
+  }, [setError]);
 
-  const onSubmit = async ({ formData }, event) => {
+  const onSubmit = useCallback(async ({ formData }, event) => {
     event.preventDefault();
-    localStorage.setItem(formDataKey, JSON.stringify(formData));
+    localStorage.setItem(formDataKeyFor(game.name), JSON.stringify(formData));
 
     let { playerName, unlisted, numPlayers, ...setupData } = formData;
     numPlayers = numPlayers || game.maxPlayers;
@@ -97,11 +95,11 @@ function CreateGame({ game }) {
         console.error(ex);
       }
     }
-  };
+  }, [game, history]);
 
   const schema = schemaFor(game);
 
-  const formData = JSON.parse(localStorage.getItem(formDataKey));
+  const formData = JSON.parse(localStorage.getItem(formDataKeyFor(game.name)));
 
   return (
     // @ts-ignore
@@ -126,17 +124,15 @@ function JoinGame({ game, matchID }) {
   const [match, setMatch] = useState(null);
   const history = useHistory();
 
-  const formDataKey = formDataKeyFor(game.name);
-
   useEffect(() => {
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
     client.getMatch(game.name, matchID).then(match => setMatch(match));
   }, [game, matchID]);
 
-  const onSubmit = async ({ formData }, event) => {
+  const onSubmit = useCallback(async ({ formData }, event) => {
     event.preventDefault();
-    localStorage.setItem(formDataKey, JSON.stringify(formData));
+    localStorage.setItem(formDataKeyFor(game.name), JSON.stringify(formData));
 
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
@@ -148,12 +144,12 @@ function JoinGame({ game, matchID }) {
     }
 
     try {
-      const join = await client.joinMatch(game.name, matchID, {
+      const join = await client.joinMatch(game.name, match.matchID, {
         playerID: `${playerID}`,
         playerName: formData.playerName,
       });
 
-      history.push(`/wait/${matchID}/${playerID}/${join.playerCredentials}`);
+      history.push(`/wait/${match.matchID}/${playerID}/${join.playerCredentials}`);
     } catch (ex) {
       if (ex.message === 'HTTP status 409') {
         setError('The game is already full');
@@ -161,10 +157,10 @@ function JoinGame({ game, matchID }) {
         setError('The game no longer exists');
       } else {
         setError('Unexpected error');
-        console.error(error);
+        console.error(ex);
       }
     }
-  };
+  }, [game, match, history]);
 
   if (match == null) {
     return <Loading />;
@@ -178,7 +174,7 @@ function JoinGame({ game, matchID }) {
   ])));
 
   const formData = {
-    ...JSON.parse(localStorage.getItem(formDataKey)),
+    ...JSON.parse(localStorage.getItem(formDataKeyFor(game.name))),
     ...match.setupData,
     unlisted: match.unlisted,
     numPlayers: match.players.length,

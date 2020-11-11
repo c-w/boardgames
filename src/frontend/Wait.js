@@ -34,13 +34,13 @@ export default function Wait({ game, matchID, playerID, credentials }) {
     setStatus({ isLoading: false, isReady });
   }, [game, matchID, setStatus]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
-  const selectContent = (/** @type {TextAreaFocusEvent} */ event) => {
+  const selectContent = useCallback((/** @type {TextAreaFocusEvent} */ event) => {
     event.target.select();
-  };
+  }, []);
 
-  const onCopy = () => {
+  const onCopy = useCallback(() => {
     setCopied(true);
-  };
+  }, [setCopied]);
 
   if (status.isLoading) {
     return <Loading />;
