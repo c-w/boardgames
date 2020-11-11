@@ -1,5 +1,9 @@
 #!/usr/bin/env babel-node
 
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import * as nunjucks from 'nunjucks';
+import * as path from 'path';
 import * as sh from 'shelljs';
 
 const rootDir = `${__dirname}/..`;
@@ -16,11 +20,21 @@ try {
   sh.exit(1);
 }
 
+const gameEnv = `${rootDir}/src/frontend/boards/${gameName}/build.env`;
+
+dotenv.config({ path: gameEnv });
+
 sh.set('-e');
 
 switch (command) {
   case 'workon':
-    sh.cp(`${rootDir}/src/frontend/boards/${gameName}/build.env`, `${rootDir}/.env.local`);
+    sh.cp(gameEnv, `${rootDir}/.env.local`);
+    sh.mkdir('-p', `${rootDir}/public`);
+    sh.ls(`${rootDir}/src/frontend/public/*.njk`).forEach(templatePath => {
+      const rendered = nunjucks.render(templatePath, { env: process.env });
+      const fileName = path.basename(templatePath, '.njk');
+      fs.writeFileSync(`${rootDir}/public/${fileName}`, rendered, { encoding: 'utf-8' });
+    });
     sh.cp(`${rootDir}/src/frontend/boards/${gameName}/public/*`, `${rootDir}/public`);
     break;
 

@@ -1,7 +1,7 @@
 {
-  "short_name": "The Vole in the Valley",
-  "name": "The Vole in the Valley",
-  "description": "A trick taking card game for two players",
+  "short_name": "{{ env.REACT_APP_BUILD_TARGET_NAME }}",
+  "name": "{{ env.REACT_APP_BUILD_TARGET_NAME }}",
+  "description": "{{ env.REACT_APP_BUILD_TARGET_DESCRIPTION }}",
   "icons": [
     {
       "src": "favicon.ico",
@@ -21,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#f1efe7"
+  "theme_color": "{{ env.REACT_APP_BUILD_TARGET_THEME_COLOR }}",
+  "background_color": "{{ env.REACT_APP_BUILD_TARGET_BACKGROUND_COLOR }}"
 }
