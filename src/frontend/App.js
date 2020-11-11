@@ -41,7 +41,7 @@ export default function App(props) {
           exact
           path="/"
           children={() => (
-            <Redirect to="/new" />
+            <Redirect to="/join" />
           )}
         />
         <Route
