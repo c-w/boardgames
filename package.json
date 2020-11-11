@@ -67,11 +67,10 @@
   "scripts": {
     "workon-sgp": "babel-node ./scripts/gamectl.js workon sgp",
     "workon-fitf": "babel-node ./scripts/gamectl.js workon fitf",
-    "prestart": "yarn run ensure-env",
     "start": "run-p start-client start-server",
     "start-client": "cross-env PORT=3000 craco start",
+    "prestart-server": "shx cp -n .env.example .env",
     "start-server": "cross-env PORT=8000 nodemon --exec babel-node src/backend/server.js",
-    "ensure-env": "shx cp -n .env.example .env",
     "lint-eslint": "eslint --max-warnings=0 scripts src",
     "lint-style": "stylelint \"src/**/*.{css,scss}\"",
     "lint-markdown": "markdownlint \"src/**/*.md\" \"*.md\"",
@@ -82,7 +81,6 @@
     "build-client-fitf": "babel-node ./scripts/gamectl.js build fitf",
     "build-client": "run-s build-client-sgp build-client-fitf",
     "build-server": "babel src --out-dir dist",
-    "prebuild": "yarn run ensure-env",
     "build": "run-p build-client build-server"
   },
   "eslintConfig": {
