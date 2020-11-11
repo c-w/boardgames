@@ -13,6 +13,11 @@
 /.terraform
 /*.tfstate
 /deploy.zip
+/public/favicon.ico
+/public/logo192.png
+/public/logo512.png
+/public/manifest.json
+/public/splash.png
 
 # misc
 .DS_Store

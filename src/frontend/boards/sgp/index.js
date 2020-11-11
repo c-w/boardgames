@@ -1,7 +1,7 @@
 import React, { Fragment, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import { default as game, NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../../shared/games/sgp';
+import { NIGIRIS, ROLLS, APPETIZERS, SPECIALS, DESSERTS, getNumRound } from '../../../shared/games/sgp';
 import { partition, range, sum } from '../../../shared/utils';
 import './index.scss';
 
@@ -153,7 +153,7 @@ function Rules() {
   return (
     <Link
       className="help"
-      to={`/${game.name}/rules`}
+      to="/rules"
       target="_blank"
     >
       <span role="img" aria-label="View rules">❓</span>
@@ -220,7 +220,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
             )}
           </tbody>
         </table>
-        <Link to={`/${game.name}/new`}>Click to play another game</Link>
+        <Link to="/new">Click to play another game</Link>
       </div>
     );
   }

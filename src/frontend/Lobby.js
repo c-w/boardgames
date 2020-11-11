@@ -4,8 +4,11 @@ import { LobbyClient } from 'boardgame.io/client';
 import Form from '@rjsf/core';
 import Loading from './Loading';
 import config from './config';
-import { useGame } from './hooks';
 import { getRandomInt } from '../shared/utils';
+
+/**
+ * @typedef {import('boardgame.io').Game} Game
+ */
 
 const GAME_DATA_SCHEMA = {
   required: [
@@ -49,14 +52,13 @@ function formDataKeyFor(gameName) {
 
 /**
  * @param {object} props
- * @param {string} props.gameName
+ * @param {Game} props.game
  */
-function CreateGame({ gameName }) {
+function CreateGame({ game }) {
   const [error, setError] = useState(null);
   const history = useHistory();
-  const { game } = useGame(gameName);
 
-  const formDataKey = formDataKeyFor(gameName);
+  const formDataKey = formDataKeyFor(game.name);
 
   const onChange = () => {
     setError(null);
@@ -86,7 +88,7 @@ function CreateGame({ gameName }) {
         playerName,
       });
 
-      history.push(`/${game.name}/wait/${matchID}/${playerID}/${join.playerCredentials}`);
+      history.push(`/wait/${matchID}/${playerID}/${join.playerCredentials}`);
     } catch (ex) {
       if (ex.message === 'HTTP status 400') {
         setError('Invalid game configuration');
@@ -96,10 +98,6 @@ function CreateGame({ gameName }) {
       }
     }
   };
-
-  if (game == null) {
-    return <Loading />;
-  }
 
   const schema = schemaFor(game);
 
@@ -120,22 +118,21 @@ function CreateGame({ gameName }) {
 
 /**
  * @param {object} props
- * @param {string} props.gameName
- * @param {string} props.matchID
+ * @param {Game} props.game
+ * @param {string=} props.matchID
  */
-function JoinGame({ gameName, matchID }) {
+function JoinGame({ game, matchID }) {
   const [error, setError] = useState(null);
   const [match, setMatch] = useState(null);
   const history = useHistory();
-  const { game } = useGame(gameName);
 
-  const formDataKey = formDataKeyFor(gameName);
+  const formDataKey = formDataKeyFor(game.name);
 
   useEffect(() => {
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
-    client.getMatch(gameName, matchID).then(match => setMatch(match));
-  }, [gameName, matchID]);
+    client.getMatch(game.name, matchID).then(match => setMatch(match));
+  }, [game, matchID]);
 
   const onSubmit = async ({ formData }, event) => {
     event.preventDefault();
@@ -151,12 +148,12 @@ function JoinGame({ gameName, matchID }) {
     }
 
     try {
-      const join = await client.joinMatch(gameName, matchID, {
+      const join = await client.joinMatch(game.name, matchID, {
         playerID: `${playerID}`,
         playerName: formData.playerName,
       });
 
-      history.push(`/${game.name}/wait/${matchID}/${playerID}/${join.playerCredentials}`);
+      history.push(`/wait/${matchID}/${playerID}/${join.playerCredentials}`);
     } catch (ex) {
       if (ex.message === 'HTTP status 409') {
         setError('The game is already full');
@@ -169,7 +166,7 @@ function JoinGame({ gameName, matchID }) {
     }
   };
 
-  if (game == null || match == null) {
+  if (match == null) {
     return <Loading />;
   }
 
@@ -201,8 +198,8 @@ function JoinGame({ gameName, matchID }) {
 
 /**
  * @param {object} props
- * @param {string} props.gameName
- * @param {string} props.matchID
+ * @param {Game} props.game
+ * @param {string=} props.matchID
  */
 export default function Lobby(props) {
   return props.matchID == null

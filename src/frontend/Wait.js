@@ -5,31 +5,25 @@ import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
 import Loading from './Loading';
 import config from './config';
-import { useGame } from './hooks';
 import './Wait.scoped.scss';
 
 /**
  * @typedef {import('react').FocusEvent<HTMLTextAreaElement>} TextAreaFocusEvent
+ * @typedef {import('boardgame.io').Game} Game
  */
 
 /**
  * @param {object} props
- * @param {string} props.gameName
+ * @param {Game} props.game
  * @param {string} props.matchID
  * @param {string} props.playerID
  * @param {string} props.credentials
  */
-export default function Wait({ gameName, matchID, playerID, credentials }) {
-  const { game } = useGame(gameName);
-
+export default function Wait({ game, matchID, playerID, credentials }) {
   const [status, setStatus] = useState({ isReady: false, isLoading: true });
   const [copied, setCopied] = useState(false);
 
   useInterval(useCallback(async () => {
-    if (game == null) {
-      return;
-    }
-
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
 
     const data = await client.getMatch(game.name, matchID);
@@ -53,11 +47,11 @@ export default function Wait({ gameName, matchID, playerID, credentials }) {
 
   if (status.isReady) {
     return (
-      <Redirect to={`/${game.name}/play/${matchID}/${playerID}/${credentials}`} />
+      <Redirect to={`/play/${matchID}/${playerID}/${credentials}`} />
     );
   }
 
-  const joinURL = `${window.location.href.split('#')[0]}#/${gameName}/join/${matchID}`;
+  const joinURL = `${window.location.href.split('#')[0]}#/join/${matchID}`;
 
   return (
     <div className="wait">

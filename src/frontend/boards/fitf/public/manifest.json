@@ -1,7 +1,7 @@
 {
-  "short_name": "Boardgames",
-  "name": "Boardgames",
-  "description": "A collection of multiplayer boardgames",
+  "short_name": "The Vole in the Valley",
+  "name": "The Vole in the Valley",
+  "description": "A trick taking card game for two players",
   "icons": [
     {
       "src": "favicon.ico",
@@ -22,5 +22,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#f1efe7"
 }

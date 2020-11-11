@@ -10,7 +10,13 @@ This repository hosts a collection of multiplayer boardgames:
 ## Development setup
 
 ```sh
+# install dependencies
 yarn install
+
+# activate a game module
+yarn run workon-sgp
+
+# start server
 yarn start
 ```
 
@@ -20,8 +26,9 @@ yarn start
 
 ```sh
 # package application
+yarn run build
 yarn install --production
-zip -qr deploy.zip ./build ./dist ./node_modules
+zip -qr deploy.zip ./dist ./node_modules
 
 # update infrastructure
 export TF_VAR_name="boardgames"

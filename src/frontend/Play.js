@@ -1,21 +1,21 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { Client } from 'boardgame.io/react';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import Loading from './Loading';
 import config from './config';
-import { useGame } from './hooks';
+
+/**
+ * @typedef {import('boardgame.io').Game} Game
+ * @typedef {import('boardgame.io/react').BoardProps} BoardProps
+ * @typedef {import('react').ComponentType<BoardProps>} BoardComponent
+ */
 
 /**
  * @param {object} props
- * @param {string} props.gameName
+ * @param {Game} props.game
+ * @param {BoardComponent} props.board
  */
-export default function Play({ gameName, ...props }) {
-  const { game, board } = useGame(gameName);
-
-  if (game == null || board == null) {
-    return <Loading />;
-  }
-
+export default function Play({ game, board, ...props }) {
   const GameClient = Client({
     game,
     board,
@@ -25,8 +25,6 @@ export default function Play({ gameName, ...props }) {
   });
 
   return (
-    <Suspense fallback={<Loading />}>
-      <GameClient {...props} />
-    </Suspense>
+    <GameClient {...props} />
   );
 }

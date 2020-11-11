@@ -1,15 +1,16 @@
 import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
-import Loading from './Loading';
 import Lobby from './Lobby';
 import Play from './Play';
-import GameList from './GameList';
 import MatchList from './MatchList';
 import Rules from './Rules';
 import Wait from './Wait';
-import { useGame } from './hooks';
-import { renderGameName } from '../shared/utils';
+
+/**
+ * @typedef {import('boardgame.io').Game} Game
+ * @typedef {import('boardgame.io/react').BoardProps} BoardProps
+ * @typedef {import('react').ComponentType<BoardProps>} BoardComponent
+ */
 
 /**
  * @param {object} props
@@ -17,38 +18,22 @@ import { renderGameName } from '../shared/utils';
  * @param {any} props.children
  */
 function DefaultLayout({ gameName, children }) {
-  const { game, icon, facebook } = useGame(gameName);
-
-  if (game == null) {
-    return (
-      <main className={gameName}>
-        <Loading />
-      </main>
-    );
-  }
-
-  const friendlyGameName = renderGameName(gameName);
-  const rootUrl = window.location.href.split('#')[0];
-
   return (
-    <>
-      <Helmet>
-        <title>{friendlyGameName}</title>
-        <meta property="og:title" content={friendlyGameName} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`${rootUrl}#/${gameName}`} />
-        {facebook && <meta property="og:image" content={`${rootUrl}${facebook}`} />}
-        {icon && <link rel="icon" href={icon} />}
-      </Helmet>
-
-      <main className={gameName}>
-        {children}
-      </main>
-    </>
+    <main className={gameName}>
+      {children}
+    </main>
   );
 }
 
-export default function App() {
+/**
+ * @param {object} props
+ * @param {Game} props.game
+ * @param {BoardComponent} props.board
+ * @param {string} props.rules
+ */
+export default function App(props) {
+  const gameName = props.game.name;
+
   return (
     <HashRouter>
       <Switch>
@@ -56,69 +41,60 @@ export default function App() {
           exact
           path="/"
           children={() => (
-            <main>
-              <GameList />
-            </main>
+            <Redirect to="/new" />
           )}
         />
         <Route
           exact
-          path="/:gameName"
-          children={({ match }) => (
-            <Redirect to={`/${match.params.gameName}/new`} />
-          )}
-        />
-        <Route
-          exact
-          path="/:gameName/new"
-          children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName}>
-              <Lobby {...match.params} />
+          path="/new"
+          children={() => (
+            <DefaultLayout gameName={gameName}>
+              <Lobby {...props} />
             </DefaultLayout>
           )}
         />
         <Route
           exact
-          path="/:gameName/rules"
-          children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName}>
-              <Rules {...match.params} />
+          path="/rules"
+          children={() => (
+            <DefaultLayout gameName={gameName}>
+              <Rules {...props} />
             </DefaultLayout>
           )}
         />
         <Route
           exact
-          path="/:gameName/join"
-          children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName}>
-              <MatchList {...match.params} />
+          path="/join"
+          children={() => (
+            <DefaultLayout gameName={gameName}>
+              <MatchList {...props} />
             </DefaultLayout>
           )}
         />
         <Route
           exact
-          path="/:gameName/join/:matchID"
+          path="/join/:matchID"
           children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName}>
-              <Lobby {...match.params} />
+            <DefaultLayout gameName={gameName}>
+              <Lobby {...match.params} {...props} />
             </DefaultLayout>
           )}
         />
         <Route
           exact
-          path="/:gameName/wait/:matchID/:playerID/:credentials"
+          path="/wait/:matchID/:playerID/:credentials"
           children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName}>
-              <Wait {...match.params} />
+            <DefaultLayout gameName={gameName}>
+              <Wait {...match.params} {...props} />
             </DefaultLayout>
           )}
         />
         <Route
           exact
-          path="/:gameName/play/:matchID/:playerID/:credentials"
+          path="/play/:matchID/:playerID/:credentials"
           children={({ match }) => (
-            <DefaultLayout gameName={match.params.gameName}>
-              <Play {...match.params} />
+            <DefaultLayout gameName={gameName}>
+              <Play {...match.params} {...props} />
             </DefaultLayout>
           )}
         />

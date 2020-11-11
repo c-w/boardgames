@@ -4,6 +4,7 @@ import { FlatFile, Server, SocketIO } from 'boardgame.io/server';
 import { AzureStorage, Compression } from 'bgio-azure-storage';
 import fs from 'fs';
 import Koa from 'koa';
+import mount from 'koa-mount';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
@@ -39,27 +40,31 @@ const transport = new SocketIO({
   },
 });
 
+const games = [
+  fitf,
+  sgp,
+];
+
 const server = Server({
-  games: [
-    fitf,
-    sgp,
-  ],
-
+  games,
   db,
-
   transport,
 });
 
-const filesRoot = path.join(__dirname, '..', '..', 'build');
-const staticRoot = path.join(filesRoot, 'static');
+for (const game of games) {
+  const filesRoot = path.join(__dirname, '..', '..', 'dist', game.name);
+  const staticRoot = path.join(filesRoot, 'static');
 
-server.app.use(serve(filesRoot, {
-  setHeaders: (res, path) => {
-    if (path.startsWith(staticRoot)) {
-      res.setHeader('cache-control', 'public, max-age=31536000, immutable');
-    }
-  },
-}));
+  const serveGameFrontend = serve(filesRoot, {
+    setHeaders: (res, path) => {
+      if (path.startsWith(staticRoot)) {
+        res.setHeader('cache-control', 'public, max-age=31536000, immutable');
+      }
+    },
+  });
+
+  server.app.use(mount(`/${game.name}`, serveGameFrontend));
+}
 
 if (config.HTTPS && config.SECONDARY_PORT) {
   const httpServer = new Koa();

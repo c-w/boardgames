@@ -4,33 +4,31 @@ import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
 import Loading from './Loading';
 import config from './config';
-import { useGame } from './hooks';
 
 /**
- * @param {object} props
- * @param {string} props.gameName
+ * @typedef {import('boardgame.io').Game} Game
  */
-function CreateGame({ gameName }) {
+
+function CreateGame() {
   return (
-    <Link to={`/${gameName}/new`} className="create-game">Create a new game</Link>
+    <Link to="/new" className="create-game">Create a new game</Link>
   );
 }
 
 /**
  * @param {object} props
- * @param {string} props.gameName
+ * @param {Game} props.game
  */
-export default function MatchList({ gameName }) {
+export default function MatchList({ game }) {
   const [matches, setMatches] = useState(null);
-  const { game } = useGame(gameName);
 
   useInterval(useCallback(async () => {
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
-    const data = await client.listMatches(gameName);
+    const data = await client.listMatches(game.name);
     setMatches(data.matches);
-  }, [gameName, setMatches]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
+  }, [game, setMatches]), config.REACT_APP_WAITING_FOR_PLAYER_REFRESH_MS);
 
-  if (matches == null || game == null) {
+  if (matches == null) {
     return <Loading />;
   }
 
@@ -39,18 +37,18 @@ export default function MatchList({ gameName }) {
   if (openMatches.length === 0) {
     return (
       <div className="matches">
-        There are currently no games waiting for players. <CreateGame gameName={game.name} />
+        There are currently no games waiting for players. <CreateGame />
       </div>
     );
   }
 
   return (
     <div className="matches">
-      <CreateGame gameName={game.name} /> or join one of the games below:
+      <CreateGame /> or join one of the games below:
       <ul>
         {openMatches.map(match => (
           <li key={match.matchID}>
-            <Link to={`/${game.name}/join/${match.matchID}`}>
+            <Link to={`/join/${match.matchID}`}>
               Join game by {match.players.find(player => player.name)?.name || 'unknown'}
             </Link>
           </li>
