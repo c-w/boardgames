@@ -8,8 +8,6 @@ import mount from 'koa-mount';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
-import fitf from '../shared/games/fitf';
-import sgp from '../shared/games/sgp';
 
 let db;
 
@@ -40,10 +38,11 @@ const transport = new SocketIO({
   },
 });
 
-const games = [
-  fitf,
-  sgp,
-];
+const gamesDir = path.join(__dirname, '..', 'shared', 'games');
+
+const games = fs.readdirSync(gamesDir)
+  .filter(file => file.endsWith('.js') && !file.endsWith('.test.js'))
+  .map(file => require(path.join(gamesDir, file)).default);
 
 const server = Server({
   games,
