@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { LobbyClient } from 'boardgame.io/client';
 import useInterval from '@use-hooks/interval';
@@ -22,6 +22,7 @@ import './Wait.scoped.scss';
 export default function Wait({ game, matchID, playerID, credentials }) {
   const [status, setStatus] = useState({ isReady: false, isLoading: true });
   const [copied, setCopied] = useState(false);
+  const history = useHistory();
 
   useInterval(useCallback(async () => {
     const client = new LobbyClient({ server: config.REACT_APP_SERVER_URL });
@@ -51,7 +52,8 @@ export default function Wait({ game, matchID, playerID, credentials }) {
     );
   }
 
-  const joinURL = `${window.location.href.split('#')[0]}#/join/${matchID}`;
+  const joinSlug = history.createHref({ pathname: `/join/${matchID}` });
+  const joinURL = `${window.location.origin}${window.location.pathname}${joinSlug}`;
 
   return (
     <div className="wait">
