@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "ignore": [
+    "src/frontend",
+    "src/index.js",
+    "src/setupProxy.js",
+    "src/**/*.test.js"
+  ]
+}

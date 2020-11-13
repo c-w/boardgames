@@ -70,7 +70,7 @@
     "start": "run-p start-client start-server",
     "start-client": "cross-env PORT=3000 craco start",
     "prestart-server": "shx cp -n ./src/backend/runtime.env .env",
-    "start-server": "cross-env PORT=8000 nodemon --exec babel-node src/backend/server.js",
+    "start-server": "cross-env PORT=8000 nodemon --watch src/backend --watch src/shared --ext js,njk --exec babel-node src/backend/server.js",
     "lint-eslint": "eslint --max-warnings=0 scripts src",
     "lint-style": "stylelint \"src/**/*.{css,scss}\"",
     "lint-markdown": "markdownlint \"src/**/*.md\" \"*.md\"",
@@ -83,69 +83,5 @@
     "build-server": "babel src --out-dir dist",
     "postbuild-server": "shx cp \"src/backend/*.njk\" ./dist/backend",
     "build": "run-p build-client build-server"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_"
-        }
-      ]
-    }
-  },
-  "stylelint": {
-    "extends": [
-      "stylelint-config-recommended"
-    ],
-    "rules": {
-      "at-rule-no-unknown": [
-        true,
-        {
-          "ignoreAtRules": [
-            "include",
-            "mixin"
-          ]
-        }
-      ],
-      "no-descending-specificity": null
-    }
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ],
-    "ignore": [
-      "src/frontend",
-      "src/index.js",
-      "src/setupProxy.js",
-      "src/**/*.test.js"
-    ]
-  },
-  "nodemonConfig": {
-    "ext": "js,njk",
-    "watch": [
-      "src/backend",
-      "src/shared"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn run lint",
-      "pre-push": "yarn run test"
-    }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
