@@ -25,6 +25,11 @@ $black: #000;
   width: 100vw;
   position: relative;
 
+  em {
+    background-color: $alert;
+    color: $background;
+  }
+
   .matches {
     @include narrow;
     text-align: center;
@@ -268,19 +273,28 @@ $black: #000;
   .wait {
     @include narrow;
 
+    textarea,
     em {
-      background-color: $alert;
-      color: $background;
+      border-radius: 8px;
+      border: 4px solid $alert;
+      padding: 4px 8px;
+      margin: 8px auto;
+    }
+
+    textarea {
+      @include font;
+      background-color: $white;
+    }
+
+    .callout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
   .bgio-client {
     @include narrow;
-
-    em {
-      background-color: $alert;
-      color: $background;
-    }
 
     .tower {
       background-color: $tower;
