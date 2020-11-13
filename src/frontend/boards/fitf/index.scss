@@ -17,6 +17,12 @@ $black: #000;
   font-size: 16px;
 }
 
+@mixin label {
+  @include font;
+  content: ':';
+  margin-right: 4px;
+}
+
 .the-vole-in-the-valley {
   @include font;
   background-color: $background;
@@ -24,6 +30,10 @@ $black: #000;
   height: 100vh;
   width: 100vw;
   position: relative;
+
+  input[type="submit"] {
+    cursor: pointer;
+  }
 
   em {
     background-color: $alert;
@@ -61,7 +71,7 @@ $black: #000;
         &:before {
           margin-left: -16px;
           margin-right: 8px;
-        } 
+        }
 
         &:nth-child(3n+1):before {
           content: '🏰';
@@ -197,7 +207,6 @@ $black: #000;
 
     input[type="submit"] {
       @include font;
-      cursor: pointer;
       width: 50%;
       line-height: 24px;
       background-color: $alert;
@@ -224,9 +233,7 @@ $black: #000;
 
         label[for] {
           &:after {
-            @include font;
-            content: ':';
-            margin-right: 4px;
+            @include label;
           }
         }
 
@@ -246,9 +253,7 @@ $black: #000;
             flex-direction: row-reverse;
 
             span:after {
-              @include font;
-              content: ':';
-              margin-right: 4px;
+              @include label;
             }
 
             input[type="checkbox"] {
@@ -294,91 +299,288 @@ $black: #000;
   }
 
   .bgio-client {
-    @include narrow;
-
-    .tower {
-      background-color: $tower;
-      color: $black;
-    }
-
-    .key {
-      background-color: $key;
-      color: $black;
-    }
-
-    .moon {
-      background-color: $moon;
-      color: $background;
-    }
-
-    fieldset {
-      border-color: $border;
-
-      > div {
-        display: block;
-      }
-    }
-
-    fieldset:not(:last-child),
-    fieldset > div:not(:last-child) {
-      margin-bottom: 0.25em;
-    }
-
-    fieldset[disabled] {
-      opacity: 0.45;
-    }
-
-    fieldset[disabled] .tower,
-    fieldset[disabled] .key,
-    fieldset[disabled] .moon,
-    fieldset[disabled] em {
-      background-color: transparent;
-      color: $black;
-    }
-
-    ol {
-      padding: 0;
-      list-style: none;
-    }
-
-    /* stylelint-disable-next-line no-descending-specificity */
-    form li > label {
+    .card {
+      position: relative;
       display: inline-block;
-      margin-bottom: 0.5em;
+      user-select: none;
+
+      &.won:before,
+      &.old:before,
+      &.new:before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin-top: -6px;
+        margin-right: -6px;
+      }
+
+      &.won:before {
+        content: '👑';
+      }
+
+      &.old:before {
+        content: '❌';
+      }
+
+      &.new:before {
+        content: '🌟';
+      }
+
+      .content {
+        background-color: $white;
+        border-style: solid;
+        border-width: 6px;
+        border-radius: 8px;
+        padding: 8px 4px;
+        text-align: center;
+        display: block;
+        height: 100px;
+        width: 65px;
+        box-sizing: border-box;
+
+        &.compact {
+          padding-top: 2px;
+          padding-bottom: 2px;
+          height: 35px;
+          overflow: hidden;
+        }
+      }
+
+      .rank {
+        padding-right: 4px;
+      }
+
+      .suit {
+        text-transform: capitalize;
+      }
+
+      &.key {
+        .content {
+          border-color: $key;
+
+          .suit:before {
+            content: '🗝️';
+          }
+        }
+      }
+
+      &.tower {
+        .content {
+          border-color: $tower;
+
+          .suit:before {
+            content: '🏰';
+          }
+        }
+      }
+
+      &.moon {
+        .content {
+          border-color: $moon;
+
+          .suit:before {
+            content: '🌙';
+          }
+        }
+      }
     }
 
-    @media screen and (min-width: 400px) {
-      form > div > input {
+    .label:after {
+      @include label;
+    }
+
+    form {
+      input[type="submit"],
+      aside {
+        @include font;
+        border-style: solid;
+        border-width: 4px;
+        border-radius: 8px;
+        margin-top: 16px;
+        min-height: 40px;
+        max-width: 50%;
+        padding: 8px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+
+      input[type="submit"] {
+        float: right;
+        margin-right: 16px;
+        border-color: $alert;
+        background-color: $alert;
+        color: $white;
+      }
+
+      aside {
+        float: left;
+        margin-left: 16px;
+        border-color: $border;
+        background-color: $white;
+        color: $black;
+      }
+    }
+
+    .board {
+      min-width: 320px;
+
+      .info {
+        display: flex;
+        justify-content: space-between;
+        margin: 8px 16px 32px 16px;
+        flex-wrap: wrap;
+
+        .stats {
+          display: table;
+
+          .score + .score + .tricks {
+            > * {
+              padding-top: 8px;
+            }
+          }
+
+          > div {
+            display: table-row;
+
+            > span {
+              display: table-cell;
+
+              &.label {
+                text-align: right;
+              }
+            }
+          }
+        }
+
+        .current-trick {
+          align-self: flex-end;
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          min-width: 160px;
+
+          .played {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+
+            .label {
+              margin-bottom: 4px;
+            }
+          }
+
+          em {
+            width: fit-content;
+            margin: 8px auto;
+            background-color: unset;
+            color: $alert;
+            border-top: 1px solid $alert;
+            border-bottom: 1px solid $alert;
+          }
+        }
+
+        .history {
+          display: table;
+          border-collapse: separate;
+          border-spacing: 8px;
+          margin: -8px;
+
+          .trump,
+          .last-trick {
+            display: table-row;
+
+            .label,
+            .card {
+              display: table-cell;
+            }
+
+            .label {
+              text-align: right;
+            }
+          }
+        }
+
+        @media screen and (max-width: 479px) {
+          flex-wrap: wrap;
+
+          .stats {
+            max-width: 50%;
+          }
+
+          .history {
+            max-width: 50%;
+          }
+
+          .current-trick {
+            order: 3;
+            margin: 0 auto;
+          }
+        }
+
+        @media screen and (max-width: 320px) {
+          .label {
+            font-size: 14px;
+
+            &:after {
+              font-size: 14px;
+              margin-right: 2px;
+            }
+          }
+        }
+      }
+    }
+
+    .disabled {
+      opacity: 0.5;
+    }
+
+    .hand {
+      margin-inline-start: 0;
+      margin-inline-end: 0;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      padding-inline-start: 0;
+      padding-inline-end: 0;
+      margin-right: 6px;
+      margin-left: 6px;
+      list-style: none;
+
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      column-gap: 8px;
+      row-gap: 8px;
+
+      label {
         width: 100%;
-        height: 2em;
-      }
-    }
+        height: 100%;
+        display: block;
 
-    @media screen and (max-width: 400px) {
-      form {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        font-size: 2.8vh;
-        min-height: 95vh;
-      }
+        input[type="checkbox"] {
+          appearance: none;
 
-      form > div {
-        position: relative;
-        padding: 1em;
-      }
+          + .card {
+            cursor: pointer;
+          }
 
-      form > div > aside {
-        position: absolute;
-        bottom: 1em;
-        text-align: justify;
-      }
+          &:checked + .card {
+            margin-top: -16px;
+            margin-right: -6px;
+            margin-left: 6px;
+          }
 
-      form > div > input {
-        position: absolute;
-        top: 25%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        height: 4em;
+          &:disabled + .card {
+            cursor: not-allowed;
+            opacity: 0.5;
+          }
+        }
       }
     }
   }

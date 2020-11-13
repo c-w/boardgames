@@ -309,13 +309,11 @@ $alert: #C9DA2B;
     table {
       margin: 0 auto;
 
-      /* stylelint-disable-next-line no-descending-specificity */
       thead > tr > th {
         background-color: $heading;
         color: $heading-text;
       }
 
-      /* stylelint-disable-next-line no-descending-specificity */
       tbody > tr > td {
         background-color: $heading-text;
         color: $black;

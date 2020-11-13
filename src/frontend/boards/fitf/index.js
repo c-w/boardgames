@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { isMoveInvalid } from '../../../shared/games/fitf';
 import { last, sum } from '../../../shared/utils';
 import './index.scss';
@@ -19,12 +20,20 @@ const CARD_TEXTS = {
 };
 
 /**
- * @param {Card} props
+ * @param {object} props
+ * @param {Card} props.card
+ * @param {boolean=} props.compact
+ * @param {boolean=} props.won
+ * @param {boolean=} props.isNew
+ * @param {boolean=} props.isOld
  */
-function Card({ rank, suit }) {
+function Card({ card, compact, won, isNew, isOld }) {
   return (
-    <span className={suit}>
-      {rank} of {suit}
+    <span className={classNames('card', card.suit, { won, new: isNew, old: isOld })}>
+      <span className={classNames('content', { compact })}>
+        <span className="rank">{card.rank}</span>
+        <span className="suit">{card.suit}</span>
+      </span>
     </span>
   );
 }
@@ -118,43 +127,39 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       : a.card.suit.localeCompare(b.card.suit);
   });
 
-  const Stats = ({ disabled=false, showHistory=false, hideTricks=false }) => (
-    <fieldset disabled={disabled}>
-      <legend>Stats</legend>
-      <div>
-        Your score: {sum(G.scores[playerID])}
+  const Stats = ({ showHistory=false, hideTricks=false }) => (
+    <div className="stats">
+      <div className="score">
+        <span className="label">Your score</span>
+        <span>{sum(G.scores[playerID])}</span>
         {showHistory && (
           <span>
-            &nbsp;(+ {last(G.scores[playerID])})
+            (+ {last(G.scores[playerID])})
           </span>
         )}
       </div>
-      <div>
-        {opponent.name} score: {sum(G.scores[opponent.id])}
+      <div className="score">
+        <span className="label">{opponent.name} score</span>
+        <span>{sum(G.scores[opponent.id])}</span>
         {showHistory && (
           <span>
-            &nbsp;(+ {last(G.scores[opponent.id])})
+            (+ {last(G.scores[opponent.id])})
           </span>
         )}
       </div>
       {!hideTricks && (
-        <div>
-          Your tricks: {tricksWon}
+        <div className="tricks">
+          <span className="label">Your tricks</span>
+          <span>{tricksWon}</span>
         </div>
       )}
       {!hideTricks && (
-        <div>
-          {opponent.name} tricks: {tricksLost}
+        <div className="tricks">
+          <span className="label">{opponent.name} tricks</span>
+          <span>{tricksLost}</span>
         </div>
       )}
-      {lastTrick && (
-        <div>
-          Last trick:&nbsp;
-          <Card {...lastTrick.cards[0]} /> vs <Card {...lastTrick.cards[1]} />&nbsp;
-          (you {lastTrick.winner === playerID ? 'won' : 'lost'})
-        </div>
-      )}
-    </fieldset>
+    </div>
   );
 
   if (isOver) {
@@ -185,30 +190,45 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   }
 
   return (
-    <form onSubmit={isDiscard ? discardCard : playCard}>
-      <Stats disabled={!isActive} />
-      <fieldset disabled={!isActive}>
-        <legend>This trick</legend>
-        <div>
-          Trump:&nbsp;
-          <Card {...trump} />
-          {previousTrump && (
-            <React.Fragment>
-              &nbsp;(was <Card {...previousTrump} />)
-            </React.Fragment>
-          )}
-        </div>
-        {G.played && (
-          <div>
-            {isActive ? `${opponent.name} played` : 'You played'}:&nbsp;
-            <Card {...G.played} />
+    <form onSubmit={isDiscard ? discardCard : playCard} className={classNames({ disabled: !isActive })}>
+      <div className="board">
+        <div className="info">
+          <Stats />
+          <div className="current-trick">
+            <em>{isActive ? 'Your move!' : `Waiting for ${opponent.name}...`}</em>
+            {G.played && (
+              <div className="played">
+                <div className="label">{isActive ? `${opponent.name} played` : 'You played'}</div>
+                <Card card={G.played} />
+              </div>
+            )}
           </div>
-        )}
-        <em>{isActive ? 'Your move!' : `Waiting for ${opponent.name}...`}</em>
-      </fieldset>
-      <fieldset disabled={!isActive}>
-        <legend>Your hand</legend>
-        <ol>
+          <div className="history">
+            <div className="trump">
+              <span className="label">Trump</span>
+              {previousTrump && (
+                <Card card={previousTrump} compact isOld />
+              )}
+              <Card card={trump} compact />
+            </div>
+            {lastTrick && (
+              <div className="last-trick">
+                <span className="label">Last</span>
+                <Card
+                  card={lastTrick.cards[0]}
+                  compact
+                  won={lastTrick.winner === '0'}
+                />
+                <Card
+                  card={lastTrick.cards[1]}
+                  compact
+                  won={lastTrick.winner === '1'}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+        <ol className="hand">
           {hand.map(({ card, i }) =>
             <li key={`${card.rank}-${card.suit}`}>
               <label>
@@ -217,28 +237,23 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
                   onChange={onClick(i)}
                   disabled={!canPlay(i)}
                   checked={chosen.includes(i)}
-                />&nbsp;
-                <Card {...card} />
+                />
+                <Card card={card} isNew={isDiscard && i === hand.length - 1} />
               </label>
-              {isDiscard && i === hand.length - 1 && (
-                <span>&nbsp;(new)</span>
-              )}
             </li>
           )}
         </ol>
-      </fieldset>
-      <div>
-        <input
-          type="submit"
-          disabled={!isActive || chosen.length === 0}
-          value={isDiscard ? 'Discard card' : 'Play card'}
-        />
-        {helpText && (
-          <aside>
-            {helpText}
-          </aside>
-        )}
       </div>
+      <input
+        type="submit"
+        disabled={!isActive || chosen.length === 0}
+        value={isDiscard ? 'Discard card' : 'Play card'}
+      />
+      {helpText && (
+        <aside>
+          {helpText}
+        </aside>
+      )}
     </form>
   );
 }
