@@ -11,4 +11,5 @@ export default envalid.cleanEnv(process.env, {
   HTTPS: envalid.bool({ default: false }),
   SSL_CRT_FILE: envalid.str({ default: '' }),
   SSL_KEY_FILE: envalid.str({ default: '' }),
+  FRONTEND_ROOT: envalid.url({ default: undefined }),
 });

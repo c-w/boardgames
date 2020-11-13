@@ -4,6 +4,7 @@ import { FlatFile, Server, SocketIO } from 'boardgame.io/server';
 import { AzureStorage, Compression } from 'bgio-azure-storage';
 import fs from 'fs';
 import Koa from 'koa';
+import cors from '@koa/cors';
 import mount from 'koa-mount';
 import { Environment, FileSystemLoader } from 'nunjucks';
 import serve from 'koa-static';
@@ -52,34 +53,38 @@ const server = Server({
   transport,
 });
 
-for (const game of games) {
-  const filesRoot = path.join(__dirname, '..', '..', 'dist', game.name);
-  const staticRoot = path.join(filesRoot, 'static');
+if (config.FRONTEND_ROOT) {
+  server.app.use(cors({ origin: config.FRONTEND_ROOT }));
+} else {
+  for (const game of games) {
+    const filesRoot = path.join(__dirname, '..', '..', 'dist', game.name);
+    const staticRoot = path.join(filesRoot, 'static');
 
-  const serveGameFrontend = serve(filesRoot, {
-    setHeaders: (res, path) => {
-      if (path.startsWith(staticRoot)) {
-        res.setHeader('cache-control', 'public, max-age=31536000, immutable');
-      }
-    },
-  });
+    const serveGameFrontend = serve(filesRoot, {
+      setHeaders: (res, path) => {
+        if (path.startsWith(staticRoot)) {
+          res.setHeader('cache-control', 'public, max-age=31536000, immutable');
+        }
+      },
+    });
 
-  server.app.use(mount(`/${game.name}`, serveGameFrontend));
-}
-
-const nunjucks = new Environment(new FileSystemLoader(__dirname));
-
-nunjucks.addFilter('renderGameName', renderGameName);
-
-const indexHtml = nunjucks.render('index.html.njk', { games });
-
-server.app.use((ctx, next) => {
-  if (ctx.path === '/') {
-    ctx.body = indexHtml;
-  } else {
-    return next();
+    server.app.use(mount(`/${game.name}`, serveGameFrontend));
   }
-});
+
+  const nunjucks = new Environment(new FileSystemLoader(__dirname));
+
+  nunjucks.addFilter('renderGameName', renderGameName);
+
+  const indexHtml = nunjucks.render('index.html.njk', { games });
+
+  server.app.use((ctx, next) => {
+    if (ctx.path === '/') {
+      ctx.body = indexHtml;
+    } else {
+      return next();
+    }
+  });
+}
 
 if (config.HTTPS && config.SECONDARY_PORT) {
   const httpServer = new Koa();

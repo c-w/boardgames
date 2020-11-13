@@ -71,6 +71,8 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 [ vm ] echo "SSL_KEY_FILE=/etc/letsencrypt/live/boardgames.justamouse.com/privkey.pem" >> .env
 [ vm ] echo "AZURE_STORAGE_ACCOUNT=boardgames" >> .env
 [ vm ] echo "AZURE_STORAGE_CONTAINER=boardgames" >> .env
+[ vm ] echo "REACT_APP_SERVER_URL=https://boardgames.justamouse.com" >> .env
+[ vm ] echo "REACT_APP_FRONTEND_ROOT=https://boardgames.justamouse.com" >> .env
 [ vm ] yarn install
 [ vm ] yarn run build
 [ vm ] sudo npm install -g pm2@latest
