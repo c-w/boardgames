@@ -53,6 +53,14 @@ const server = Server({
   transport,
 });
 
+export function renderIndex() {
+  const nunjucks = new Environment(new FileSystemLoader(__dirname));
+
+  nunjucks.addFilter('renderGameName', renderGameName);
+
+  return nunjucks.render('index.html.njk', { games });
+}
+
 if (config.FRONTEND_ROOT) {
   server.app.use(cors({ origin: config.FRONTEND_ROOT }));
 } else {
@@ -71,11 +79,7 @@ if (config.FRONTEND_ROOT) {
     server.app.use(mount(`/${game.name}`, serveGameFrontend));
   }
 
-  const nunjucks = new Environment(new FileSystemLoader(__dirname));
-
-  nunjucks.addFilter('renderGameName', renderGameName);
-
-  const indexHtml = nunjucks.render('index.html.njk', { games });
+  const indexHtml = renderIndex();
 
   server.app.use((ctx, next) => {
     if (ctx.path === '/') {
@@ -86,15 +90,17 @@ if (config.FRONTEND_ROOT) {
   });
 }
 
-if (config.HTTPS && config.SECONDARY_PORT) {
-  const httpServer = new Koa();
-  httpServer.use(ctx => {
-    ctx.status = 302;
-    ctx.redirect(`https://${ctx.request.hostname}:${config.PORT}${ctx.request.path}`);
-  });
-  new Promise(() => {
-    httpServer.listen(config.SECONDARY_PORT);
-  });
-}
+if (process.argv.length === 3 && process.argv[2] === 'run') {
+  if (config.HTTPS && config.SECONDARY_PORT) {
+    const httpServer = new Koa();
+    httpServer.use(ctx => {
+      ctx.status = 302;
+      ctx.redirect(`https://${ctx.request.hostname}:${config.PORT}${ctx.request.path}`);
+    });
+    new Promise(() => {
+      httpServer.listen(config.SECONDARY_PORT);
+    });
+  }
 
-server.run(config.PORT);
+  server.run(config.PORT);
+}

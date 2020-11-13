@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as nunjucks from 'nunjucks';
 import * as path from 'path';
 import * as sh from 'shelljs';
+import { renderIndex } from '../src/backend/server';
 
 const rootDir = `${__dirname}/..`;
 const args = process.argv.slice(2);
@@ -45,6 +46,7 @@ switch (command) {
     sh.popd('-q');
     sh.mkdir('-p', `${rootDir}/dist/${game.name}`);
     sh.mv(`${rootDir}/build/*`, `${rootDir}/dist/${game.name}`);
+    fs.writeFileSync(`${rootDir}/dist/index.html`, renderIndex());
     break;
 
   default:

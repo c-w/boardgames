@@ -76,7 +76,7 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 [ vm ] yarn install
 [ vm ] yarn run build
 [ vm ] sudo npm install -g pm2@latest
-[ vm ] pm2 start dist/backend/server.js
+[ vm ] pm2 start dist/backend/server.js -- run
 [ vm ] pm2 monit
 ```
 
