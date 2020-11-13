@@ -79,6 +79,7 @@
     "lint-tsc": "tsc",
     "lint": "run-p lint-eslint lint-style lint-markdown lint-tsc",
     "test": "cross-env CI=true craco test --env=node",
+    "clean": "shx rm -rf ./build ./dist ./public",
     "build-client-sgp": "babel-node ./scripts/gamectl.js build sgp",
     "build-client-fitf": "babel-node ./scripts/gamectl.js build fitf",
     "build-client": "run-s build-client-sgp build-client-fitf",

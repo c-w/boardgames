@@ -84,5 +84,5 @@ terraform apply -var code_zip=deploy.zip ./infrastructure
 
 ```txt
 [host] git push -f vm master
-[host] ssh clewolff@boardgames.justamouse.com 'cd boardgames/code && git fetch origin && git reset --hard origin/master && yarn && yarn run build && pm2 restart 0'
+[host] ssh clewolff@boardgames.justamouse.com 'cd boardgames/code && git fetch origin && git reset --hard origin/master && yarn && yarn run clean && yarn run build && pm2 restart 0'
 ```
