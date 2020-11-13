@@ -5,9 +5,11 @@ import { AzureStorage, Compression } from 'bgio-azure-storage';
 import fs from 'fs';
 import Koa from 'koa';
 import mount from 'koa-mount';
+import { Environment, FileSystemLoader } from 'nunjucks';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
+import { renderGameName } from '../shared/utils';
 
 let db;
 
@@ -64,6 +66,20 @@ for (const game of games) {
 
   server.app.use(mount(`/${game.name}`, serveGameFrontend));
 }
+
+const nunjucks = new Environment(new FileSystemLoader(__dirname));
+
+nunjucks.addFilter('renderGameName', renderGameName);
+
+const indexHtml = nunjucks.render('index.html.njk', { games });
+
+server.app.use((ctx, next) => {
+  if (ctx.path === '/') {
+    ctx.body = indexHtml;
+  } else {
+    return next();
+  }
+});
 
 if (config.HTTPS && config.SECONDARY_PORT) {
   const httpServer = new Koa();
