@@ -28,6 +28,7 @@ deployment="$(az deployment group create \
   --output json \
   --no-prompt)"
 
+staging_slot_name="$(jq -r '.properties.outputs.stagingSlotName.value' <<< "${deployment}")"
 website_name="$(jq -r '.properties.outputs.websiteName.value' <<< "${deployment}")"
 code_container_name="$(jq -r '.properties.outputs.codeContainerName.value' <<< "${deployment}")"
 storage_account_name="$(jq -r '.properties.outputs.storageAccountName.value' <<< "${deployment}")"
@@ -62,5 +63,43 @@ blob_url="$(az storage blob url \
 az webapp config appsettings set \
   --resource-group "${RG_NAME}" \
   --name "${website_name}" \
+  --slot "${staging_slot_name}" \
   --settings WEBSITE_RUN_FROM_PACKAGE="${blob_url}?${sas}" \
 > /dev/null
+
+az webapp restart \
+  --resource-group "${RG_NAME}" \
+  --name "${website_name}" \
+  --slot "${staging_slot_name}" \
+> /dev/null
+
+deployed=
+
+for i in {1..30}; do
+  if curl -o/dev/null -m60 -fsSL "https://${website_name}-${staging_slot_name}.azurewebsites.net/games"; then
+    deployed="true"
+    break
+  else
+    sleep 10s
+  fi
+done
+
+if [ "${deployed}" != "true" ]; then
+  exit 1
+fi
+
+az webapp deployment slot swap \
+  --resource-group "${RG_NAME}" \
+  --name "${website_name}" \
+  --slot "${staging_slot_name}" \
+  --action preview \
+> /dev/null
+
+az webapp deployment slot swap \
+  --resource-group "${RG_NAME}" \
+  --name "${website_name}" \
+  --slot "${staging_slot_name}" \
+  --action swap \
+> /dev/null
+
+curl -m60 -fsSL "https://${website_name}.azurewebsites.net/games"

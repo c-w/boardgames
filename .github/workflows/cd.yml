@@ -54,7 +54,7 @@ jobs:
           yarn run build-server
           yarn install --production --frozen-lockfile
           code_zip="$(find ./dist -type f -exec cat {} \; | md5sum | cut -d' ' -f1).zip"
-          zip -qr "${code_zip}" ./dist ./node_modules
+          zip -qr "${code_zip}" ./package.json ./dist ./node_modules
           echo "code_zip=${code_zip}" >> "${GITHUB_ENV}"
 
       - name: Deploy server

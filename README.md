@@ -17,5 +17,5 @@ yarn install
 yarn run workon-sgp
 
 # start game server and web client
-yarn start
+yarn run start-dev
 ```

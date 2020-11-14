@@ -15,12 +15,45 @@
     "storageAccountName": "[concat('storage', uniqueString(parameters('name')))]",
     "serverFarmName": "[concat('hosting', uniqueString(parameters('name')))]",
     "websiteName": "[parameters('name')]",
+    "stagingSlotName": "staging",
     "codeContainerName": "code",
     "stateContainerName": "state",
     "cors": {
       "allowedOrigins": [
         "[parameters('frontendRoot')]"
       ]
+    },
+    "siteConfig": {
+      "alwaysOn": true,
+      "appSettings": [
+        {
+          "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+          "value": "false"
+        },
+        {
+          "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+          "value": "false"
+        },
+        {
+          "name": "SOCKET_PER_MESSAGE_DEFLATE",
+          "value": "false"
+        },
+        {
+          "name": "AZURE_STORAGE_ACCOUNT",
+          "value": "[variables('storageAccountName')]"
+        },
+        {
+          "name": "AZURE_STORAGE_CONTAINER",
+          "value": "[variables('stateContainerName')]"
+        },
+        {
+          "name": "FRONTEND_ROOT",
+          "value": "[parameters('frontendRoot')]"
+        }
+      ],
+      "cors": "[if(empty(parameters('frontendRoot')), null(), variables('cors'))]",
+      "linuxFxVersion": "NODE|12-lts",
+      "webSocketsEnabled": true
     },
     "location": "[resourceGroup().location]"
   },
@@ -130,40 +163,26 @@
       },
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]",
-        "siteConfig": {
-          "alwaysOn": true,
-          "appCommandLine": "node dist/backend/server.js run",
-          "appSettings": [
-            {
-              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-              "value": "false"
-            },
-            {
-              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-              "value": "false"
-            },
-            {
-              "name": "SOCKET_PER_MESSAGE_DEFLATE",
-              "value": "false"
-            },
-            {
-              "name": "AZURE_STORAGE_ACCOUNT",
-              "value": "[variables('storageAccountName')]"
-            },
-            {
-              "name": "AZURE_STORAGE_CONTAINER",
-              "value": "[variables('stateContainerName')]"
-            },
-            {
-              "name": "FRONTEND_ROOT",
-              "value": "[parameters('frontendRoot')]"
-            }
+        "siteConfig": "[variables('siteConfig')]"
+      },
+      "resources": [
+        {
+          "type": "slots",
+          "apiVersion": "2018-11-01",
+          "name": "[variables('stagingSlotName')]",
+          "location": "[variables('location')]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('websiteName'))]"
           ],
-          "cors": "[if(empty(parameters('frontendRoot')), null(), variables('cors'))]",
-          "linuxFxVersion": "NODE|12-lts",
-          "webSocketsEnabled": true
+          "identity": {
+            "type": "SystemAssigned"
+          },
+          "properties": {
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]",
+            "siteConfig": "[variables('siteConfig')]"
+          }
         }
-      }
+      ]
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
@@ -176,6 +195,19 @@
       "properties": {
         "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "principalId": "[reference(concat('Microsoft.Web/sites/', variables('websiteName')), '2018-11-01', 'Full').identity.principalId]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[guid('Storage Blob Data Contributor', variables('websiteName'), variables('stagingSlotName'), variables('storageAccountName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Web/sites/slots', variables('websiteName'), variables('stagingSlotName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+        "principalId": "[reference(concat('Microsoft.Web/sites/', variables('websiteName'), '/slots/', variables('stagingSlotName')), '2018-11-01', 'Full').identity.principalId]"
       }
     }
   ],
@@ -191,6 +223,10 @@
     "websiteName": {
       "type": "string",
       "value": "[variables('websiteName')]"
+    },
+    "stagingSlotName": {
+      "type": "string",
+      "value": "[variables('stagingSlotName')]"
     }
   }
 }

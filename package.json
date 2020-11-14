@@ -72,7 +72,8 @@
   "scripts": {
     "workon-sgp": "babel-node ./scripts/gamectl.js workon --game sgp",
     "workon-fitf": "babel-node ./scripts/gamectl.js workon --game fitf",
-    "start": "run-p start-client start-server",
+    "start": "node dist/backend/server.js run",
+    "start-dev": "run-p start-client start-server",
     "start-client": "cross-env PORT=7777 REACT_APP_FRONTEND_ROOT=http://localhost:7777 REACT_APP_SERVER_URL=http://localhost:8888 craco start",
     "prestart-server": "shx cp -n ./src/backend/runtime.env .env",
     "start-server": "cross-env PORT=8888 FRONTEND_ROOT=http://localhost:7777 nodemon --watch src/backend --watch src/shared --ext js,njk --exec \"babel-node src/backend/server.js run\"",
