@@ -63,6 +63,6 @@ jobs:
           SP_USERNAME: 10c12ec4-e789-45f8-86b9-14b29da08045
           SP_TENANT: 4c6f8fef-8d83-40de-89fc-ed1a247e13ac
           SP_PASSWORD: ${{ secrets.SP_PASSWORD }}
-          RG_LOCATION: EastUS
+          RG_LOCATION: SouthCentralUS
           RG_NAME: justamouse
           FRONTEND_ROOT: https://justamouse.com
