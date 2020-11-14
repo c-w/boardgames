@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "38239e07b3be874d41fe942154b03288",
+    "revision": "028909fb885d10d6a162c4c7dfe8513e",
     "url": "https://justamouse.com/boardgames/sashimi-express/index.html"
   },
   {

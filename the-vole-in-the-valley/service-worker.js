@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "https://justamouse.com/boardgames/the-vole-in-the-valley/precache-manifest.afd4f118aa6710f4af5faee40f043e84.js"
+  "https://justamouse.com/boardgames/the-vole-in-the-valley/precache-manifest.e3dc86da21653064a0edc3c950c46618.js"
 );
 
 self.addEventListener('message', (event) => {

@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "9e7872cc67db8c26da57a5543445060b",
+    "revision": "856bf46ef4b7cc174ea559418cc823bc",
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/index.html"
   },
   {
