@@ -5195,16 +5195,6 @@ entities@~2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.3.tgz#5c487e5742ab93c15abb5da22759b8590ec03b7f"
   integrity sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ==
 
-envalid@^6.0.1:
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/envalid/-/envalid-6.0.2.tgz#7139770e089acc945c0e47b5075d72915d8683e8"
-  integrity sha512-ChJb9a5rjwZ/NkcXfBrzEl5cFZaGLg38N7MlWJkv5qsmSypX2WJe28LkoAWcklC60nKZXYKRlBbsjuJSjYw0Xg==
-  dependencies:
-    chalk "^3.0.0"
-    dotenv "^8.2.0"
-    meant "^1.0.1"
-    validator "^13.0.0"
-
 errno@^0.1.3, errno@~0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/errno/-/errno-0.1.7.tgz#4684d71779ad39af177e3f007996f7c67c852618"
@@ -8814,11 +8804,6 @@ mdurl@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
   integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
-
-meant@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/meant/-/meant-1.0.2.tgz#5d0c78310a3d8ae1408a16be0fe0bd42a969f560"
-  integrity sha512-KN+1uowN/NK+sT/Lzx7WSGIj2u+3xe5n2LbwObfjOhPZiA+cCfCm6idVl0RkEfjThkw5XJ96CyRcanq6GmKtUg==
 
 media-typer@0.3.0:
   version "0.3.0"
@@ -13905,11 +13890,6 @@ validate.io-number@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/validate.io-number/-/validate.io-number-1.0.3.tgz#f63ffeda248bf28a67a8d48e0e3b461a1665baf8"
   integrity sha1-9j/+2iSL8opnqNSODjtGGhZluvg=
-
-validator@^13.0.0:
-  version "13.1.17"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-13.1.17.tgz#ad677736950adddd3c37209484a6b2e0966579ad"
-  integrity sha512-zL5QBoemJ3jYFb2/j38y7ljhwYGXVLUp8H6W1nVxadnAOvUOytec+L7BHh1oBQ82/TzWXHd+GSaxUWp4lROkLg==
 
 value-equal@^1.0.1:
   version "1.0.1"
