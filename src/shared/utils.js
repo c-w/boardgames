@@ -95,14 +95,3 @@ export function pairs(items) {
 
   return pairs;
 }
-
-/**
- * @param {string} name
- * @returns {string}
- */
-export function renderGameName(name) {
-  return name
-    .split('-')
-    .map(word => word[0].toUpperCase() + word.slice(1))
-    .join(' ');
-}

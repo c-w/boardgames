@@ -4,13 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Boardgames</title>
+    <style>
+      li {
+        text-transform: capitalize;
+      }
+    </style>
   </head>
   <body>
     <main>
       <ul>
-        {% for game in games %}
-        <li><a href="/{{ game.name }}">{{ game.name | renderGameName }}</a></li>
-        {% endfor %}
+        {%- for game in games %}
+        <li><a href="/{{ game.name }}">{{ game.name | replace('-', ' ') }}</a></li>
+        {%- endfor -%}
       </ul>
     </main>
   </body>

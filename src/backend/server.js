@@ -6,11 +6,11 @@ import fs from 'fs';
 import Koa from 'koa';
 import cors from '@koa/cors';
 import mount from 'koa-mount';
-import { Environment, FileSystemLoader } from 'nunjucks';
+import send from 'koa-send';
 import serve from 'koa-static';
 import path from 'path';
 import config from './config';
-import { renderGameName } from '../shared/utils';
+import { loadGames } from './utils';
 
 let db;
 
@@ -41,11 +41,7 @@ const transport = new SocketIO({
   },
 });
 
-const gamesDir = path.join(__dirname, '..', 'shared', 'games');
-
-const games = fs.readdirSync(gamesDir)
-  .filter(file => file.endsWith('.js') && !file.endsWith('.test.js'))
-  .map(file => require(path.join(gamesDir, file)).default);
+const games = loadGames();
 
 const server = Server({
   games,
@@ -53,19 +49,13 @@ const server = Server({
   transport,
 });
 
-export function renderIndex() {
-  const nunjucks = new Environment(new FileSystemLoader(__dirname));
-
-  nunjucks.addFilter('renderGameName', renderGameName);
-
-  return nunjucks.render('index.html.njk', { games });
-}
-
 if (config.FRONTEND_ROOT) {
   server.app.use(cors({ origin: config.FRONTEND_ROOT }));
 } else {
+  const publicRoot = path.join(__dirname, '..', '..', 'dist', 'frontend');
+
   for (const game of games) {
-    const filesRoot = path.join(__dirname, '..', '..', 'dist', game.name);
+    const filesRoot = path.join(publicRoot, game.name);
     const staticRoot = path.join(filesRoot, 'static');
 
     const serveGameFrontend = serve(filesRoot, {
@@ -79,11 +69,9 @@ if (config.FRONTEND_ROOT) {
     server.app.use(mount(`/${game.name}`, serveGameFrontend));
   }
 
-  const indexHtml = renderIndex();
-
   server.app.use((ctx, next) => {
     if (ctx.path === '/') {
-      ctx.body = indexHtml;
+      return send(ctx, 'index.html', { root: publicRoot });
     } else {
       return next();
     }

@@ -5,11 +5,22 @@ import * as fs from 'fs';
 import * as nunjucks from 'nunjucks';
 import * as path from 'path';
 import * as sh from 'shelljs';
-import { renderIndex } from '../src/backend/server';
+import { loadGames } from '../src/backend/utils';
 
 const rootDir = `${__dirname}/..`;
 const args = process.argv.slice(2);
 const command = args[0];
+
+if (command === 'build-server-templates') {
+  const templatePath = path.join(__dirname, '..', 'src', 'backend', 'index.html.njk');
+  const rendered = nunjucks.render(templatePath, { games: loadGames() });
+
+  sh.mkdir('-p', `${rootDir}/dist/frontend`);
+  fs.writeFileSync(`${rootDir}/dist/frontend/index.html`, rendered, { encoding: 'utf-8' });
+
+  process.exit(0);
+}
+
 const gameName = args[1];
 
 let game;
@@ -44,9 +55,8 @@ switch (command) {
     sh.exec(`yarn run workon-${gameName}`);
     sh.exec('npx craco build');
     sh.popd('-q');
-    sh.mkdir('-p', `${rootDir}/dist/${game.name}`);
-    sh.mv(`${rootDir}/build/*`, `${rootDir}/dist/${game.name}`);
-    fs.writeFileSync(`${rootDir}/dist/index.html`, renderIndex());
+    sh.mkdir('-p', `${rootDir}/dist/frontend/${game.name}`);
+    sh.mv(`${rootDir}/build/*`, `${rootDir}/dist/frontend/${game.name}`);
     break;
 
   default:
