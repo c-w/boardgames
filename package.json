@@ -74,7 +74,7 @@
     "start": "node dist/backend/server.js run",
     "start-dev": "run-p start-client start-server",
     "start-client": "cross-env PORT=7777 REACT_APP_FRONTEND_ROOT=http://localhost:7777 REACT_APP_SERVER_URL=http://localhost:8888 craco start",
-    "start-server": "cross-env PORT=8888 FRONTEND_ROOT=http://localhost:7777 STATE_DIR=./state nodemon --watch src/backend --watch src/shared --ext js,njk --exec \"babel-node src/backend/server.js run\"",
+    "start-server": "cross-env PORT=8888 FRONTEND_ROOT=http://localhost:7777 STATE_DIR=./state nodemon --watch src/backend --watch src/shared --ext js --exec \"babel-node src/backend/server.js run\"",
     "lint-eslint": "eslint --max-warnings=0 scripts src",
     "lint-style": "stylelint \"src/**/*.{css,scss}\"",
     "lint-markdown": "markdownlint \"src/**/*.md\" \"*.md\"",
