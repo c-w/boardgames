@@ -14,7 +14,7 @@
     <main>
       <ul>
         {%- for game in games %}
-        <li><a href="/{{ game.name }}">{{ game.name | replace('-', ' ') }}</a></li>
+        <li><a href="./{{ game.name }}">{{ game.name | replace('-', ' ') }}</a></li>
         {%- endfor -%}
       </ul>
     </main>
