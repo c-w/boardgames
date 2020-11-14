@@ -10,9 +10,6 @@
 /build
 /certs
 /dist
-/.terraform
-/*.tfstate
-/deploy.zip
 /public
 
 # misc

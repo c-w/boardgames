@@ -1,0 +1,196 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]"
+    },
+    "frontendRoot": {
+      "type": "string",
+      "defaultValue": ""
+    }
+  },
+  "variables": {
+    "storageAccountName": "[concat('storage', uniqueString(parameters('name')))]",
+    "serverFarmName": "[concat('hosting', uniqueString(parameters('name')))]",
+    "websiteName": "[parameters('name')]",
+    "codeContainerName": "code",
+    "stateContainerName": "state",
+    "cors": {
+      "allowedOrigins": [
+        "[parameters('frontendRoot')]"
+      ]
+    },
+    "location": "[resourceGroup().location]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2019-06-01",
+      "location": "[variables('location')]",
+      "kind": "StorageV2",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "resources": [
+        {
+          "type": "blobServices",
+          "name": "default",
+          "apiVersion": "2019-06-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+          ],
+          "properties": {
+            "isVersioningEnabled": true
+          },
+          "resources": [
+            {
+              "type": "containers",
+              "name": "[variables('codeContainerName')]",
+              "apiVersion": "2019-06-01",
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]"
+              ],
+              "properties": {}
+            },
+            {
+              "type": "containers",
+              "name": "[variables('stateContainerName')]",
+              "apiVersion": "2019-06-01",
+              "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountName'), 'default')]"
+              ],
+              "properties": {}
+            }
+          ]
+        },
+        {
+          "type": "managementPolicies",
+          "name": "default",
+          "apiVersion": "2019-06-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+          ],
+          "properties": {
+            "policy": {
+              "rules": [
+                {
+                  "name": "state-daily-cleanup",
+                  "enabled": true,
+                  "type": "Lifecycle",
+                  "definition": {
+                    "filters": {
+                      "prefixMatch": [
+                        "[concat(variables('stateContainerName'), '/')]"
+                      ],
+                      "blobTypes": [
+                        "blockBlob"
+                      ]
+                    },
+                    "actions": {
+                      "baseBlob": {
+                        "delete": {
+                          "daysAfterModificationGreaterThan": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('serverFarmName')]",
+      "location": "[variables('location')]",
+      "sku": {
+        "name": "S1"
+      },
+      "kind": "linux",
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('websiteName')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]"
+      ],
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverFarmName'))]",
+        "siteConfig": {
+          "alwaysOn": true,
+          "appCommandLine": "node dist/backend/server.js run",
+          "appSettings": [
+            {
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "false"
+            },
+            {
+              "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
+              "value": "false"
+            },
+            {
+              "name": "SOCKET_PER_MESSAGE_DEFLATE",
+              "value": "false"
+            },
+            {
+              "name": "AZURE_STORAGE_ACCOUNT",
+              "value": "[variables('storageAccountName')]"
+            },
+            {
+              "name": "AZURE_STORAGE_CONTAINER",
+              "value": "[variables('stateContainerName')]"
+            },
+            {
+              "name": "FRONTEND_ROOT",
+              "value": "[parameters('frontendRoot')]"
+            }
+          ],
+          "cors": "[if(empty(parameters('frontendRoot')), null(), variables('cors'))]",
+          "linuxFxVersion": "NODE|12-lts",
+          "webSocketsEnabled": true
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2018-01-01-preview",
+      "name": "[guid('Storage Blob Data Contributor', variables('websiteName'), variables('storageAccountName'))]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Web/sites', variables('websiteName'))]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
+        "principalId": "[reference(concat('Microsoft.Web/sites/', variables('websiteName')), '2018-11-01', 'Full').identity.principalId]"
+      }
+    }
+  ],
+  "outputs": {
+    "codeContainerName": {
+      "type": "string",
+      "value": "[variables('codeContainerName')]"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "value": "[variables('storageAccountName')]"
+    },
+    "websiteName": {
+      "type": "string",
+      "value": "[variables('websiteName')]"
+    }
+  }
+}

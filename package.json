@@ -85,9 +85,9 @@
     "clean": "shx rm -rf ./build ./dist ./public",
     "build-client-sgp": "babel-node ./scripts/gamectl.js build --game sgp",
     "build-client-fitf": "babel-node ./scripts/gamectl.js build --game fitf",
-    "build-client": "run-s build-client-sgp build-client-fitf",
+    "build-client-index": "babel-node ./scripts/gamectl.js build-server-templates",
+    "build-client": "run-s build-client-sgp build-client-fitf build-client-index",
     "build-server": "babel src --out-dir dist",
-    "postbuild-server": "babel-node ./scripts/gamectl.js build-server-templates",
     "build": "run-p build-client build-server"
   }
 }

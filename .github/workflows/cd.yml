@@ -1,0 +1,68 @@
+name: CD
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  deploy-client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Build client
+        run: yarn run build-client
+        env:
+          REACT_APP_FRONTEND_ROOT: https://justamouse.com/boardgames
+          REACT_APP_SERVER_URL: https://justamouse.azurewebsites.net
+
+      - name: Deploy client
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/frontend
+
+  deploy-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Build server
+        run: |
+          set -e
+          yarn run build-server
+          yarn install --production --frozen-lockfile
+          code_zip="$(find ./dist -type f -exec cat {} \; | md5sum | cut -d' ' -f1).zip"
+          zip -qr "${code_zip}" ./dist ./node_modules
+          echo "code_zip=${code_zip}" >> "${GITHUB_ENV}"
+
+      - name: Deploy server
+        run: ./infrastructure/azuredeploy.sh "${code_zip}"
+        env:
+          SP_USERNAME: 10c12ec4-e789-45f8-86b9-14b29da08045
+          SP_TENANT: 4c6f8fef-8d83-40de-89fc-ed1a247e13ac
+          SP_PASSWORD: ${{ secrets.SP_PASSWORD }}
+          RG_LOCATION: EastUS
+          RG_NAME: justamouse
+          FRONTEND_ROOT: https://justamouse.com
