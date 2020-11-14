@@ -21,7 +21,7 @@ function loadGameConfig(gameName) {
 
 function buildServerTemplates() {
   const templatePath = path.join(__dirname, '..', 'src', 'backend', 'index.html.njk');
-  const rendered = nunjucks.render(templatePath, { games });
+  const rendered = nunjucks.render(templatePath, { env: process.env, games });
   sh.mkdir('-p', `${rootDir}/dist/frontend`);
   fs.writeFileSync(`${rootDir}/dist/frontend/index.html`, rendered, { encoding: 'utf-8' });
 }

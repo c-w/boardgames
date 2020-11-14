@@ -9,6 +9,10 @@
         text-transform: capitalize;
       }
     </style>
+    {%- if env.REACT_APP_SERVER_URL %}
+    <link rel="preconnect" href="{{ env.REACT_APP_SERVER_URL }}" crossorigin>
+    <link rel="dns-prefetch" href="{{ env.REACT_APP_SERVER_URL }}">
+    {%- endif %}
   </head>
   <body>
     <main>
