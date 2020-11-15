@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import classNames from 'classnames';
 import Lobby from './Lobby';
 import Play from './Play';
 import MatchList from './MatchList';
@@ -18,8 +19,10 @@ import Wait from './Wait';
  * @param {any} props.children
  */
 function DefaultLayout({ gameName, children }) {
+  const android = navigator.userAgent.toLowerCase().includes('android');
+
   return (
-    <main className={gameName}>
+    <main className={classNames(gameName, { android })}>
       {children}
     </main>
   );

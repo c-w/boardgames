@@ -257,8 +257,6 @@ $black: #000;
             }
 
             input[type="checkbox"] {
-              appearance: none;
-
               &:before {
                 @include font;
                 content: 'no';
@@ -564,8 +562,6 @@ $black: #000;
         display: block;
 
         input[type="checkbox"] {
-          appearance: none;
-
           + .card {
             cursor: pointer;
           }
@@ -582,6 +578,16 @@ $black: #000;
           }
         }
       }
+    }
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+  }
+
+  &.android {
+    input[type="checkbox"] {
+      visibility: hidden;
     }
   }
 }
