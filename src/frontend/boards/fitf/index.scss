@@ -31,6 +31,10 @@ $black: #000;
   width: 100vw;
   position: relative;
 
+  .help {
+    display: none;
+  }
+
   input[type="submit"] {
     cursor: pointer;
   }

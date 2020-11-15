@@ -38,6 +38,36 @@ $alert: #C9DA2B;
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
 
+  .help {
+    color: $black;
+    position: fixed;
+    z-index: 1;
+    bottom: 8px;
+    right: 8px;
+    background-color: $alert;
+    border: 2px solid $alert;
+    text-decoration: none;
+    border-radius: 26px;
+    height: 48px;
+    width: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+
+    span {
+      display: none;
+    }
+
+    &::before {
+      content: '❓';
+    }
+
+    &:hover {
+      border-color: $default;
+    }
+  }
+
   table {
     border-spacing: 0;
 
@@ -483,28 +513,6 @@ $alert: #C9DA2B;
       padding: 8px 16px;
       border-radius: 16px;
       background-color: $alert;
-    }
-
-    .help {
-      color: $black;
-      position: fixed;
-      z-index: 1;
-      bottom: 8px;
-      right: 8px;
-      background-color: $alert;
-      border: 2px solid $alert;
-      text-decoration: none;
-      border-radius: 26px;
-      height: 48px;
-      width: 48px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-
-      &:hover {
-        border-color: $default;
-      }
     }
 
     .gameover {

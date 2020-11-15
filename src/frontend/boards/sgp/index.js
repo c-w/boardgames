@@ -149,18 +149,6 @@ function Card({ ctx, card, onClick, disabled }) {
   );
 }
 
-function Rules() {
-  return (
-    <Link
-      className="help"
-      to="/rules"
-      target="_blank"
-    >
-      <span role="img" aria-label="View rules">❓</span>
-    </Link>
-  )
-}
-
 /**
  * @param {object} props
  * @param {G} props.G
@@ -278,7 +266,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       {otherPlayerIDs.map(id =>
         <PlayedCards key={id} playerID={id} />
       )}
-      <Rules />
     </Fragment>
   );
 }

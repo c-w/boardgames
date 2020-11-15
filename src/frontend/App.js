@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { HashRouter, Link, Redirect, Route, Switch } from 'react-router-dom';
 import classNames from 'classnames';
 import Lobby from './Lobby';
 import Play from './Play';
@@ -16,14 +16,21 @@ import Wait from './Wait';
 /**
  * @param {object} props
  * @param {string} props.gameName
+ * @param {boolean=} props.showHelp
  * @param {any} props.children
  */
-function DefaultLayout({ gameName, children }) {
+function DefaultLayout({ gameName, showHelp, children }) {
   const android = navigator.userAgent.toLowerCase().includes('android');
 
   return (
     <main className={classNames(gameName, { android })}>
       {children}
+
+      {showHelp !== false && (
+        <Link className="help" to="/rules" target="_blank">
+          <span>View rules</span>
+        </Link>
+      )}
     </main>
   );
 }
@@ -60,7 +67,7 @@ export default function App(props) {
           exact
           path="/rules"
           children={() => (
-            <DefaultLayout gameName={gameName}>
+            <DefaultLayout gameName={gameName} showHelp={false}>
               <Rules {...props} />
             </DefaultLayout>
           )}
