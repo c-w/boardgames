@@ -103,28 +103,28 @@ $alert: #C9DA2B;
       li {
         margin-bottom: 8px;
 
-        &:before {
+        &::before {
           margin-left: -16px;
           margin-right: 8px;
         } 
 
-        &:nth-child(5n+1):before {
+        &:nth-child(5n+1)::before {
           content: '🍣';
         }
 
-        &:nth-child(5n+2):before {
+        &:nth-child(5n+2)::before {
           content: '🍱';
         }
 
-        &:nth-child(5n+3):before {
+        &:nth-child(5n+3)::before {
           content: '🥢';
         }
 
-        &:nth-child(5n+4):before {
+        &:nth-child(5n+4)::before {
           content: '🍙';
         }
 
-        &:nth-child(5n+5):before {
+        &:nth-child(5n+5)::before {
           content: '🍶';
         }
       }
@@ -219,11 +219,11 @@ $alert: #C9DA2B;
             margin-left: 8px;
             line-height: 32px;
 
-            &:before {
+            &::before {
               content: 'No 🍥';
             }
 
-            &:checked:before {
+            &:checked::before {
               content: 'Yes 🍘️️';
             }
           }

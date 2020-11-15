@@ -68,20 +68,20 @@ $black: #000;
       li {
         margin-bottom: 8px;
 
-        &:before {
+        &::before {
           margin-left: -16px;
           margin-right: 8px;
         }
 
-        &:nth-child(3n+1):before {
+        &:nth-child(3n+1)::before {
           content: '🏰';
         }
 
-        &:nth-child(3n+2):before {
+        &:nth-child(3n+2)::before {
           content: '🌙';
         }
 
-        &:nth-child(3n+3):before {
+        &:nth-child(3n+3)::before {
           content: '🗝️';
         }
       }
@@ -141,8 +141,8 @@ $black: #000;
         display: inline-block;
         position: relative;
 
-        &:before,
-        &:after {
+        &::before,
+        &::after {
           content: "";
           position: absolute;
           height: 5px;
@@ -155,12 +155,12 @@ $black: #000;
           }
         }
 
-        &:before {
+        &::before {
           right: 100%;
           margin-right: 16px;
         }
 
-        &:after {
+        &::after {
           left: 100%;
           margin-left: 16px;
         }
@@ -232,7 +232,7 @@ $black: #000;
       border-radius: 8px;
 
         label[for] {
-          &:after {
+          &::after {
             @include label;
           }
         }
@@ -252,18 +252,18 @@ $black: #000;
             display: flex;
             flex-direction: row-reverse;
 
-            span:after {
+            span::after {
               @include label;
             }
 
             input[type="checkbox"] {
-              &:before {
+              &::before {
                 @include font;
                 content: 'no';
                 border-bottom: 1px solid $border;
               }
 
-              &:checked:before {
+              &:checked::before {
                 @include font;
                 content: 'yes';
               }
@@ -302,9 +302,9 @@ $black: #000;
       display: inline-block;
       user-select: none;
 
-      &.won:before,
-      &.old:before,
-      &.new:before {
+      &.won::before,
+      &.old::before,
+      &.new::before {
         position: absolute;
         top: 0;
         right: 0;
@@ -312,15 +312,15 @@ $black: #000;
         margin-right: -6px;
       }
 
-      &.won:before {
+      &.won::before {
         content: '👑';
       }
 
-      &.old:before {
+      &.old::before {
         content: '❌';
       }
 
-      &.new:before {
+      &.new::before {
         content: '🌟';
       }
 
@@ -356,7 +356,7 @@ $black: #000;
         .content {
           border-color: $key;
 
-          .suit:before {
+          .suit::before {
             content: '🗝️';
           }
         }
@@ -366,7 +366,7 @@ $black: #000;
         .content {
           border-color: $tower;
 
-          .suit:before {
+          .suit::before {
             content: '🏰';
           }
         }
@@ -376,14 +376,14 @@ $black: #000;
         .content {
           border-color: $moon;
 
-          .suit:before {
+          .suit::before {
             content: '🌙';
           }
         }
       }
     }
 
-    .label:after {
+    .label::after {
       @include label;
     }
 
@@ -526,7 +526,7 @@ $black: #000;
           .label {
             font-size: 14px;
 
-            &:after {
+            &::after {
               font-size: 14px;
               margin-right: 2px;
             }
@@ -595,7 +595,7 @@ $black: #000;
         .suit {
           font-size: 15px;
 
-          &:before {
+          &::before {
             display: inline-block;
           }
         }
