@@ -589,5 +589,15 @@ $black: #000;
     input[type="checkbox"] {
       visibility: hidden;
     }
+
+    .card {
+      &.key {
+        .content {
+          .suit:before {
+            display: inline-block;
+          }
+        }
+      }
+    }
   }
 }
