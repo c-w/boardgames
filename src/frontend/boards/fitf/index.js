@@ -217,12 +217,12 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
                 <Card
                   card={lastTrick.cards[0]}
                   compact
-                  won={lastTrick.winner === '0'}
+                  won={lastTrick.winner === lastTrick.cards[0].playerID}
                 />
                 <Card
                   card={lastTrick.cards[1]}
                   compact
-                  won={lastTrick.winner === '1'}
+                  won={lastTrick.winner === lastTrick.cards[1].playerID}
                 />
               </div>
             )}

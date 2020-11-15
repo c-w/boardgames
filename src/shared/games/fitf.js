@@ -12,7 +12,7 @@ import { last, removeAt, sum } from '../utils.js';
  *
  * @typedef {{
  *   winner: string,
- *   cards: Card[],
+ *   cards: Array<Card & { playerID: string }>,
  * }[]} Tricks
  *
  * @typedef {{
@@ -343,7 +343,7 @@ function playCard(G, ctx, i=null, j=null) {
 
   let { winner, next } = determineTrickWinner(G, ctx, i);
 
-  G.tricks.push({ winner, cards: [{ ...G.played }, { ...card }] });
+  G.tricks.push({ winner, cards: [{ ...G.played, playerID: opponentID }, { ...card, playerID }] });
   G.played = null;
   G.players[playerID].stashed = null;
   G.players[playerID].hand = newHand;
