@@ -591,9 +591,11 @@ $black: #000;
     }
 
     .card {
-      &.key {
-        .content {
-          .suit:before {
+      .content {
+        .suit {
+          font-size: 15px;
+
+          &:before {
             display: inline-block;
           }
         }
