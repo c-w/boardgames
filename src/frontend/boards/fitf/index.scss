@@ -235,44 +235,44 @@ $black: #000;
       border: 4px solid $border;
       border-radius: 8px;
 
-        label[for] {
-          &::after {
+      label[for] {
+        &::after {
+          @include label;
+        }
+      }
+
+      input[type="text"] {
+        @include font;
+        min-width: 0;
+        flex-grow: 1;
+        padding: 0;
+        border: 0;
+        background-color: $white;
+        border-bottom: 1px solid $border;
+      }
+
+      .checkbox {
+        label {
+          display: flex;
+          flex-direction: row-reverse;
+
+          span::after {
             @include label;
           }
-        }
 
-        input[type="text"] {
-          @include font;
-          min-width: 0;
-          flex-grow: 1;
-          padding: 0;
-          border: 0;
-          background-color: $white;
-          border-bottom: 1px solid $border;
-        }
-
-        .checkbox {
-          label {
-            display: flex;
-            flex-direction: row-reverse;
-
-            span::after {
-              @include label;
+          input[type="checkbox"] {
+            &::before {
+              @include font;
+              content: 'no';
+              border-bottom: 1px solid $border;
             }
 
-            input[type="checkbox"] {
-              &::before {
-                @include font;
-                content: 'no';
-                border-bottom: 1px solid $border;
-              }
-
-              &:checked::before {
-                @include font;
-                content: 'yes';
-              }
+            &:checked::before {
+              @include font;
+              content: 'yes';
             }
           }
+        }
       }
     }
   }
