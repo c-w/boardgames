@@ -600,8 +600,10 @@ $black: #000;
   }
 
   &.android {
-    input[type="checkbox"] {
-      visibility: hidden;
+    .hand {
+      input[type="checkbox"] {
+        visibility: hidden;
+      }
     }
 
     .card {
