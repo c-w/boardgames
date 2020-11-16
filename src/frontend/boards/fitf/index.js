@@ -173,7 +173,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   if (ctx.gameover) {
     return (
-      <form onSubmit={goToNewGame}>
+      <form onSubmit={goToNewGame} className="end-of-game">
         <Stats showHistory hideTricks />
         <input type="submit" value="Play again" />
       </form>
@@ -182,7 +182,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   if (showEndOfRoundScreen) {
     return (
-      <form onSubmit={goToNextRound}>
+      <form onSubmit={goToNextRound} className="end-of-round">
         <Stats showHistory hideTricks />
         <input type="submit" value="Continue" />
       </form>

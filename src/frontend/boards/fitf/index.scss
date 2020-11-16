@@ -301,6 +301,19 @@ $black: #000;
   }
 
   .bgio-client {
+    .end-of-round,
+    .end-of-game {
+      min-width: 200px;
+
+      .stats {
+        background-color: $white;
+        border-radius: 8px;
+        border: 4px solid $alert;
+        padding: 4px 8px;
+        margin: 8px auto;
+      }
+    }
+
     .card {
       position: relative;
       display: inline-block;
