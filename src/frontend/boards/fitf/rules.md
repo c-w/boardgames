@@ -1,6 +1,6 @@
 # The Vole in the Valley
 
-> Once upon a time, behind the dark forest and the icy mountain peaks, there was a valley. And in that valley there lived a vole, known far and wide as the most adventurous rodent in the land...
+> Once upon a time, behind the dark forest and the icy mountain peaks, there was a valley. And in that valley there lived a vole, known far and wide as the most adventurous rodent in the land…
 
 Welcome to The Vole in the Valley, a trick taking card game for 2 players. Our little adventuring vole is exploring the valley: can you guide her to the most interesting discoveries? But be careful: exploring too many places at once will exhaust our rodent friend!
 

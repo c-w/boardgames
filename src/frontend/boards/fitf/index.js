@@ -195,7 +195,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         <div className="info">
           <Stats />
           <div className="current-trick">
-            <em>{isActive ? 'Your move!' : `Waiting for ${opponent.name}...`}</em>
+            <em>{isActive ? 'Your move!' : `Waiting for ${opponent.name}…`}</em>
             {G.played && (
               <div className="played">
                 <div className="label">{isActive ? `${opponent.name} played` : 'You played'}</div>
