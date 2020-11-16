@@ -483,7 +483,7 @@ $black: #000;
           align-items: center;
           display: flex;
           flex-direction: column;
-          min-width: 160px;
+          min-width: 215px;
 
           .played {
             align-items: center;
@@ -526,24 +526,17 @@ $black: #000;
           }
         }
 
-        @media screen and (max-width: 479px) {
+        @media screen and (max-width: 570px) {
           flex-wrap: wrap;
 
-          .stats {
-            max-width: 50%;
-          }
-
-          .history {
-            max-width: 50%;
-          }
-
           .current-trick {
+            width: 100%;
             order: 3;
             margin: 0 auto;
           }
         }
 
-        @media screen and (max-width: 320px) {
+        @media screen and (max-width: 325px) {
           .label {
             font-size: 14px;
 
