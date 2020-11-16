@@ -101,13 +101,12 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     history.push('/new');
   };
 
-  const isOver = ctx.gameover != null;
-  const isWinner = isOver && ctx.gameover.winner === playerID;
   const isActive = playerID === ctx.currentPlayer;
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
   const isEndOfRound = G.tricks.length === 0 && G.history.length > 0;
   const player = G.players[playerID];
   const opponent = matchData.find(u => u.id !== Number(playerID));
+  const otherPlayerID = opponent.id.toString();
   const tricksWon = G.tricks.filter(t => t.winner === playerID).length;
   const tricksLost = G.tricks.filter(t => t.winner !== playerID).length;
   const trump = last(G.trumps);
@@ -137,13 +136,23 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
             (+ {last(G.scores[playerID])})
           </span>
         )}
+        {ctx.gameover?.winner === playerID && (
+          <span>
+            <span role="img" aria-label="You won">👑</span>
+          </span>
+        )}
       </div>
       <div className="score">
         <span className="label">{opponent.name} score</span>
-        <span>{sum(G.scores[opponent.id])}</span>
+        <span>{sum(G.scores[otherPlayerID])}</span>
         {showHistory && (
           <span>
-            (+ {last(G.scores[opponent.id])})
+            (+ {last(G.scores[otherPlayerID])})
+          </span>
+        )}
+        {ctx.gameover?.winner === otherPlayerID && (
+          <span>
+            <span role="img" aria-label={`${opponent.name} won`}>👑</span>
           </span>
         )}
       </div>
@@ -162,17 +171,11 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     </div>
   );
 
-  if (isOver) {
+  if (ctx.gameover) {
     return (
       <form onSubmit={goToNewGame}>
         <Stats showHistory hideTricks />
-        <div>
-          <em>{isWinner ? 'You won!' : 'You lost.'}</em>
-        </div>
-        <input
-          type="submit"
-          value="Click to play another game"
-        />
+        <input type="submit" value="Play again" />
       </form>
     );
   }
@@ -181,10 +184,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     return (
       <form onSubmit={goToNextRound}>
         <Stats showHistory hideTricks />
-        <input
-          type="submit"
-          value="Ok, proceed to next round"
-        />
+        <input type="submit" value="Continue" />
       </form>
     );
   }

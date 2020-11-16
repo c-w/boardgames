@@ -430,6 +430,32 @@ $black: #000;
       }
     }
 
+    .stats {
+      display: table;
+
+      .score + .score + .tricks {
+        > * {
+          padding-top: 8px;
+        }
+      }
+
+      > div {
+        display: table-row;
+
+        > span {
+          display: table-cell;
+
+          &.label {
+            text-align: right;
+          }
+
+          + span {
+            padding-right: 4px;
+          }
+        }
+      }
+    }
+
     .board {
       min-width: 320px;
 
@@ -438,28 +464,6 @@ $black: #000;
         justify-content: space-between;
         margin: 8px 16px 32px 16px;
         flex-wrap: wrap;
-
-        .stats {
-          display: table;
-
-          .score + .score + .tricks {
-            > * {
-              padding-top: 8px;
-            }
-          }
-
-          > div {
-            display: table-row;
-
-            > span {
-              display: table-cell;
-
-              &.label {
-                text-align: right;
-              }
-            }
-          }
-        }
 
         .current-trick {
           align-self: flex-end;
