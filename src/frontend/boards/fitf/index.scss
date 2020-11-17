@@ -23,6 +23,20 @@ $black: #000;
   margin-right: 4px;
 }
 
+@keyframes grayscale {
+    0% { filter: none; }
+   25% { filter: grayscale(25%); }
+   50% { filter: grayscale(50%); }
+   75% { filter: grayscale(75%); }
+  100% { filter: grayscale(100%); }
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;
+  }
+}
+
 .the-vole-in-the-valley {
   @include font;
   background-color: $background;
@@ -30,6 +44,38 @@ $black: #000;
   height: 100vh;
   width: 100vw;
   position: relative;
+
+  .loading {
+    height: 100%;
+    width: 100%;
+    background-size: 192px;
+    background-image: url('./public/logo192.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-name: grayscale;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    position: relative;
+
+    > span {
+      position: absolute;
+      top: calc(50% + 96px);
+      left: calc(50% - 4ch);
+
+      &::after {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        animation-name: ellipsis;
+        animation-timing-function: steps(4, end);
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        content: "…";
+        width: 0px;
+      }
+    }
+  }
 
   .help {
     display: none;

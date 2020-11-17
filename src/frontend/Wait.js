@@ -52,8 +52,7 @@ export default function Wait({ game, matchID, playerID, credentials }) {
     );
   }
 
-  const joinSlug = history.createHref({ pathname: `/join/${matchID}` });
-  const joinURL = `${window.location.origin}${window.location.pathname}${joinSlug}`;
+  const joinURL = history.createHref({ pathname: `/join/${matchID}` });
 
   return (
     <div className="wait">

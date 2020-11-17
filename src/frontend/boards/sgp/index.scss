@@ -29,6 +29,18 @@ $alert: #C9DA2B;
   border-radius: 16px;
 }
 
+@keyframes move {
+    0% { background-position: calc(50% - 48px); }
+   50% { background-position: calc(50% + 0px); }
+  100% { background-position: calc(50% + 48px); }
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;
+  }
+}
+
 .sashimi-express {
   background-color: $background;
   display: table-cell;
@@ -37,6 +49,39 @@ $alert: #C9DA2B;
   position: relative;
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
+
+  .loading {
+    height: 100%;
+    width: 100%;
+    background-size: 192px;
+    background-image: url('./public/logo192.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    animation-name: move;
+    animation-duration: 750ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate-reverse;
+    position: relative;
+
+    > span {
+      position: absolute;
+      top: calc(50% + 96px);
+      left: calc(50% - 4ch);
+
+      &::after {
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: bottom;
+        animation-name: ellipsis;
+        animation-timing-function: steps(4, end);
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        content: "…";
+        width: 0px;
+      }
+    }
+  }
 
   .help {
     color: $black;
