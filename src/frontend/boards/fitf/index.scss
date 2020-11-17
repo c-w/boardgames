@@ -367,6 +367,10 @@ $black: #000;
 
       .suit {
         text-transform: capitalize;
+
+        &::before {
+          display: inline-block;
+        }
       }
 
       &.key {
@@ -610,10 +614,6 @@ $black: #000;
       .content {
         .suit {
           font-size: 15px;
-
-          &::before {
-            display: inline-block;
-          }
         }
       }
     }
