@@ -649,6 +649,16 @@ $black: #000;
     appearance: none;
   }
 
+  &.safari {
+    .card {
+      .content.compact {
+        .suit::before {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
   &.android {
     .hand {
       input[type="checkbox"] {

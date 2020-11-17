@@ -20,10 +20,12 @@ import Wait from './Wait';
  * @param {any} props.children
  */
 function DefaultLayout({ gameName, showHelp, children }) {
-  const android = navigator.userAgent.toLowerCase().includes('android');
+  const userAgent = navigator.userAgent.toLowerCase();
+  const android = userAgent.includes('android');
+  const safari = userAgent.includes('safari');
 
   return (
-    <main className={classNames(gameName, { android })}>
+    <main className={classNames(gameName, { android, safari })}>
       {children}
 
       {showHelp !== false && (
