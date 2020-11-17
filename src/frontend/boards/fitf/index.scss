@@ -650,6 +650,12 @@ $black: #000;
   }
 
   &.safari {
+    .rjsf {
+      .field + .field {
+        margin-right: 4px;
+      }
+    }
+
     .card {
       .content.compact {
         .suit::before {
