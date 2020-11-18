@@ -663,6 +663,16 @@ $black: #000;
         }
       }
     }
+
+    .hand {
+      @for $i from 1 through 13 {
+        li:nth-child(#{$i}) {
+          .card {
+            z-index: 14-$i;
+          }
+        }
+      }
+    }
   }
 
   &.android {
