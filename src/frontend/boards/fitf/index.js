@@ -13,7 +13,7 @@ import './index.scss';
 const CARD_TEXTS = {
   1: 'If you play this and lose the trick, you lead the next trick.',
   3: 'When you play this, you may exchange the trump card with a card from your hand.',
-  5: 'When you play this, draw 1 card. Then discard any 1 card to the bottom of the deck (face down).',
+  5: 'When you play this, draw 1 card. Then discard any 1 card.',
   7: 'The winner of the trick receives 1 point for each 7 in the trick.',
   9: 'When determining the winner of a trick with only one 9, treat the 9 as if it were in the trump suit.',
   11: 'When you lead this, if your opponent has a card of this suit, they must play either the 1 of this suit or their highest ranked card of this suit.',
