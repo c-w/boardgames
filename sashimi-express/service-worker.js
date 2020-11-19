@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "https://justamouse.com/boardgames/sashimi-express/precache-manifest.2894ffb64b83950ab933fbdb2e484aab.js"
+  "https://justamouse.com/boardgames/sashimi-express/precache-manifest.e22473389f9d1bc4d8db116ac1240464.js"
 );
 
 self.addEventListener('message', (event) => {
