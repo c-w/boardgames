@@ -281,6 +281,7 @@ $alert: #C9DA2B;
           display: flex;
           flex-direction: row-reverse;
           align-items: center;
+          column-gap: 8px;
 
           span {
             @include category-header;
@@ -291,7 +292,6 @@ $alert: #C9DA2B;
           input {
             appearance: none;
             background-color: $text;
-            margin-left: 8px;
             line-height: 32px;
 
             &::before {
