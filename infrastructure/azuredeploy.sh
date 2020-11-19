@@ -105,3 +105,19 @@ az webapp deployment slot swap \
 > /dev/null
 
 curl -m60 -fsSL "https://${website_name}.azurewebsites.net/games"
+
+az storage blob list \
+  --account-key="${storage_account_key}" \
+  --account-name="${storage_account_name}" \
+  --container-name="${code_container_name}" \
+  --output tsv \
+  --query '[].name' \
+| grep -v "^${code_zip}$" \
+| while IFS= read -r blob_name; do
+  az storage blob delete \
+    --account-key="${storage_account_key}" \
+    --account-name="${storage_account_name}" \
+    --container-name="${code_container_name}" \
+    --name "${blob_name}" \
+  > /dev/null
+done
