@@ -3,7 +3,7 @@
 set -e
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-code_zip="$1"
+code_zip_path="$1"
 
 # The login step assumes that a service principal has been created for non-interactive authentication, e.g. via:
 # az ad sp create-for-rbac --name "${name}" --years 5
@@ -34,11 +34,13 @@ code_container_name="$(jq -r '.properties.outputs.codeContainerName.value' <<< "
 storage_account_name="$(jq -r '.properties.outputs.storageAccountName.value' <<< "${deployment}")"
 storage_account_key="$(az storage account keys list --resource-group "${RG_NAME}" --account-name "${storage_account_name}" --output tsv --query '[0].value')"
 
+code_zip="$(basename "${code_zip_path}")"
+
 az storage blob upload \
   --account-key="${storage_account_key}" \
   --account-name="${storage_account_name}" \
   --container-name="${code_container_name}" \
-  --file "${code_zip}" \
+  --file "${code_zip_path}" \
   --name "${code_zip}" \
   --no-progress \
 > /dev/null
