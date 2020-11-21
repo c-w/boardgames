@@ -22,7 +22,7 @@ import Wait from './Wait';
 function DefaultLayout({ gameName, showHelp, children }) {
   const userAgent = navigator.userAgent.toLowerCase();
   const android = userAgent.includes('android');
-  const safari = userAgent.includes('safari');
+  const safari = userAgent.includes('safari') && !userAgent.includes('chrome');
 
   return (
     <main className={classNames(gameName, { android, safari })}>
