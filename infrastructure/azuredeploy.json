@@ -25,32 +25,6 @@
     },
     "siteConfig": {
       "alwaysOn": true,
-      "appSettings": [
-        {
-          "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
-          "value": "false"
-        },
-        {
-          "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-          "value": "false"
-        },
-        {
-          "name": "SOCKET_PER_MESSAGE_DEFLATE",
-          "value": "false"
-        },
-        {
-          "name": "AZURE_STORAGE_ACCOUNT",
-          "value": "[variables('storageAccountName')]"
-        },
-        {
-          "name": "AZURE_STORAGE_CONTAINER",
-          "value": "[variables('stateContainerName')]"
-        },
-        {
-          "name": "FRONTEND_ROOT",
-          "value": "[parameters('frontendRoot')]"
-        }
-      ],
       "cors": "[if(empty(parameters('frontendRoot')), null(), variables('cors'))]",
       "linuxFxVersion": "NODE|12-lts",
       "webSocketsEnabled": true
@@ -212,6 +186,10 @@
     }
   ],
   "outputs": {
+    "stateContainerName": {
+      "type": "string",
+      "value": "[variables('stateContainerName')]"
+    },
     "codeContainerName": {
       "type": "string",
       "value": "[variables('codeContainerName')]"

@@ -30,20 +30,24 @@ deployment="$(az deployment group create \
 
 staging_slot_name="$(jq -r '.properties.outputs.stagingSlotName.value' <<< "${deployment}")"
 website_name="$(jq -r '.properties.outputs.websiteName.value' <<< "${deployment}")"
+state_container_name="$(jq -r '.properties.outputs.stateContainerName.value' <<< "${deployment}")"
 code_container_name="$(jq -r '.properties.outputs.codeContainerName.value' <<< "${deployment}")"
 storage_account_name="$(jq -r '.properties.outputs.storageAccountName.value' <<< "${deployment}")"
 storage_account_key="$(az storage account keys list --resource-group "${RG_NAME}" --account-name "${storage_account_name}" --output tsv --query '[0].value')"
 
 code_zip="$(basename "${code_zip_path}")"
 
-az storage blob upload \
+if ! az storage blob upload \
   --account-key="${storage_account_key}" \
   --account-name="${storage_account_name}" \
   --container-name="${code_container_name}" \
   --file "${code_zip_path}" \
   --name "${code_zip}" \
+  --if-none-match '*' \
   --no-progress \
-> /dev/null
+> /dev/null; then
+  exit 0
+fi
 
 sas="$(az storage blob generate-sas \
   --account-key="${storage_account_key}" \
@@ -66,7 +70,14 @@ az webapp config appsettings set \
   --resource-group "${RG_NAME}" \
   --name "${website_name}" \
   --slot "${staging_slot_name}" \
-  --settings WEBSITE_RUN_FROM_PACKAGE="${blob_url}?${sas}" \
+  --settings \
+    WEBSITES_ENABLE_APP_SERVICE_STORAGE='false' \
+    SCM_DO_BUILD_DURING_DEPLOYMENT='false' \
+    SOCKET_PER_MESSAGE_DEFLATE='false' \
+    AZURE_STORAGE_ACCOUNT="${storage_account_name}" \
+    AZURE_STORAGE_CONTAINER="${state_container_name}" \
+    FRONTEND_ROOT="${FRONTEND_ROOT}" \
+    WEBSITE_RUN_FROM_PACKAGE="${blob_url}?${sas}" \
 > /dev/null
 
 az webapp restart \
