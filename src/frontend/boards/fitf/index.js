@@ -103,6 +103,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   const isActive = playerID === ctx.currentPlayer;
   const isDiscard = ctx.activePlayers && ctx.activePlayers[playerID] === 'discard';
+  const isPicked = chosen.length !== 0;
   const isEndOfRound = G.tricks.length === 0 && G.history.length > 0;
   const player = G.players[playerID];
   const opponent = matchData.find(u => u.id !== Number(playerID));
@@ -189,13 +190,30 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     );
   }
 
+  let playerAction;
+
+  if (isActive && isDiscard) {
+    playerAction = 'Discard card';
+  } else if (isActive && isPicked) {
+    playerAction = 'Play card';
+  } else if (isActive) {
+    playerAction = 'Your move!';
+  } else {
+    playerAction = `Waiting for ${opponent.name}…`;
+  }
+
   return (
     <form onSubmit={isDiscard ? discardCard : playCard} className={classNames({ disabled: !isActive })}>
       <div className="board">
         <div className="info">
           <Stats />
           <div className="current-trick">
-            <em>{isActive ? 'Your move!' : `Waiting for ${opponent.name}…`}</em>
+            <input
+              className={classNames({ active: isActive, picked: isPicked })}
+              type="submit"
+              disabled={!isActive || !isPicked}
+              value={playerAction}
+            />
             {G.played && (
               <div className="played">
                 <div className="label">{isActive ? `${opponent.name} played` : 'You played'}</div>
@@ -244,11 +262,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           )}
         </ol>
       </div>
-      <input
-        type="submit"
-        disabled={!isActive || chosen.length === 0}
-        value={isDiscard ? 'Discard card' : 'Play card'}
-      />
       {helpText && (
         <aside>
           {helpText}

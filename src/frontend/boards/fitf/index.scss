@@ -78,7 +78,29 @@ $black: #000;
   }
 
   .help {
-    display: none;
+    position: fixed;
+    z-index: 100;
+    bottom: 8px;
+    left: 8px;
+    border: 4px solid $border;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: $white;
+    text-decoration: none;
+    height: 46px;
+    width: 46px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      display: none;
+    }
+
+    &::before {
+      content: '📖';
+    }
   }
 
   input[type="submit"] {
@@ -351,6 +373,17 @@ $black: #000;
     .end-of-game {
       min-width: 200px;
 
+      input[type="submit"] {
+        @include font;
+        border-radius: 8px;
+        border: 4px solid $alert;
+        background-color: $alert;
+        color: $white;
+        padding: 8px;
+        margin: 0 auto;
+        display: block;
+      }
+
       .stats {
         background-color: $white;
         border-radius: 8px;
@@ -455,41 +488,23 @@ $black: #000;
     }
 
     form {
-      input[type="submit"],
       aside {
-        @include font;
-        border-style: solid;
-        border-width: 4px;
+        position: fixed;
+        bottom: 8px;
+        right: 8px;
+        z-index: 100;
+        max-width: calc(100% - 72px);
+        min-height: 48px;
+        margin-left: 16px;
+        border: 4px solid $border;
+        background-color: $white;
+        color: $black;
         border-radius: 8px;
-        margin-top: 16px;
-        min-height: 40px;
-        max-width: 50%;
         padding: 8px;
         box-sizing: border-box;
         display: flex;
         justify-content: center;
         align-items: center;
-
-        &:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-      }
-
-      input[type="submit"] {
-        float: right;
-        margin-right: 16px;
-        border-color: $alert;
-        background-color: $alert;
-        color: $white;
-      }
-
-      aside {
-        float: left;
-        margin-left: 16px;
-        border-color: $border;
-        background-color: $white;
-        color: $black;
       }
     }
 
@@ -545,13 +560,36 @@ $black: #000;
             }
           }
 
-          em {
-            width: fit-content;
-            margin: 8px auto;
+          input[type="submit"] {
+            @include font;
             background-color: unset;
             color: $alert;
             border-top: 1px solid $alert;
             border-bottom: 1px solid $alert;
+            border-right: none;
+            border-left: none;
+            font-style: italic;
+            margin: 8px auto;
+
+            &.active,
+            &.picked {
+              font-style: normal;
+              border-radius: 8px;
+              border: 4px solid $alert;
+              background-color: $alert;
+              color: $white;
+              padding: 8px;
+            }
+
+            &.active {
+              cursor: not-allowed;
+              opacity: 0.5;
+            }
+
+            &.picked {
+              cursor: pointer;
+              opacity: 1;
+            }
           }
         }
 
