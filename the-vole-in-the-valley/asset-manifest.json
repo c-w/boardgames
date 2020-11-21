@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/main.7e6d248e.chunk.css",
-    "main.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/main.85f9c846.chunk.js",
-    "main.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/main.85f9c846.chunk.js.map",
-    "runtime-main.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/runtime-main.449bfe32.js",
-    "runtime-main.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/runtime-main.449bfe32.js.map",
+    "main.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/main.6235ee72.chunk.js",
+    "main.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/main.6235ee72.chunk.js.map",
+    "runtime-main.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/runtime-main.a86181d4.js",
+    "runtime-main.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/runtime-main.a86181d4.js.map",
     "static/js/2.c3546131.chunk.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/2.c3546131.chunk.js",
     "static/js/2.c3546131.chunk.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/2.c3546131.chunk.js.map",
-    "static/css/3.854060df.chunk.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/3.854060df.chunk.css",
-    "static/js/3.d96e3226.chunk.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/3.d96e3226.chunk.js",
-    "static/js/3.d96e3226.chunk.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/3.d96e3226.chunk.js.map",
+    "static/css/3.fb750d51.chunk.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/3.fb750d51.chunk.css",
+    "static/js/3.8ef95acf.chunk.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/3.8ef95acf.chunk.js",
+    "static/js/3.8ef95acf.chunk.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/3.8ef95acf.chunk.js.map",
     "static/css/4.44f8bcd6.chunk.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/4.44f8bcd6.chunk.css",
     "static/js/4.a02edce1.chunk.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/4.a02edce1.chunk.js",
     "static/js/4.a02edce1.chunk.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/4.a02edce1.chunk.js.map",
-    "static/css/5.854060df.chunk.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/5.854060df.chunk.css",
+    "static/css/5.fb750d51.chunk.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/5.fb750d51.chunk.css",
     "static/js/5.2d7f26b3.chunk.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/5.2d7f26b3.chunk.js",
     "static/js/5.2d7f26b3.chunk.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/5.2d7f26b3.chunk.js.map",
     "static/css/6.44f8bcd6.chunk.css": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/6.44f8bcd6.chunk.css",
@@ -28,19 +28,19 @@
     "static/js/10.79178d40.chunk.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/10.79178d40.chunk.js",
     "static/js/10.79178d40.chunk.js.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/10.79178d40.chunk.js.map",
     "index.html": "https://justamouse.com/boardgames/the-vole-in-the-valley/index.html",
-    "precache-manifest.e3d3a3b196c4e145fb4bcb286594f2bb.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/precache-manifest.e3d3a3b196c4e145fb4bcb286594f2bb.js",
+    "precache-manifest.e965f3d411bae794f652bbb287fbb4dd.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/precache-manifest.e965f3d411bae794f652bbb287fbb4dd.js",
     "service-worker.js": "https://justamouse.com/boardgames/the-vole-in-the-valley/service-worker.js",
-    "static/css/3.854060df.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/3.854060df.chunk.css.map",
+    "static/css/3.fb750d51.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/3.fb750d51.chunk.css.map",
     "static/css/4.44f8bcd6.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/4.44f8bcd6.chunk.css.map",
-    "static/css/5.854060df.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/5.854060df.chunk.css.map",
+    "static/css/5.fb750d51.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/5.fb750d51.chunk.css.map",
     "static/css/6.44f8bcd6.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/6.44f8bcd6.chunk.css.map",
     "static/css/main.7e6d248e.chunk.css.map": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/main.7e6d248e.chunk.css.map",
     "static/js/2.c3546131.chunk.js.LICENSE.txt": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/2.c3546131.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.449bfe32.js",
+    "static/js/runtime-main.a86181d4.js",
     "static/js/2.c3546131.chunk.js",
     "static/css/main.7e6d248e.chunk.css",
-    "static/js/main.85f9c846.chunk.js"
+    "static/js/main.6235ee72.chunk.js"
   ]
 }
