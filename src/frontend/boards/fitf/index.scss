@@ -624,7 +624,11 @@ $black: #000;
           }
         }
 
-        @media screen and (max-width: 325px) {
+        @media screen and (max-width: 345px) {
+          .stats {
+            font-size: 14px;
+          }
+
           .label {
             font-size: 14px;
 
