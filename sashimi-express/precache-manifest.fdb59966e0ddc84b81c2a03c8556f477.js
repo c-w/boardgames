@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "73a86006cc78c003958d11e4525972ee",
+    "revision": "90cfe485d0a54087671d10bd489bf370",
     "url": "https://justamouse.com/boardgames/sashimi-express/index.html"
   },
   {
-    "revision": "ed36db7de8e47619be9a",
-    "url": "https://justamouse.com/boardgames/sashimi-express/static/css/3.fb750d51.chunk.css"
+    "revision": "5b17b6b5f03a3f18985f",
+    "url": "https://justamouse.com/boardgames/sashimi-express/static/css/3.7d7ad079.chunk.css"
   },
   {
     "revision": "4434bbb13986c59d0e73",
     "url": "https://justamouse.com/boardgames/sashimi-express/static/css/4.44f8bcd6.chunk.css"
   },
   {
-    "revision": "0c4c43fb0baf81de3524",
-    "url": "https://justamouse.com/boardgames/sashimi-express/static/css/5.fb750d51.chunk.css"
+    "revision": "59825fafdb6973b8663e",
+    "url": "https://justamouse.com/boardgames/sashimi-express/static/css/5.7d7ad079.chunk.css"
   },
   {
     "revision": "115ba1595679ed68a2d1",
@@ -36,15 +36,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://justamouse.com/boardgames/sashimi-express/static/js/2.30c2a3c1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ed36db7de8e47619be9a",
-    "url": "https://justamouse.com/boardgames/sashimi-express/static/js/3.8ef95acf.chunk.js"
+    "revision": "5b17b6b5f03a3f18985f",
+    "url": "https://justamouse.com/boardgames/sashimi-express/static/js/3.34e1a87b.chunk.js"
   },
   {
     "revision": "4434bbb13986c59d0e73",
     "url": "https://justamouse.com/boardgames/sashimi-express/static/js/4.a02edce1.chunk.js"
   },
   {
-    "revision": "0c4c43fb0baf81de3524",
+    "revision": "59825fafdb6973b8663e",
     "url": "https://justamouse.com/boardgames/sashimi-express/static/js/5.2d7f26b3.chunk.js"
   },
   {
@@ -68,7 +68,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://justamouse.com/boardgames/sashimi-express/static/js/main.6587a933.chunk.js"
   },
   {
-    "revision": "99eb8c86d2573aac454d",
-    "url": "https://justamouse.com/boardgames/sashimi-express/static/js/runtime-main.01f4f0c8.js"
+    "revision": "11289e8f02bb00b86cc9",
+    "url": "https://justamouse.com/boardgames/sashimi-express/static/js/runtime-main.b82ec53f.js"
   }
 ]);

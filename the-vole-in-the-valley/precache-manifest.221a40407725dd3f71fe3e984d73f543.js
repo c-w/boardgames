@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "729ed74c78575ca77b7ff50fce48c541",
+    "revision": "65b52c649e9220856e843555b692ffaa",
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/index.html"
   },
   {
-    "revision": "ed36db7de8e47619be9a",
-    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/3.fb750d51.chunk.css"
+    "revision": "5b17b6b5f03a3f18985f",
+    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/3.7d7ad079.chunk.css"
   },
   {
     "revision": "4434bbb13986c59d0e73",
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/4.44f8bcd6.chunk.css"
   },
   {
-    "revision": "0c4c43fb0baf81de3524",
-    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/5.fb750d51.chunk.css"
+    "revision": "59825fafdb6973b8663e",
+    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/css/5.7d7ad079.chunk.css"
   },
   {
     "revision": "115ba1595679ed68a2d1",
@@ -36,15 +36,15 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/2.c3546131.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "ed36db7de8e47619be9a",
-    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/3.8ef95acf.chunk.js"
+    "revision": "5b17b6b5f03a3f18985f",
+    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/3.34e1a87b.chunk.js"
   },
   {
     "revision": "4434bbb13986c59d0e73",
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/4.a02edce1.chunk.js"
   },
   {
-    "revision": "0c4c43fb0baf81de3524",
+    "revision": "59825fafdb6973b8663e",
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/5.2d7f26b3.chunk.js"
   },
   {
@@ -68,7 +68,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/main.6235ee72.chunk.js"
   },
   {
-    "revision": "72e3615b6444c992224b",
-    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/runtime-main.a86181d4.js"
+    "revision": "444edd066d58a589919d",
+    "url": "https://justamouse.com/boardgames/the-vole-in-the-valley/static/js/runtime-main.47e3788e.js"
   }
 ]);
