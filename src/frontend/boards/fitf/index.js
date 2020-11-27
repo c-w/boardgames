@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { isMoveInvalid } from '../../../shared/games/fitf';
@@ -36,6 +36,28 @@ function Card({ card, compact, won, isNew, isOld }) {
       </span>
     </span>
   );
+}
+
+/**
+ * @param {object} props
+ * @param {Card?} props.card
+ */
+function HelpText({ card }) {
+  const [shown, setShown] = useState(true);
+
+  const onClick = useCallback(() => {
+    setShown(false);
+  }, [setShown]);
+
+  if (!card || !shown) {
+    return null;
+  }
+
+  return (
+    <aside onClick={onClick}>
+      {CARD_TEXTS[card.rank]}
+    </aside>
+  )
 }
 
 /**
@@ -113,7 +135,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   const trump = last(G.trumps);
   const previousTrump = trump.turn > 0 && ctx.turn - trump.turn <= 1 ? G.trumps[G.trumps.length - 2] : null;
   const lastTrick = isEndOfRound && showEndOfRoundScreen ? last(last(G.history)) : G.tricks.length >= 1 ? last(G.tricks) : null;
-  const helpText = chosen.length > 0 ? CARD_TEXTS[player.hand[chosen[0]].rank] : null;
+  const firstPickedCard = chosen.length > 0 ? player.hand[chosen[0]] : null;
 
   useEffect(() => {
     if (isEndOfRound) {
@@ -262,11 +284,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
           )}
         </ol>
       </div>
-      {helpText && (
-        <aside>
-          {helpText}
-        </aside>
-      )}
+      <HelpText card={firstPickedCard} key={`${firstPickedCard?.suit}-${firstPickedCard?.rank}`} />
     </form>
   );
 }
