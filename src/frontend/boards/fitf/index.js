@@ -43,7 +43,7 @@ function Card({ card, compact, won, isNew, isOld }) {
  * @param {Card?} props.card
  */
 function HelpText({ card }) {
-  const [shown, setShown] = useState(true);
+  const [shown, setShown] = useState(card?.rank % 2 === 1);
 
   const onClick = useCallback(() => {
     setShown(false);
