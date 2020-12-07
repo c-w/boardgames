@@ -236,10 +236,10 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
               disabled={!isActive || !isPicked}
               value={playerAction}
             />
-            {G.played && (
+            {(G.played || player.stashed) && (
               <div className="played">
-                <div className="label">{isActive ? `${opponent.name} played` : 'You played'}</div>
-                <Card card={G.played} />
+                <div className="label">{(isActive && !isDiscard) ? `${opponent.name} played` : 'You played'}</div>
+                <Card card={G.played || player.stashed} />
               </div>
             )}
           </div>
