@@ -28,15 +28,20 @@ const GAME_DATA_SCHEMA = {
 };
 
 function schemaFor(game) {
+  const schema = game.setupDataSchema || {
+    required: [],
+    properties: {},
+  };
+
   return {
     type: 'object',
     required: [
       ...GAME_DATA_SCHEMA.required,
-      ...game.setupDataSchema.required,
+      ...schema.required,
     ],
     properties: {
       playerName: GAME_DATA_SCHEMA.properties.playerName,
-      ...game.setupDataSchema.properties,
+      ...schema.properties,
       unlisted: GAME_DATA_SCHEMA.properties.unlisted,
     },
   };
