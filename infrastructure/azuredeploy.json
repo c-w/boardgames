@@ -19,6 +19,7 @@
     "codeContainerName": "code",
     "stateContainerName": "state",
     "cors": {
+      "supportCredentials": true,
       "allowedOrigins": [
         "[parameters('frontendRoot')]"
       ]
