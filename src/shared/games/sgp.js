@@ -902,7 +902,7 @@ function pickCard(G, ctx, i) {
   player.hand = removeAt(player.hand, i);
 }
 
-export default {
+const game = {
   name: 'sashimi-express',
 
   minPlayers: MIN_PLAYERS,
@@ -1033,3 +1033,5 @@ export default {
 
   disableUndo: true,
 };
+
+export default game;

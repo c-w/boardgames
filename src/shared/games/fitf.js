@@ -368,7 +368,7 @@ function playCard(G, ctx, i=null, j=null) {
   ctx.events.endTurn({ next });
 }
 
-export default {
+const game = {
   name: 'the-vole-in-the-valley',
 
   minPlayers: 2,
@@ -439,3 +439,5 @@ export default {
 
   disableUndo: true,
 };
+
+export default game;
