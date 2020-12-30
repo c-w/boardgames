@@ -25,6 +25,14 @@ function importGame(gameName) {
         import('./frontend/boards/sgp/index.scss'),
       ];
 
+    case 'soaring-cities':
+      return [
+        import('./shared/games/lc'),
+        import('./frontend/boards/lc/rules.md'),
+        import('./frontend/boards/lc'),
+        import('./frontend/boards/lc/index.scss'),
+      ];
+
     default:
       throw new Error(`Unhandled game name: ${gameName}`);
   }

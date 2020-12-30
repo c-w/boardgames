@@ -6,6 +6,7 @@ This repository hosts a collection of multiplayer boardgames:
 
 - [The Vole in the Valley](./src/frontend/boards/fitf/rules.md)
 - [Sashimi Express](./src/frontend/boards/sgp/rules.md)
+- [Soaring Cities](./src/frontend/boards/lc/rules.md)
 
 ## Development setup
 

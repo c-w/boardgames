@@ -1,0 +1,231 @@
+$blue: #6AACDA;
+$red: #E2001A;
+$white: #FFFFFF;
+$yellow: #FCDA00;
+$green: #97BF0D;
+$background: #FDECCE;
+$black: #000000;
+
+$cardWidth: 45px;
+$cardHeight: 70px;
+$cardOffsetXMax: 10px;
+$cardOffsetXStep: 2px;
+$cardOffsetYStep: 20px;
+$cardNumMax: 13;
+$cardBorder: 2px;
+
+.soaring-cities {
+  background-color: $background;
+  color: $black;
+  display: table-cell;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+
+  .bgio-client {
+    ul, ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .played,
+    .discarded,
+    .hand {
+      display: grid;
+      grid-template-columns: 25px auto;
+      grid-template-rows: auto;
+      grid-template-areas: "label content";
+      margin-bottom: 25px;
+
+      > label {
+        grid-area: label;
+        transform: rotate(180deg);
+        writing-mode: vertical-lr;
+        text-align: center;
+      }
+
+      > ul {
+        grid-area: content;
+      }
+    }
+
+    .played {
+      .suit {
+        &.cards-0 {
+          height: 0;
+        }
+
+        @for $i from 1 through $cardNumMax {
+          &.cards-#{$i} {
+            height: $cardHeight + ($i - 1) * $cardOffsetYStep;
+          }
+        }
+      }
+
+      > ul {
+        > li {
+          min-height: 100px;
+
+          ol {
+            position: relative;
+
+            li {
+              position: absolute;
+
+              @for $i from 1 through $cardNumMax {
+                &:nth-child(#{$i}) {
+                  z-index: $i;
+                  top: $cardOffsetYStep * ($i - 1);
+                }
+              }
+
+              @for $i from 0 through 2 {
+                &:nth-child(6n + #{$i * 2 + 1}) {
+                  left: calc(50% - #{$cardWidth / 2 + $cardOffsetXStep * $i});
+                }
+
+                &:nth-child(6n + #{$i * 2}) {
+                  left: calc(50% - #{$cardWidth / 2 + $cardOffsetXMax - ($cardOffsetXStep * $i)});
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .discarded {
+      > ul {
+        > li {
+          min-height: $cardWidth * 2;
+          min-width: $cardHeight + $cardBorder * $cardNumMax;
+          position: relative;
+
+          > input {
+            appearance: none;
+          }
+
+          > label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            font-size: 0;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+          }
+
+          ol {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            li {
+              position: absolute;
+              transform: rotate(-90deg);
+              transform-origin: 0 0;
+
+              @for $i from 1 through $cardNumMax {
+                &:nth-child(#{$i}) {
+                  z-index: $i;
+                  top: calc(50% + #{$cardWidth / 2 - $cardBorder * ($i - 1)});
+                  left: calc(50% - #{$cardHeight / 2 - $cardBorder * ($i - 1)});
+                }
+              }
+            }
+          }
+
+          &.checked {
+            ol {
+              li {
+                transform: none;
+
+                @for $i from 1 through $cardNumMax {
+                  &:nth-child(#{$i}) {
+                    z-index: $i;
+                    top: calc(50% - #{$cardHeight / 2 - $cardBorder * ($i - 1)});
+                    left: calc(50% - #{$cardWidth / 2 - $cardBorder * ($i - 1)});
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .played,
+    .discarded {
+      > ul {
+        display: flex;
+        justify-content: space-between;
+
+        > li {
+          width: 20%;
+        }
+      }
+    }
+
+    .hand {
+      min-height: $cardHeight + 20px;
+
+      > ul {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 10px;
+
+        li {
+          &.checked {
+            align-self: start;
+          }
+
+          input {
+            appearance: none;
+          }
+
+          label {
+            display: inline-block;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .card {
+      height: $cardHeight;
+      width: $cardWidth;
+      border-radius: 4px;
+      box-sizing: border-box;
+      border: $cardBorder solid $black;
+      padding: 1px 4px;
+      display: block;
+      user-select: none;
+    }
+
+    .card,
+    .discarded .suit {
+      &.blue {
+        background-color: $blue;
+      }
+
+      &.red {
+        background-color: $red;
+      }
+
+      &.white {
+        background-color: $white;
+      }
+
+      &.yellow {
+        background-color: $yellow;
+      }
+
+      &.green {
+        background-color: $green;
+      }
+    }
+  }
+}

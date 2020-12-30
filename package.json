@@ -71,6 +71,7 @@
   "scripts": {
     "workon-sgp": "babel-node ./scripts/gamectl.js workon --game sgp",
     "workon-fitf": "babel-node ./scripts/gamectl.js workon --game fitf",
+    "workon-lc": "babel-node ./scripts/gamectl.js workon --game lc",
     "start": "node dist/backend/server.js run",
     "start-dev": "run-p start-client start-server",
     "start-client": "cross-env PORT=7777 REACT_APP_FRONTEND_ROOT=http://localhost:7777 REACT_APP_SERVER_URL=http://localhost:8888 craco start",
@@ -84,8 +85,9 @@
     "clean": "shx rm -rf ./build ./dist ./public ./state ./.env.local",
     "build-client-sgp": "babel-node ./scripts/gamectl.js build --game sgp",
     "build-client-fitf": "babel-node ./scripts/gamectl.js build --game fitf",
+    "build-client-lc": "babel-node ./scripts/gamectl.js build --game lc",
     "build-client-index": "babel-node ./scripts/gamectl.js build-server-templates",
-    "build-client": "run-s build-client-sgp build-client-fitf build-client-index",
+    "build-client": "run-s build-client-sgp build-client-fitf build-client-lc build-client-index",
     "build-server": "babel src --out-dir dist",
     "build": "run-p build-client build-server"
   }
