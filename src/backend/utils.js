@@ -16,5 +16,6 @@ export function loadGames() {
     .map(file => ({
       ...require(path.join(gamesDir, file)).default,
       shortName: path.basename(file, '.js'),
-    }));
+    }))
+    .sort((game1, game2) => game1.name.localeCompare(game2.name));
 }
