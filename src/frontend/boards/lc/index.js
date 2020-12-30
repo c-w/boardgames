@@ -15,12 +15,12 @@ import './index.scss';
 /**
  * @param {object} props
  * @param {number} props.deckSize
- * @param {string} props.round
+ * @param {number} props.round
  */
 function Deck({ deckSize, round }) {
   return (
     <div className="deck">
-      {round}, cards remaining: {deckSize}
+      Round {round + 1}, cards remaining: {deckSize}
     </div>
   );
 }
@@ -308,7 +308,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     <>
       <Deck
         deckSize={G.deckSize}
-        round={ctx.phase}
+        round={G.round}
       />
       <Played
         cards={G.played[otherPlayerID]}

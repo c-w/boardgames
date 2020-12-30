@@ -1,5 +1,5 @@
-import { INVALID_MOVE, PlayerView, TurnOrder } from 'boardgame.io/core';
-import { last, partition, range, sum } from '../utils';
+import { INVALID_MOVE, PlayerView } from 'boardgame.io/core';
+import { last, partition, sum } from '../utils';
 
 /** @typedef {import('boardgame.io/dist/types/src/types').Ctx} Ctx **/
 
@@ -32,7 +32,7 @@ import { last, partition, range, sum } from '../utils';
  *   scores: {
  *     [player: string]: number[],
  *   },
- *   turnOrder: string[],
+ *   round: number;
  * }} GameContext
  *
  * @typedef {GameState & GameContext} G
@@ -66,11 +66,10 @@ export function toOrdinal(card) {
 
 /**
  * @param {G} G
- * @param {Ctx} ctx
  * @returns {{ winner: string }?}
  */
-function checkGameOver(G, ctx) {
-  if (ctx.phase != null) {
+function checkGameOver(G) {
+  if (G.round < NUM_ROUNDS) {
     return undefined;
   }
 
@@ -92,8 +91,10 @@ function checkGameOver(G, ctx) {
 
 /**
  * @param {G} G
+ * @param {Ctx} ctx
+ * @returns {string}
  */
-function onRoundEnd(G) {
+function onRoundEnd(G, ctx) {
   for (const player of [PLAYER_1, PLAYER_2]) {
     const played = Object.values(Object.values(G.played[player]));
     const score = sum(played.map(cards => scoreSuit(cards)));
@@ -103,22 +104,23 @@ function onRoundEnd(G) {
   const player1Score = sum(G.scores[PLAYER_1]);
   const player2Score = sum(G.scores[PLAYER_2]);
 
-  if (player1Score > player2Score) {
-    G.turnOrder = [PLAYER_1, PLAYER_2];
-  } else if (player2Score > player1Score) {
-    G.turnOrder = [PLAYER_2, PLAYER_1];
-  } else {
-    G.turnOrder = [G.turnOrder[1], G.turnOrder[0]];
-  }
-}
+  let next;
 
-/**
- * @param {G} G
- * @param {Ctx} ctx
- * @returns {G}
- */
-function onRoundStart(G, ctx) {
-  return { ...G, ...dealCards(ctx) };
+  if (player1Score > player2Score) {
+    next = PLAYER_1;
+  } else if (player2Score > player1Score) {
+    next = PLAYER_2;
+  } else {
+    next = ctx.currentPlayer === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+  }
+
+  G.round++;
+
+  for (const [key, value] of Object.entries(dealCards(ctx))) {
+    G[key] = value;
+  }
+
+  return next;
 }
 
 /**
@@ -297,10 +299,12 @@ function drawCardFromDeck(G, ctx) {
 
   const card = G.secret.deck.pop();
   G.players[ctx.currentPlayer].hand.push(card);
-  ctx.events.endTurn();
 
   if (G.secret.deck.length === 0) {
-    ctx.events.endPhase();
+    const next = onRoundEnd(G, ctx);
+    ctx.events.endTurn({ next });
+  } else {
+    ctx.events.endTurn();
   }
 }
 
@@ -351,14 +355,16 @@ const game = {
   maxPlayers: 2,
 
   /**
-   * @returns {GameContext}
+   * @param {Ctx} ctx
+   * @returns {G}
    */
-  setup: () => ({
+  setup: (ctx) => ({
     scores: {
       [PLAYER_1]: [],
       [PLAYER_2]: [],
     },
-    turnOrder: [PLAYER_1, PLAYER_2],
+    round: 0,
+    ...dealCards(ctx),
   }),
 
   moves: {
@@ -375,8 +381,6 @@ const game = {
   turn: {
     onBegin: onTurnStart,
 
-    order: TurnOrder.CUSTOM_FROM('turnOrder'),
-
     stages: {
       drawCard: {
         moves: {
@@ -392,16 +396,6 @@ const game = {
       },
     },
   },
-
-  phases: Object.fromEntries(range(NUM_ROUNDS).map(i => ([
-    `Round ${i + 1}`,
-    {
-      start: i === 0,
-      next: i === NUM_ROUNDS - 1 ? undefined : `Round ${i + 2}`,
-      onBegin: onRoundStart,
-      onEnd: onRoundEnd,
-    },
-  ]))),
 
   endIf: checkGameOver,
 
