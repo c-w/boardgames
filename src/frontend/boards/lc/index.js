@@ -14,24 +14,6 @@ import './index.scss';
 
 /**
  * @param {object} props
- * @param {number} props.deckSize
- * @param {number} props.round
- * @param {any} props.drawCardFromDeck
- */
-function Stats({ deckSize, round, drawCardFromDeck }) {
-  const cards = range(deckSize).map(i => ({ suit: 'background', rank: (i + 1) * -100}));
-
-  return (
-    <div className="stats">
-      {drawCardFromDeck}
-      <span className="rounds">Round {round + 1}</span>
-      <Deck cards={cards} />
-    </div>
-  );
-}
-
-/**
- * @param {object} props
  * @param {number} props.points
  */
 function Points({ points }) {
@@ -56,8 +38,8 @@ function Played({ cards, scores, caption, playCard }) {
   return (
     <div className="played">
       {playCard}
-      <label>{caption}, <Points points={sum(scores)} /></label>
-      <ul>
+      <label className="description">{caption}, <Points points={sum(scores)} /></label>
+      <ul className="content">
         {Object.entries(cards).map(([suit, cards]) => (
           <li key={suit} className={classNames('suit', suit, `cards-${cards.length}`)}>
             <Deck cards={cards} />
@@ -87,7 +69,7 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled, discardCard, draw
   return (
     <div className="discarded">
       {discardCard}
-      <label>Discarded cards</label>
+      <label className="description">Discarded cards</label>
       <ul>
         {Object.entries(G.discarded).map(([suit, cards]) => {
           const id = `pickedSuit-${suit}`;
@@ -130,11 +112,16 @@ function Card(card) {
 
 /**
  * @param {object} props
- * @param {Card[]} props.cards
+ * @param {Card[] | number} props.cards
+ * @param {string=} props.className
  */
-function Deck({ cards }) {
+function Deck({ cards, className }) {
+  if (!Array.isArray(cards)) {
+    cards = range(cards).map(i => ({ suit: 'background', rank: (i + 1) * -100}));
+  }
+
   return (
-    <ol className="deck">
+    <ol className={classNames('deck', className)}>
       {cards.map(card => (
         <li key={toOrdinal(card)}>
           <Card {...card} />
@@ -146,12 +133,15 @@ function Deck({ cards }) {
 
 /**
  * @param {object} props
+ * @param {number} props.deckSize
+ * @param {number} props.round
+ * @param {any} props.drawCardFromDeck
  * @param {Card[]} props.cards
  * @param {any} props.onPickCard
  * @param {Card} props.pickedCard
  * @param {boolean} props.disabled
  */
-function Hand({ cards, onPickCard, pickedCard, disabled }) {
+function Hand({ deckSize, round, drawCardFromDeck, cards, onPickCard, pickedCard, disabled }) {
   const onChange = useCallback((/** @type {InputChangeEvent} */ event) => {
     const card = JSON.parse(event.target.value);
     onPickCard(card);
@@ -159,29 +149,35 @@ function Hand({ cards, onPickCard, pickedCard, disabled }) {
 
   return (
     <div className="hand">
-      <label>Your hand</label>
-      <ul>
-        {cards.sort((card1, card2) => toOrdinal(card1) - toOrdinal(card2)).map((card) => {
-          const id = `pickedCard-${toOrdinal(card)}`;
-          const checked = card.suit === pickedCard?.suit && card.rank === pickedCard?.rank;
-          return (
-            <li key={id} className={classNames({ checked })}>
-              <input
-                type="radio"
-                name="pickedCard"
-                value={JSON.stringify(card)}
-                onChange={onChange}
-                checked={checked}
-                disabled={disabled}
-                id={id}
-              />
-              <label htmlFor={id} className={classNames({ disabled })}>
-                <Card {...card} />
-              </label>
-            </li>
-          );
-        })}
-      </ul>
+      <label className="description">Hand {round + 1}</label>
+      <div className="content">
+        <div className="drawpile">
+          {drawCardFromDeck}
+          <Deck cards={deckSize} />
+        </div>
+        <ul>
+          {cards.sort((card1, card2) => toOrdinal(card1) - toOrdinal(card2)).map((card) => {
+            const id = `pickedCard-${toOrdinal(card)}`;
+            const checked = card.suit === pickedCard?.suit && card.rank === pickedCard?.rank;
+            return (
+              <li key={id} className={classNames({ checked })}>
+                <input
+                  type="radio"
+                  name="pickedCard"
+                  value={JSON.stringify(card)}
+                  onChange={onChange}
+                  checked={checked}
+                  disabled={disabled}
+                  id={id}
+                />
+                <label htmlFor={id} className={classNames({ disabled })}>
+                  <Card {...card} />
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
@@ -308,11 +304,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   return (
     <div className={classNames({ waiting: !isActive })}>
-      <Stats
-        deckSize={G.deckSize}
-        round={G.round}
-        drawCardFromDeck={drawCardFromDeck}
-      />
       <Played
         cards={G.played[otherPlayerID]}
         scores={G.scores[otherPlayerID]}
@@ -334,6 +325,9 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         playCard={playCard}
       />
       <Hand
+        deckSize={G.deckSize}
+        round={G.round}
+        drawCardFromDeck={drawCardFromDeck}
         cards={G.players[playerID].hand}
         onPickCard={setPickedCard}
         pickedCard={pickedCard}
