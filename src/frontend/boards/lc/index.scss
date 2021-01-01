@@ -13,9 +13,11 @@ $cardOffsetXMax: 10px;
 $cardOffsetXStep: 2px;
 $cardOffsetYStep: 20px;
 $cardNumMax: 13;
+$numSuits: 5;
 $cardBorder: 2px;
 $brickWidth: 21;
 $brickHeight: 22;
+$fontSize: 16px;
 
 .soaring-cities {
   background-color: $background;
@@ -24,6 +26,7 @@ $brickHeight: 22;
   height: 100vh;
   width: 100vw;
   position: relative;
+  font-size: $fontSize;
 
   .bgio-client {
     ul, ol {
@@ -32,8 +35,56 @@ $brickHeight: 22;
       margin: 0;
     }
 
+    .stats {
+      min-height: $cardHeight + $cardBorder;
+      display: flex;
+      align-items: center;
+
+      .deck {
+        display: block;
+        position: relative;
+        min-height: $cardHeight + $cardBorder;
+
+        li {
+          position: absolute;
+
+          @for $i from 1 through $cardNumMax * $numSuits {
+            &:nth-child(#{$i}) {
+              z-index: $i;
+              left: $cardBorder * $i;
+
+              &::after {
+                content: "Cards #{$i}";
+                text-align: center;
+                position: absolute;
+                font-size: smaller;
+                top: $cardHeight / 2 - $fontSize;
+                left: $cardBorder;
+                display: none;
+              }
+            }
+          }
+
+          &:last-child::after {
+            display: block;
+          }
+
+          @for $i from 1 through 5 {
+            &:nth-child(10n + #{$i}) {
+              top: $cardBorder * $i / 2;
+            }
+
+            &:nth-child(10n + #{$i + 5}) {
+              top: $cardBorder * (5 - $i) / 2;
+            }
+          }
+        }
+      }
+    }
+
     .played,
     .discarded,
+    .stats,
     .hand {
       display: grid;
       grid-template-columns: 25px auto;
@@ -41,6 +92,7 @@ $brickHeight: 22;
       grid-template-areas: "label content";
       margin-bottom: 25px;
 
+      > span,
       > label {
         grid-area: label;
         transform: rotate(180deg);
@@ -48,6 +100,7 @@ $brickHeight: 22;
         text-align: center;
       }
 
+      > ol,
       > ul {
         grid-area: content;
       }
@@ -213,6 +266,10 @@ $brickHeight: 22;
 
       &.background {
         background-color: $brown;
+
+        .rank {
+          display: none;
+        }
       }
 
       &.blue {

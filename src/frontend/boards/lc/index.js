@@ -18,9 +18,12 @@ import './index.scss';
  * @param {number} props.round
  */
 function Stats({ deckSize, round }) {
+  const cards = range(deckSize).map(i => ({ suit: 'background', rank: (i + 1) * -100}));
+
   return (
     <div className="stats">
-      Round {round + 1}, cards remaining: {deckSize}
+      <span className="rounds">Round {round + 1}</span>
+      <Deck cards={cards} />
     </div>
   );
 }
@@ -111,7 +114,7 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
 function Card(card) {
   return (
     <span className={classNames('card', card.suit)}>
-      {isBet(card) ? 'bet' : card.rank}
+      <span className="rank">{isBet(card) ? 'bet' : card.rank}</span>
     </span>
   )
 }
