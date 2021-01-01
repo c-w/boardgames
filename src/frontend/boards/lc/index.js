@@ -16,12 +16,14 @@ import './index.scss';
  * @param {object} props
  * @param {number} props.deckSize
  * @param {number} props.round
+ * @param {any} props.drawCardFromDeck
  */
-function Stats({ deckSize, round }) {
+function Stats({ deckSize, round, drawCardFromDeck }) {
   const cards = range(deckSize).map(i => ({ suit: 'background', rank: (i + 1) * -100}));
 
   return (
     <div className="stats">
+      {drawCardFromDeck}
       <span className="rounds">Round {round + 1}</span>
       <Deck cards={cards} />
     </div>
@@ -48,10 +50,12 @@ function Points({ points }) {
  * @param {Cards} props.cards
  * @param {number[]} props.scores
  * @param {string} props.caption
+ * @param {any=} props.playCard
  */
-function Played({ cards, scores, caption }) {
+function Played({ cards, scores, caption, playCard }) {
   return (
     <div className="played">
+      {playCard}
       <label>{caption}, <Points points={sum(scores)} /></label>
       <ul>
         {Object.entries(cards).map(([suit, cards]) => (
@@ -71,8 +75,10 @@ function Played({ cards, scores, caption }) {
  * @param {any} props.onPickSuit
  * @param {string} props.pickedSuit
  * @param {boolean} props.disabled
+ * @param {any} props.discardCard
+ * @param {any} props.drawCardFromDiscard
  */
-function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
+function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled, discardCard, drawCardFromDiscard }) {
   const onChange = useCallback((/** @type {InputChangeEvent} */ event) => {
     const suit = event.target.value;
     onPickSuit(suit);
@@ -80,6 +86,7 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
 
   return (
     <div className="discarded">
+      {discardCard}
       <label>Discarded cards</label>
       <ul>
         {Object.entries(G.discarded).map(([suit, cards]) => {
@@ -88,6 +95,7 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
           const isMoveLegal = !disabled && canDrawCardFromDiscard(G, ctx, suit) == null;
           return (
             <li key={suit} className={classNames('suit', suit, `cards-${cards.length}`, { checked })}>
+              {suit === pickedSuit && drawCardFromDiscard}
               <Deck cards={cards} />
               <input
                 type="radio"
@@ -180,64 +188,6 @@ function Hand({ cards, onPickCard, pickedCard, disabled }) {
 
 /**
  * @param {object} props
- * @param {G} props.G
- * @param {Ctx} props.ctx
- * @param {any} props.moves
- * @param {Card=} props.card
- * @param {string=} props.suit
- * @param {boolean} props.active
- * @param {string} props.stage
- */
-function Actions({ G, ctx, card, suit, moves, active, stage }) {
-  let content;
-
-  if (active && stage === 'playCard') {
-    content = (
-      <>
-        <button
-          onClick={() => moves.playCardToBoard(card)}
-          disabled={card == null || canPlayCardToBoard(G, ctx, card) != null}
-        >
-          Play card
-        </button>
-        <button
-          onClick={() => moves.playCardToDiscard(card)}
-          disabled={card == null || canPlayCardToDiscard(G, ctx, card) != null}
-        >
-          Discard card
-        </button>
-      </>
-    );
-  } else if (active && stage === 'drawCard') {
-    content = (
-      <>
-        <button
-          onClick={() => moves.drawCardFromDeck()}
-          disabled={canDrawCardFromDeck(G, ctx) != null}
-        >
-          Draw card
-        </button>
-        <button
-          onClick={() => moves.drawCardFromDiscard(suit)}
-          disabled={suit == null || canDrawCardFromDiscard(G, ctx, suit) != null}
-        >
-          Pick {suit || 'discarded'}
-        </button>
-      </>
-    );
-  } else if (!active) {
-    content = <em>Waiting for opponent&hellip;</em>
-  }
-
-  return (
-    <div className="actions">
-      {content}
-    </div>
-  );
-}
-
-/**
- * @param {object} props
  * @param {string} props.name
  * @param {boolean} props.winner
  * @param {number[]} props.scores
@@ -312,11 +262,56 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
     );
   }
 
+  let playCard, discardCard, drawCardFromDeck, drawCardFromDiscard;
+
+  if (isActive && stage === 'playCard' && pickedCard != null) {
+    playCard = (
+      <button
+        className="action"
+        onClick={() => moves.playCardToBoard(pickedCard)}
+        disabled={canPlayCardToBoard(G, ctx, pickedCard) != null}
+      >
+        Play card
+      </button>
+    );
+
+    discardCard = (
+      <button
+        className="action"
+        onClick={() => moves.playCardToDiscard(pickedCard)}
+        disabled={canPlayCardToDiscard(G, ctx, pickedCard) != null}
+      >
+        Discard card
+      </button>
+    );
+  } else if (isActive && stage === 'drawCard') {
+    drawCardFromDeck = (
+      <button
+        className="action"
+        onClick={() => moves.drawCardFromDeck()}
+        disabled={canDrawCardFromDeck(G, ctx) != null}
+      >
+        Draw card
+      </button>
+    );
+
+    drawCardFromDiscard = pickedSuit && (
+      <button
+        className="action"
+        onClick={() => moves.drawCardFromDiscard(pickedSuit)}
+        disabled={canDrawCardFromDiscard(G, ctx, pickedSuit) != null}
+      >
+        Pick {pickedSuit}
+      </button>
+    );
+  }
+
   return (
     <div className={classNames({ waiting: !isActive })}>
       <Stats
         deckSize={G.deckSize}
         round={G.round}
+        drawCardFromDeck={drawCardFromDeck}
       />
       <Played
         cards={G.played[otherPlayerID]}
@@ -329,26 +324,20 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         onPickSuit={setPickedSuit}
         pickedSuit={pickedSuit}
         disabled={!isActive || stage !== 'drawCard'}
+        discardCard={discardCard}
+        drawCardFromDiscard={drawCardFromDiscard}
       />
       <Played
         cards={G.played[playerID]}
         scores={G.scores[playerID]}
         caption="Your cards"
+        playCard={playCard}
       />
       <Hand
         cards={G.players[playerID].hand}
         onPickCard={setPickedCard}
         pickedCard={pickedCard}
         disabled={!isActive || stage !== 'playCard'}
-      />
-      <Actions
-        G={G}
-        ctx={ctx}
-        moves={moves}
-        card={pickedCard}
-        suit={pickedSuit}
-        stage={stage}
-        active={isActive}
       />
     </div>
   );
