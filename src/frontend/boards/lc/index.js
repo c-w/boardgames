@@ -312,7 +312,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
   }
 
   return (
-    <>
+    <div className={classNames({ waiting: !isActive })}>
       <Stats
         deckSize={G.deckSize}
         round={G.round}
@@ -349,6 +349,6 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
         stage={stage}
         active={isActive}
       />
-    </>
+    </div>
   );
 }
