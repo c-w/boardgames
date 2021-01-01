@@ -242,6 +242,14 @@ $fontSize: 16px;
       grid-template-areas: "label content";
       margin-bottom: 25px;
 
+      label {
+        cursor: pointer;
+
+        &.disabled {
+          cursor: not-allowed;
+        }
+      }
+
       > span,
       > label {
         grid-area: label;
@@ -324,7 +332,6 @@ $fontSize: 16px;
             font-size: 0;
             top: 0;
             left: 0;
-            cursor: pointer;
           }
 
           ol {
@@ -398,7 +405,6 @@ $fontSize: 16px;
 
           label {
             display: inline-block;
-            cursor: pointer;
           }
         }
       }

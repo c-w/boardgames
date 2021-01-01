@@ -85,6 +85,7 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
         {Object.entries(G.discarded).map(([suit, cards]) => {
           const id = `pickedSuit-${suit}`;
           const checked = suit === pickedSuit;
+          const isMoveLegal = !disabled && canDrawCardFromDiscard(G, ctx, suit) == null;
           return (
             <li key={suit} className={classNames('suit', suit, `cards-${cards.length}`, { checked })}>
               <Deck cards={cards} />
@@ -94,10 +95,10 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
                 value={suit}
                 onChange={onChange}
                 checked={checked}
-                disabled={disabled || canDrawCardFromDiscard(G, ctx, suit) != null}
+                disabled={!isMoveLegal}
                 id={id}
               />
-              <label htmlFor={id}>
+              <label htmlFor={id} className={classNames({ disabled: !isMoveLegal })}>
                 Pick {suit}
               </label>
             </li>
@@ -166,7 +167,7 @@ function Hand({ cards, onPickCard, pickedCard, disabled }) {
                 disabled={disabled}
                 id={id}
               />
-              <label htmlFor={id}>
+              <label htmlFor={id} className={classNames({ disabled })}>
                 <Card {...card} />
               </label>
             </li>
