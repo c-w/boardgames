@@ -21,6 +21,17 @@ $brickHeight: 22;
 $fontSize: 16px;
 $gap: 10px;
 
+@mixin callout {
+  text-decoration: none;
+  background-color: $callout;
+  color: $white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: block;
+  width: fit-content;
+  margin: 8px auto;
+}
+
 .soaring-cities {
   background-color: $background;
   color: $black;
@@ -29,6 +40,49 @@ $gap: 10px;
   width: 100vw;
   position: relative;
   font-size: $fontSize;
+
+  table {
+    margin: $gap auto;
+    border-collapse: collapse;
+    border-radius: 4px;
+    padding: 4px 16px;
+    text-align: center;
+
+    thead {
+      background-color: $callout;
+      color: $white;
+
+      th {
+        padding: 8px;
+        font-weight: normal;
+        font-size: smaller;
+      }
+    }
+
+    tbody {
+      background-color: $white;
+
+      td {
+        padding: 8px;
+      }
+    }
+
+    thead > tr:first-of-type > th:first-of-type {
+      border-top-left-radius: 4px;
+    }
+
+    thead > tr:first-of-type > th:last-of-type {
+      border-top-right-radius: 4px;
+    }
+
+    tbody > tr:last-of-type > td:first-of-type {
+      border-bottom-left-radius: 4px;
+    }
+
+    tbody > tr:last-of-type > td:last-of-type {
+      border-bottom-right-radius: 4px;
+    }
+  }
 
   .help {
     position: fixed;
@@ -69,13 +123,7 @@ $gap: 10px;
       color: $black;
 
       &.create-game {
-        background-color: $callout;
-        color: $white;
-        padding: 8px 12px;
-        border-radius: 4px;
-        display: block;
-        width: fit-content;
-        margin: 8px auto;
+        @include callout;
       }
     }
 
@@ -158,49 +206,6 @@ $gap: 10px;
         padding-bottom: 12px;
       }
     }
-
-    table {
-      margin: 0 auto;
-      border-collapse: collapse;
-      border-radius: 4px;
-      padding: 4px 16px;
-      text-align: center;
-
-      thead {
-        background-color: $callout;
-        color: $white;
-
-        th {
-          padding: 8px;
-          font-weight: normal;
-          font-size: smaller;
-        }
-      }
-
-      tbody {
-        background-color: $white;
-
-        td {
-          padding-top: 4px;
-        }
-      }
-
-      thead > tr:first-of-type > th:first-of-type {
-        border-top-left-radius: 4px;
-      }
-
-      thead > tr:first-of-type > th:last-of-type {
-        border-top-right-radius: 4px;
-      }
-
-      tbody > tr:last-of-type > td:first-of-type {
-        border-bottom-left-radius: 4px;
-      }
-
-      tbody > tr:last-of-type > td:last-of-type {
-        border-bottom-right-radius: 4px;
-      }
-    }
   }
 
   .bgio-client {
@@ -213,6 +218,14 @@ $gap: 10px;
       list-style: none;
       padding: 0;
       margin: 0;
+    }
+
+    .gameover {
+      text-align: center;
+
+      a {
+        @include callout;
+      }
     }
 
     .drawpile,
