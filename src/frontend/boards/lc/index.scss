@@ -24,12 +24,14 @@ $gap: 10px;
 @mixin callout {
   text-decoration: none;
   background-color: $callout;
+  border: none;
   color: $white;
   padding: 8px 12px;
   border-radius: 4px;
   display: block;
   width: fit-content;
   margin: 8px auto;
+  cursor: pointer;
 }
 
 .soaring-cities {
@@ -110,6 +112,76 @@ $gap: 10px;
 
     &:hover {
       border-color: $red;
+    }
+  }
+
+  .rjsf {
+    max-width: 400px;
+    margin: 0 auto;
+
+    fieldset {
+      border: none;
+    }
+
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      column-gap: $gap;
+      margin-bottom: $gap;
+
+      label {
+        width: 50%;
+      }
+
+      input {
+        width: 50%;
+      }
+    }
+
+    label[for="root_playerName"]::before {
+      content: '👷';
+      margin-right: 2px;
+    }
+
+    .checkbox {
+      width: 100%;
+
+      label {
+        width: 100%;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+
+        input {
+          appearance: none;
+
+          &::before {
+            content: '❌';
+          }
+
+          &:checked::before {
+            content: '✔️';
+          }
+        }
+
+        span {
+          width: 50%;
+
+          &::before {
+            content: '🚧';
+            margin-right: 2px;
+          }
+        }
+      }
+    }
+
+    input[type="submit"] {
+      @include callout;
+    }
+
+    .required {
+      display: none;
     }
   }
 
