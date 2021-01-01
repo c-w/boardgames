@@ -19,6 +19,7 @@ $cardBorder: 2px;
 $brickWidth: 21;
 $brickHeight: 22;
 $fontSize: 16px;
+$gap: 10px;
 
 .soaring-cities {
   background-color: $background;
@@ -256,10 +257,10 @@ $fontSize: 16px;
     .discarded,
     .hand {
       display: grid;
-      grid-template-columns: 25px auto;
+      grid-template-columns: 2 * $gap auto;
       grid-template-rows: auto;
       grid-template-areas: "description content";
-      margin: 10px 0;
+      margin: $gap 0;
 
       label {
         cursor: pointer;
@@ -403,7 +404,7 @@ $fontSize: 16px;
     }
 
     .hand {
-      min-height: $cardHeight + 20px;
+      min-height: $cardHeight + 2 * $gap;
 
       .content {
         display: flex;
@@ -419,8 +420,8 @@ $fontSize: 16px;
         display: flex;
         justify-content: center;
         align-items: center;
-        column-gap: 10px;
-        margin-right: 10px;
+        column-gap: $gap;
+        margin-right: $gap;
 
         li {
           &.checked {
