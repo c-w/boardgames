@@ -6,15 +6,15 @@ Welcome to Soaring Cities, a set collection card game for 2 players. Your rival 
 
 ## How is the game played?
 
-Soaring Cities takes place over 3 rounds. At the start of each round, players are dealt 8 cards from the deck and use these cards to start their construction projects. For each of the five construction projects, the deck contains cards numbered from 2 through 10 as well as 3 bet cards. Players alternate turns, taking one of the following actions:
+Soaring Cities takes place over 3 rounds. At the start of each round, players are dealt 8 cards from the deck and use these cards to start their construction projects. For each of the five projects, the deck contains cards numbered from 2 through 10 as well as 3 bet cards. Players alternate turns, taking one of the following actions:
 
-1. Adding a card to one of the player's construction projects. Numbered cards must be placed in ascending order. Bet cards must be placed before any numbered card.
+1. Adding a card to one of the player's construction projects. Bet cards must be played first. Numbered cards must be placed in ascending order.
 2. Discarding a card to the discard pile corresponding to the card's construction project.
 
 After adding or discarding a card, the player replenishes their hand by either:
 
 1. Drawing a card from the deck.
-2. Picking up the top card from one of the discard piles. Note that if a player discarded a card as their action, they cannot chose to pick up the discarded card during replenishment.
+2. Picking up the top card from one of the discard piles. If a player discarded a card as their action, they cannot chose to pick up the discarded card during replenishment.
 
 Once the last card is picked from the deck, the round ends and each player is awarded points for each of their construction projects. Breaking ground on a building project incurs a starting cost of &minus;$20M. A player then scores &plus;$1M for each point on the cards added to the project. Any gains or losses are multiplied by the number of bet cards placed in the project according to the table below.
 
