@@ -17,9 +17,9 @@ import './index.scss';
  * @param {number} props.deckSize
  * @param {number} props.round
  */
-function Deck({ deckSize, round }) {
+function Stats({ deckSize, round }) {
   return (
-    <div className="deck">
+    <div className="stats">
       Round {round + 1}, cards remaining: {deckSize}
     </div>
   );
@@ -53,13 +53,7 @@ function Played({ cards, scores, caption }) {
       <ul>
         {Object.entries(cards).map(([suit, cards]) => (
           <li key={suit} className={classNames('suit', suit, `cards-${cards.length}`)}>
-            <ol>
-              {cards.map(card => (
-                <li key={toOrdinal(card)}>
-                  <Card {...card} />
-                </li>
-              ))}
-            </ol>
+            <Deck cards={cards} />
           </li>
         ))}
       </ul>
@@ -90,13 +84,7 @@ function Discarded({ G, ctx, onPickSuit, pickedSuit, disabled }) {
           const checked = suit === pickedSuit;
           return (
             <li key={suit} className={classNames('suit', suit, `cards-${cards.length}`, { checked })}>
-              <ol>
-                {cards.map(card => (
-                  <li key={toOrdinal(card)}>
-                    <Card {...card} />
-                  </li>
-                ))}
-              </ol>
+              <Deck cards={cards} />
               <input
                 type="radio"
                 name="pickedSuit"
@@ -126,6 +114,22 @@ function Card(card) {
       {isBet(card) ? 'bet' : card.rank}
     </span>
   )
+}
+
+/**
+ * @param {object} props
+ * @param {Card[]} props.cards
+ */
+function Deck({ cards }) {
+  return (
+    <ol className="deck">
+      {cards.map(card => (
+        <li key={toOrdinal(card)}>
+          <Card {...card} />
+        </li>
+      ))}
+    </ol>
+  );
 }
 
 /**
@@ -306,7 +310,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
 
   return (
     <>
-      <Deck
+      <Stats
         deckSize={G.deckSize}
         round={G.round}
       />

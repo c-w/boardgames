@@ -211,6 +211,10 @@ $brickHeight: 22;
       display: block;
       user-select: none;
 
+      &.background {
+        background-color: $brown;
+      }
+
       &.blue {
         background-color: $blue;
       }
