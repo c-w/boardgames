@@ -6,6 +6,7 @@ $green: #97BF0D;
 $background: #FDECCE;
 $black: #000000;
 $brown: #8A5634;
+$callout: #004481;
 
 $cardWidth: 45px;
 $cardHeight: 70px;
@@ -27,6 +28,79 @@ $fontSize: 16px;
   width: 100vw;
   position: relative;
   font-size: $fontSize;
+
+  .matches {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+
+    a {
+      text-decoration: none;
+      color: $black;
+
+      &.create-game {
+        background-color: $callout;
+        color: $white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        display: block;
+        width: fit-content;
+        margin: 8px auto;
+      }
+    }
+
+    ul {
+      list-style: none;
+      text-align: left;
+      padding: 0;
+      margin: 16px 0 0 0;
+
+      li {
+        margin-bottom: 8px;
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        &::before {
+          margin-left: -16px;
+          margin-right: 8px;
+        }
+
+        &:nth-child(8n+1)::before {
+          content: '🏢';
+        }
+
+        &:nth-child(8n+2)::before {
+          content: '🚧';
+        }
+
+        &:nth-child(8n+3)::before {
+          content: '🏨';
+        }
+
+        &:nth-child(8n+4)::before {
+          content: '️🚛';
+        }
+
+        &:nth-child(8n+5)::before {
+          content: '🏨';
+        }
+
+        &:nth-child(8n+6)::before {
+          content: '👷';
+        }
+
+        &:nth-child(8n+7)::before {
+          content: '🏪';
+        }
+
+        &:nth-child(8n+8)::before {
+          content: '🦺';
+        }
+      }
+    }
+  }
 
   .bgio-client {
     ul, ol {
