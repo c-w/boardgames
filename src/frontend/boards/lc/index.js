@@ -307,7 +307,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       <Played
         cards={G.played[otherPlayerID]}
         scores={G.scores[otherPlayerID]}
-        caption={`${opponent.name}'s cards`}
+        caption={`${opponent.name}'s projects`}
       />
       <Discarded
         G={G}
@@ -321,7 +321,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       <Played
         cards={G.played[playerID]}
         scores={G.scores[playerID]}
-        caption="Your cards"
+        caption="Your projects"
         playCard={playCard}
       />
       <Hand
