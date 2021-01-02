@@ -510,9 +510,11 @@ $gap: 10px;
         background-color: $brown;
 
         > li {
-          min-height: $brickHeight * 6 + 0.5px;
+          min-height: max($cardHeight + $cardBorder * 2, $cardWidth + $cardBorder * ($cardNumMax + 2));
           min-width: $cardHeight + $cardBorder * 2;
           position: relative;
+          display: flex;
+          align-items: center;
 
           > input {
             appearance: none;
@@ -530,18 +532,29 @@ $gap: 10px;
 
           ol {
             position: relative;
-            width: 100%;
-            height: 100%;
+            width: $cardHeight + 2 * $cardBorder;
 
             li {
               position: absolute;
               transform: rotate(-90deg);
               transform-origin: 0 0;
+            }
+          }
 
-              @for $i from 1 through $cardNumMax {
+          @for $i from 0 through $cardNumMax {
+            &.cards-#{$i} {
+              ol {
+                height: $cardWidth + ($i - 1) * $cardBorder;
+              }
+            }
+          }
+
+          @for $i from 1 through $cardNumMax {
+            ol {
+              li {
                 &:nth-child(#{$i}) {
                   z-index: $i;
-                  top: calc(50% + #{$cardWidth / 2 - $i * $cardBorder});
+                  top: calc(100% - #{($i - 1) * $cardBorder});
                   left: $cardBorder;
                 }
               }
