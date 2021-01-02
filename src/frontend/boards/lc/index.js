@@ -155,7 +155,7 @@ function Hand({ deckSize, round, drawCardFromDeck, cards, onPickCard, pickedCard
           {drawCardFromDeck}
           <Deck cards={deckSize} />
         </div>
-        <ul>
+        <ul className={`cards-${cards.length}`}>
           {cards.sort((card1, card2) => toOrdinal(card1) - toOrdinal(card2)).map((card) => {
             const id = `pickedCard-${toOrdinal(card)}`;
             const checked = card.suit === pickedCard?.suit && card.rank === pickedCard?.rank;

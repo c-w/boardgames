@@ -13,12 +13,13 @@ $cardHeight: 70px;
 $cardOffsetXMax: 10px;
 $cardOffsetXStep: 2px;
 $cardOffsetYStep: 20px;
-$cardNumMax: 13;
+$cardNumMax: 12;
 $numSuits: 5;
 $cardBorder: 2px;
 $brickWidth: 21;
 $brickHeight: 22;
 $fontSize: 16px;
+$handSize: 8;
 $gap: 10px;
 
 @mixin callout {
@@ -593,7 +594,7 @@ $gap: 10px;
       }
 
       .drawpile {
-        min-width: $cardWidth + $cardBorder * $cardNumMax * $numSuits;
+        min-width: $cardBorder * ($cardNumMax * $numSuits - 2 * $handSize + 1) + $cardWidth;
         height: $cardHeight + $cardBorder * 2
       }
 
@@ -601,10 +602,17 @@ $gap: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
-        column-gap: $gap;
+        column-gap: $gap / 2;
         row-gap: $gap;
-        margin-right: $gap;
+        margin-right: $gap / 2;
         flex-wrap: wrap;
+
+        &.cards-7::after {
+          content: "";
+          width: $cardWidth;
+          height: $cardHeight;
+          display: block;
+        }
 
         li {
           &.checked {
