@@ -112,21 +112,20 @@ $gap: 10px;
     text-align: center;
 
     thead {
-      background-color: $callout;
       color: $white;
 
       th {
         padding: 8px;
         font-weight: normal;
         font-size: smaller;
+        background-color: $callout;
       }
     }
 
     tbody {
-      background-color: $white;
-
       td {
         padding: 8px;
+        background-color: $white;
       }
     }
 
