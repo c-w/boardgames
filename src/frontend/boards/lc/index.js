@@ -38,7 +38,7 @@ function Played({ cards, scores, caption, playCard }) {
   return (
     <div className="played">
       {playCard}
-      <label className="description">{caption}, <Points points={sum(scores)} /></label>
+      <label className="description">{caption} <Points points={sum(scores)} /></label>
       <ul className="content">
         {Object.entries(cards).map(([suit, cards]) => (
           <li key={suit} className={classNames('suit', suit, `cards-${cards.length}`)}>
@@ -307,7 +307,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       <Played
         cards={G.played[otherPlayerID]}
         scores={G.scores[otherPlayerID]}
-        caption={`${opponent.name}'s projects`}
+        caption={opponent.name}
       />
       <Discarded
         G={G}
@@ -321,7 +321,7 @@ export default function Board({ G, ctx, playerID, moves, matchData }) {
       <Played
         cards={G.played[playerID]}
         scores={G.scores[playerID]}
-        caption="Your projects"
+        caption="You"
         playCard={playCard}
       />
       <Hand
