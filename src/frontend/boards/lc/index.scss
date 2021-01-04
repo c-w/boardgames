@@ -247,6 +247,36 @@ $gap: 10px;
     }
   }
 
+  .wait {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+
+    .callout {
+      @include callout;
+    }
+
+    .url,
+    textarea {
+      margin: $gap / 2 auto;
+    }
+
+    .url {
+      &::before,
+      &::after {
+        font-size: 20px;
+      }
+
+      &::before {
+        content: '👷‍♀️👷‍♂️';
+      }
+
+      &::after {
+        content: '🔧🏗️🔨';
+      }
+    }
+  }
+
   .matches {
     max-width: 400px;
     margin: 0 auto;
