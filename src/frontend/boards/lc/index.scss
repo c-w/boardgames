@@ -36,6 +36,11 @@ $borderRadius: 4px;
   cursor: pointer;
 }
 
+@mixin narrow {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
 @keyframes wobble {
   0%,
   10% {
@@ -179,8 +184,7 @@ $borderRadius: 4px;
   }
 
   .rjsf {
-    max-width: 400px;
-    margin: 0 auto;
+    @include narrow;
 
     fieldset {
       border: none;
@@ -249,8 +253,7 @@ $borderRadius: 4px;
   }
 
   .wait {
-    max-width: 400px;
-    margin: 0 auto;
+    @include narrow;
     text-align: center;
 
     .callout {
@@ -279,8 +282,7 @@ $borderRadius: 4px;
   }
 
   .matches {
-    max-width: 400px;
-    margin: 0 auto;
+    @include narrow;
     text-align: center;
 
     a {
@@ -346,8 +348,7 @@ $borderRadius: 4px;
   }
 
   .rules {
-    max-width: 400px;
-    margin: 0 auto;
+    @include narrow;
     padding: $gap;
     font-size: larger;
 
