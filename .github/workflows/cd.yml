@@ -58,7 +58,7 @@ jobs:
           echo "code_zip=${code_zip}" >> "${GITHUB_ENV}"
 
       - name: Deploy server
-        run: ./infrastructure/azuredeploy.sh "${code_zip}"
+        run: ./infrastructure/azure/azuredeploy.sh "${code_zip}"
         env:
           SP_USERNAME: 10c12ec4-e789-45f8-86b9-14b29da08045
           SP_TENANT: 4c6f8fef-8d83-40de-89fc-ed1a247e13ac
