@@ -11,6 +11,9 @@
 /certs
 /dist
 /public
+.terraform*
+*.tfstate*
+.ansible*.yml
 
 # misc
 .DS_Store

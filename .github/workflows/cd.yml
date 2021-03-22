@@ -25,7 +25,7 @@ jobs:
         run: yarn run build-client
         env:
           REACT_APP_FRONTEND_ROOT: https://justamouse.com/boardgames
-          REACT_APP_SERVER_URL: https://justamouse.azurewebsites.net
+          REACT_APP_SERVER_URL: https://boardgames.justamouse.com
 
       - name: Deploy client
         uses: peaceiris/actions-gh-pages@v3
@@ -39,6 +39,29 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        run: |
+          if ! command -v terraform >/dev/null; then
+            curl -fsSL "https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip" -o /tmp/terraform.zip
+            sudo unzip /tmp/terraform.zip terraform -d /usr/local/bin
+            rm /tmp/terraform.zip
+          fi
+        env:
+          terraform_version: '0.14.8'
+
+      - name: Setup Ansible
+        run: |
+          if ! command -v ansible >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install --yes software-properties-common
+            sudo apt-add-repository --yes --update ppa:ansible/ansible
+            sudo apt-get install --yes ansible
+          fi
+          if ! command -v sshpass >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install --yes sshpass
+          fi
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -58,11 +81,11 @@ jobs:
           echo "code_zip=${code_zip}" >> "${GITHUB_ENV}"
 
       - name: Deploy server
-        run: ./infrastructure/azure/azuredeploy.sh "${code_zip}"
+        run: ./infrastructure/linode/linodedeploy.sh "${code_zip}"
         env:
-          SP_USERNAME: 10c12ec4-e789-45f8-86b9-14b29da08045
-          SP_TENANT: 4c6f8fef-8d83-40de-89fc-ed1a247e13ac
-          SP_PASSWORD: ${{ secrets.SP_PASSWORD }}
-          RG_LOCATION: SouthCentralUS
-          RG_NAME: justamouse
+          LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
+          TF_VAR_root_password: ${{ secrets.LINODE_VM_ROOT_PASSWORD }}
+          TF_VAR_cloudflare_zone_id: '754c0447008df811847fb40a507054bc'
           FRONTEND_ROOT: https://justamouse.com

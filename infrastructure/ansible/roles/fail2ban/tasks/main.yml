@@ -1,0 +1,15 @@
+- name: Install fail2ban
+  apt:
+    name: fail2ban
+
+- name: Copy fail2ban config
+  template:
+    src: ./templates/jail.conf.j2
+    dest: /etc/fail2ban/jail.conf
+  register: config
+
+- name: Reload fail2ban
+  systemd:
+    name: fail2ban
+    state: reloaded
+  when: config.changed

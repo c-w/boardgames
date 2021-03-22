@@ -1,0 +1,29 @@
+- name: Add caddy apt key
+  apt_key:
+    url: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+
+- name: Add caddy repository
+  apt_repository:
+    repo: deb https://dl.cloudsmith.io/public/caddy/stable/deb/debian any-version main
+    update_cache: yes
+
+- name: Install caddy
+  apt:
+    name: caddy
+
+- name: Enable caddy to bind to privileged ports
+  capabilities:
+    path: /usr/bin/caddy
+    capability: cap_net_bind_service+ep
+
+- name: Copy caddy config
+  template:
+    src: ./templates/Caddyfile.j2
+    dest: /etc/caddy/Caddyfile
+  register: config
+
+- name: Reload caddy
+  systemd:
+    name: caddy
+    state: reloaded
+  when: config.changed

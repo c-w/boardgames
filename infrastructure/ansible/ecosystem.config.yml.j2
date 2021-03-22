@@ -1,0 +1,10 @@
+apps:
+  - name: boardgames
+    script: ./dist/backend/server.js
+    args: run
+    env:
+      NODE_ENV: 'production'
+      STATE_DIR: '{{ state_dir }}'
+      STATE_TTL: 'true'
+      PORT: '{{ deploy_port }}'
+      FRONTEND_ROOT: '{{ frontend_root }}'

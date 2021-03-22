@@ -1,0 +1,14 @@
+- name: Gather facts
+  setup:
+    gather_subset: min
+
+- name: Update packages
+  apt:
+    upgrade: dist
+    update_cache: yes
+
+- name: Install common dependencies
+  apt:
+    name:
+      - apt-transport-https
+      - unzip

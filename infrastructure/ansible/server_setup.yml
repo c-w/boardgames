@@ -1,0 +1,67 @@
+- name: Setup server
+  hosts: all
+  gather_facts: no
+
+  vars:
+    deploy_user: "boardgames"
+    deploy_port: "8888"
+    code_dir: "/home/{{ deploy_user }}/code"
+    state_dir: "/home/{{ deploy_user }}/state"
+
+  pre_tasks:
+    - name: Wait for server
+      wait_for_connection:
+        timeout: 60
+
+  roles:
+    - role: system
+    - role: fail2ban
+    - role: nodejs
+    - role: caddy
+      vars:
+        hostname: "{{ fqdn }}"
+        backend: "127.0.0.1:{{ deploy_port }}"
+
+  tasks:
+    - name: Create deploy user
+      user:
+        name: "{{ deploy_user }}"
+        shell: /bin/bash
+
+    - name: Create code directory
+      file:
+        path: "{{ code_dir }}"
+        state: directory
+      become: true
+      become_user: "{{ deploy_user }}"
+
+    - name: Copy code
+      unarchive:
+        src: "{{ code_zip_path }}"
+        dest: "{{ code_dir }}"
+      become: true
+      become_user: "{{ deploy_user }}"
+      register: code
+
+    - name: Create state directory
+      file:
+        path: "{{ state_dir }}"
+        state: directory
+      become: true
+      become_user: "{{ deploy_user }}"
+
+    - name: Copy server startup file
+      template:
+        src: ./ecosystem.config.yml.j2
+        dest: "{{ code_dir }}/ecosystem.config.yml"
+      become: true
+      become_user: "{{ deploy_user }}"
+      register: config
+
+    - name: Reload server
+      shell:
+        cmd: pm2 startOrRestart ./ecosystem.config.yml --update-env
+        chdir: "{{ code_dir }}"
+      become: true
+      become_user: "{{ deploy_user }}"
+      when: config.changed or code.changed
