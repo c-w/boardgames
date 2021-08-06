@@ -81,8 +81,10 @@ jobs:
           echo "code_zip=${code_zip}" >> "${GITHUB_ENV}"
 
       - name: Deploy server
-        run: ./infrastructure/linode/linodedeploy.sh "${code_zip}"
+        run: ./infrastructure/digitalocean/digitaloceandeploy.sh "${code_zip}"
         env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+          DIGITALOCEAN_SSH_KEY_B64: ${{ secrets.DIGITALOCEAN_SSH_KEY_B64 }}
           LINODE_TOKEN: ${{ secrets.LINODE_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           ARM_ACCESS_KEY: ${{ secrets.ARM_ACCESS_KEY }}
