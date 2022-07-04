@@ -8,5 +8,6 @@ rules:
       - for
       - include
       - mixin
+      - use
   no-descending-specificity: null
   unit-no-unknown: null
